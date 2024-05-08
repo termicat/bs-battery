@@ -1,0 +1,22 @@
+{
+  "hello": "你好",
+  "shared": "分享",
+  "shared-tip-qr": "手机扫码，数据同步更新",
+  "shared-tip-link": "复制下面链接，分享给其他人，数据同步更新",
+  "wellcome": "欢迎使用多维数据台",
+  "loading": "数据台加载中...",
+  "edit": "编辑",
+  "gene-h5-link": "生成H5链接",
+  "gene-h5-qr": "生成二维码",
+  "v": "版本",
+  "submit": "提交中...",
+  "submit-btn": "提交",
+  "submit-err": "提交失败，请检查配置",
+  "err-readonly": "参数错误，或者链接失效",
+  "help": "帮助文档",
+  "update-tip": "更新时间",
+  "link-tip": "图表链接",
+  "copy-link": "复制链接",
+  "feedback": "意见反馈",
+  "develop": "联系开发者"
+}
