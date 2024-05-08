@@ -1,7 +1,14 @@
 import { Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
+import { ConfigItemProps } from "./ConfigItemProps";
 
-export default function ConfigString(props: any) {
+export type ConfigStringOptions = {
+  name: string;
+};
+
+export type ConfigStringProps = ConfigItemProps<'string', ConfigStringOptions>;
+
+export default function ConfigString(props:ConfigStringProps) {
   const {
     field,
     label,
@@ -10,6 +17,7 @@ export default function ConfigString(props: any) {
     tip,
     onChange,
     target,
+    options
   } = props;
   const ref = useRef<any>();
 

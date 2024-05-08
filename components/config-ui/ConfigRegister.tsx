@@ -1,15 +1,28 @@
+import ConfigString, { type ConfigStringOptions, type ConfigStringProps } from "./ConfigString";
 import ConfigArray from "./ConfigArray";
 import ConfigEnums from "./ConfigEnums";
-import ConfigString from "./ConfigString";
-import ConfigObject from "./ConfigObject";
-import ConfigSQL from "./ConfigSQL";
+import ConfigObject, { type ConfigObjectOptions } from "./ConfigObject";
 import ConfigInteger from "./ConfigInteger";
+import type { ConfigItemProps } from "./ConfigItemProps";
 
-export const ConfigRegister: any = {
-  object: () => ConfigObject,
-  string: () => ConfigString,
-  enums: () => ConfigEnums,
-  array: () => ConfigArray,
-  sql: () => ConfigSQL,
-  integer: () => ConfigInteger,
+// function reg<F extends (p: P)=>R, P extends ConfigItemProps<, O>, R, T, O>(fn: ()=>F) {
+//   return fn
+// }
+
+function reg<F>(fn: F){
+  return fn
+}
+
+export const ConfigRegister = {
+  object: reg((p: ConfigStringOptions)=>ConfigObject),
+  string: reg((p: ConfigObjectOptions)=>ConfigString),
+  // enums: reg(()=>ConfigEnums),
+  // array: reg(()=>ConfigArray),
+  // integer: reg(()=>ConfigInteger),
 };
+
+
+export type NodeTypes = keyof typeof ConfigRegister;
+
+export type NodeOptions<T extends NodeTypes> = Parameters<typeof ConfigRegister[T]>[0];
+

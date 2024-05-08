@@ -1,6 +1,7 @@
 import { useTranslation } from "next-i18next";
 import { BsSdk } from "@/libs/bs-sdk/BsSdk";
 import { useRouter } from "next/router";
+import ConfigUI from "@/components/config-ui";
 
 const bsSdk = new BsSdk({});
 
@@ -13,6 +14,8 @@ export default function App() {
   const [t, i18n] = useTranslation();
 
   return (
-    <div>hello</div>
+    <div>
+      <ConfigUI></ConfigUI>
+    </div>
   );
 }
