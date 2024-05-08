@@ -107,7 +107,7 @@ export const scheme = {
         },
         {
           label: "以记录聚合为类别，以字段为系列",
-          value: "fieldCategory",
+          value: "recordCategory",
           properties: [
             {
               label: "类别",
@@ -146,7 +146,7 @@ export const scheme = {
                 },
                 {
                   label: "字段",
-                  field: "field",
+                  field: "fields",
                   type: "field-list",
                   config: {
                     itemCalcOptions: [
@@ -179,35 +179,51 @@ export const scheme = {
   ],
 };
 
-export const value = {
-  header: {
-    title: "CRM 系统",
-    sub: "系统演示",
-    logo: "https://picsum.photos/500/500",
-    background: "url(https://picsum.photos/3000/4500)",
-    height: 200,
+// fieldCategory
+export const fieldCategory = {
+  selectTable: "table1",
+  selectView: "view1",
+  selectTheme: "theme1",
+  chartOptions: {
+    showLegend: true,
+    showDataLabel: true,
   },
-  charts: [
-    {
-      id: "cd-xxff1",
-      title: "门店数量",
-      type: "NumberGroup",
-      query:
-        "select 门店名称 as title, count(门店名称) as data from 地址管理 group by 门店名称",
-    },
-    {
-      id: "cd-tt22",
-      title: "预约咨询",
-      type: "LinkGroup",
-      query:
-        "select 功能名称 as title, 链接入口 as data, 图标 as icon from 预约咨询",
-    },
-    {
-      id: "cd-xxxt",
-      title: "跟进进度",
-      type: "ChartBar",
-      query:
-        "select 跟进时间 as title, count(跟进时间) as data from 加盟商跟进记录 group by 跟进时间 order by title asc",
-    },
-  ],
+  dataOptions: {
+    fieldCategory: {
+      cate: ["field1"],
+      series: {
+        calc: "max",
+        field: "field2",
+      }
+    }
+  },
 };
+
+// recordCategory
+export const recordCategory = {
+  selectTable: "table1",
+  selectView: "view1",
+  selectTheme: "theme1",
+  chartOptions: {
+    showLegend: true,
+    showDataLabel: true,
+  },
+  dataOptions: {
+    recordCategory: {
+      cate: "field1",
+      series: {
+        calc: "max",
+        fields: [
+          {
+            field: "field2",
+            calc: "max",
+          },
+          {
+            field: "field3",
+            calc: "min",
+          }
+        ],
+      }
+    }
+  },
+}
