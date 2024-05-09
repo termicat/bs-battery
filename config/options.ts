@@ -1,6 +1,7 @@
 import type { Node, Scheme } from "@/components/config-ui/types";
 
 export const scheme: Scheme = {
+  field: '',
   type: "object",
   properties: [
     {
@@ -52,12 +53,13 @@ export const scheme: Scheme = {
       // tip: "添加一个表格组件",
     },
     {
+      field: '',
       type: 'line',
     },
     {
       label: "数据映射",
       field: "dataOptions",
-      type: " select-tabs",
+      type: "select-tabs",
       options: [
         {
           label: "以字段为类别，以记录聚合为系列",
