@@ -2,9 +2,7 @@ import { Row } from "@douyinfe/semi-ui";
 import { ConfigRegister } from "./ConfigRegister";
 import type { ConfigItemProps } from "./ConfigItemProps";
 
-export type ConfigObjectOptions = {
-  name: string;
-};
+export type ConfigObjectOptions = {};
 
 export type ConfigObjectProps = ConfigItemProps<'object', ConfigObjectOptions>;
 

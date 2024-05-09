@@ -1,17 +1,22 @@
-import ConfigObject from "./ConfigObject";
-import type { Scheme } from "./types";
+import ConfigObject, { type ConfigObjectProps } from "./ConfigObject";
+import type { Node } from "./types";
 
 type ConfigUIProps<Value> = {
-  scheme: Scheme;
+  scheme: ConfigObjectProps;
   value: Value;
   onChange?: (target: any, field: string, val: any) => void;
-}
+};
 
 export default function ConfigUI<Value>(props: ConfigUIProps<Value>) {
   return (
     <ConfigObject
+      type={"object"}
+      label={props.scheme.label}
+      field={props.scheme.field}
       properties={props.scheme.properties}
       value={props.value}
+      options={props.scheme.options}
+      target={props.value}
       onChange={(target: any, field: string, val: any) => {
         target[field] = val;
         props.onChange?.(target, field, val);

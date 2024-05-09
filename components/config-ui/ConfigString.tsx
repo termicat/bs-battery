@@ -2,9 +2,7 @@ import { Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "./ConfigItemProps";
 
-export type ConfigStringOptions = {
-  name: string;
-};
+export type ConfigStringOptions = { };
 
 export type ConfigStringProps = ConfigItemProps<'string', ConfigStringOptions>;
 
