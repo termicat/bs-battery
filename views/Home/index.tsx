@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import ConfigUI from "@/components/config-ui";
 import { fieldCategory, scheme } from "@/config/options";
 import { useState } from "react";
+import { Button } from "@douyinfe/semi-ui";
 
 // const bsSdk = new BsSdk({});
 
@@ -20,6 +21,7 @@ export default function App() {
     <div
       style={{
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
@@ -30,14 +32,23 @@ export default function App() {
           scheme={scheme}
           value={value}
           onChange={(target, field, value) => {
-            setValue((prev) => {
-              const next: any = { ...prev };
-              next[target][field] = value;
-              return next;
-            });
+            console.log("Root onChange", target, field, value);
+
+            target[field] = value;
+            setValue({ ...target });
           }}
         ></ConfigUI>
       </div>
+      <pre
+        style={{
+          margin: 10,
+          padding: 10,
+          border: "1px solid #eee",
+          width: 340,
+        }}
+      >
+        {JSON.stringify(value, null, 2)}
+      </pre>
     </div>
   );
 }

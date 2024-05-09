@@ -1,8 +1,8 @@
 import ConfigObject, { type ConfigObjectProps } from "./item/ConfigObject";
-import type { Node } from "./types";
+import type { Node, Scheme } from "./types";
 
 type ConfigUIProps<Value> = {
-  scheme: ConfigObjectProps;
+  scheme: Scheme;
   value: Value;
   onChange?: (target: any, field: string, val: any) => void;
 };

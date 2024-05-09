@@ -12,7 +12,7 @@ export default function ConfigObject(props: ConfigObjectProps) {
     <div style={{ border: "1px solid #eee", padding: "10px" }}>
       {label && <div style={{ marginBottom: "10px" }}>{label}</div>}
       <Row>
-        {properties.map((item: any) => {
+        {properties?.map((item: any) => {
           const { type, field } = item;
           const Component = (ConfigRegister as any)[type]();
           return (

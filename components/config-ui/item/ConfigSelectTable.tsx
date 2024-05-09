@@ -20,7 +20,7 @@ export default function ConfigSelectTable(props:ConfigSelectTableProps) {
   const ref = useRef<any>();
 
   return (
-    <Col span={12} style={{ padding: "5px", paddingTop: "10px" }}>
+    <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
