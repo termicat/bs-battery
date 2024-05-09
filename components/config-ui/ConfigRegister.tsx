@@ -7,6 +7,8 @@ import ConfigEnums from "./item/ConfigEnums";
 import ConfigObject, { type ConfigObjectOptions } from "./item/ConfigObject";
 import ConfigInteger from "./item/ConfigInteger";
 import type { ConfigItemProps } from "./ConfigItemProps";
+import type { ConfigSelectTableOptions } from "./item/ConfigSelectTable";
+import ConfigSelectTable from "./item/ConfigSelectTable";
 
 
 function reg<F>(fn: F) {
@@ -16,6 +18,7 @@ function reg<F>(fn: F) {
 export const ConfigRegister = {
   object: reg((p: ConfigObjectOptions) => ConfigObject),
   string: reg((p: ConfigStringOptions) => ConfigString),
+  'select-table': reg((p: ConfigSelectTableOptions) => ConfigSelectTable),
   // enums: reg(()=>ConfigEnums),
   // array: reg(()=>ConfigArray),
   // integer: reg(()=>ConfigInteger),

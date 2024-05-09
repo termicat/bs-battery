@@ -6,8 +6,8 @@ export type Node<T extends NodeTypes> = {
   label?: string;
   tip?: string;
   default?: any;
-  options: NodeOptions<T>;
-  properties: Node<NodeTypes>[];
+  options?: NodeOptions<T>;
+  properties?: Node<NodeTypes>[];
 }
 
 export type Scheme = Node<'object'>;
