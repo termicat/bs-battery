@@ -2,8 +2,9 @@ import { useTranslation } from "next-i18next";
 import { BsSdk } from "@/libs/bs-sdk/BsSdk";
 import { useRouter } from "next/router";
 import ConfigUI from "@/components/config-ui";
+import { scheme } from "@/config/options";
 
-const bsSdk = new BsSdk({});
+// const bsSdk = new BsSdk({});
 
 let btId = "";
 let btUrl = "";
@@ -15,7 +16,7 @@ export default function App() {
 
   return (
     <div>
-      <ConfigUI></ConfigUI>
+      <ConfigUI scheme={scheme}></ConfigUI>
     </div>
   );
 }

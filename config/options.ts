@@ -1,4 +1,6 @@
-export const scheme = {
+import type { Node } from "@/components/config-ui/types";
+
+export const scheme: Node<'object'> = {
   type: "object",
   properties: [
     {

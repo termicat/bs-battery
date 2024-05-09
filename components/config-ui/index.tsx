@@ -1,4 +1,4 @@
-import ConfigObject, { type ConfigObjectProps } from "./ConfigObject";
+import ConfigObject, { type ConfigObjectProps } from "./item/ConfigObject";
 import type { Node } from "./types";
 
 type ConfigUIProps<Value> = {

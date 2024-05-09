@@ -1,6 +1,6 @@
 import { Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
-import { ConfigItemProps } from "./ConfigItemProps";
+import { ConfigItemProps } from "../ConfigItemProps";
 
 export type ConfigStringOptions = { };
 

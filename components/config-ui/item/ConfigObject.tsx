@@ -1,6 +1,6 @@
 import { Row } from "@douyinfe/semi-ui";
-import { ConfigRegister } from "./ConfigRegister";
-import type { ConfigItemProps } from "./ConfigItemProps";
+import { ConfigRegister } from "../ConfigRegister";
+import type { ConfigItemProps } from "../ConfigItemProps";
 
 export type ConfigObjectOptions = {};
 

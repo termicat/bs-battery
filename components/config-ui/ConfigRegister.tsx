@@ -1,11 +1,11 @@
 import ConfigString, {
   type ConfigStringOptions,
   type ConfigStringProps,
-} from "./ConfigString";
-import ConfigArray from "./ConfigArray";
-import ConfigEnums from "./ConfigEnums";
-import ConfigObject, { type ConfigObjectOptions } from "./ConfigObject";
-import ConfigInteger from "./ConfigInteger";
+} from "./item/ConfigString";
+import ConfigArray from "./item/ConfigArray";
+import ConfigEnums from "./item/ConfigEnums";
+import ConfigObject, { type ConfigObjectOptions } from "./item/ConfigObject";
+import ConfigInteger from "./item/ConfigInteger";
 import type { ConfigItemProps } from "./ConfigItemProps";
 
 

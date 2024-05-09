@@ -9,3 +9,5 @@ export type Node<T extends NodeTypes> = {
   options: NodeOptions<T>;
   properties: Node<NodeTypes>[];
 }
+
+export type Scheme = Node<'object'>;
