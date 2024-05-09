@@ -2,11 +2,14 @@ import { Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 
-export type ConfigCheckboxesOptions = { };
+export type ConfigCheckboxesOptions = {};
 
-export type ConfigCheckboxesProps = ConfigItemProps<'checkboxes', ConfigCheckboxesOptions>;
+export type ConfigCheckboxesProps = ConfigItemProps<
+  "checkboxes",
+  ConfigCheckboxesOptions
+>;
 
-export default function ConfigCheckboxes(props:ConfigCheckboxesProps) {
+export default function ConfigCheckboxes(props: ConfigCheckboxesProps) {
   const {
     field,
     label,
@@ -15,12 +18,12 @@ export default function ConfigCheckboxes(props:ConfigCheckboxesProps) {
     tip,
     onChange,
     target,
-    options
+    options,
   } = props;
   const ref = useRef<any>();
 
   return (
-    <Col span={12} style={{ padding: "5px", paddingTop: "10px" }}>
+    <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>

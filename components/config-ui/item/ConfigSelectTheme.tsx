@@ -2,11 +2,14 @@ import { Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 
-export type ConfigSelectThemeOptions = { };
+export type ConfigSelectThemeOptions = {};
 
-export type ConfigSelectThemeProps = ConfigItemProps<'select-theme', ConfigSelectThemeOptions>;
+export type ConfigSelectThemeProps = ConfigItemProps<
+  "select-theme",
+  ConfigSelectThemeOptions
+>;
 
-export default function ConfigSelectTheme(props:ConfigSelectThemeProps) {
+export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
   const {
     field,
     label,
@@ -15,12 +18,12 @@ export default function ConfigSelectTheme(props:ConfigSelectThemeProps) {
     tip,
     onChange,
     target,
-    options
+    options,
   } = props;
   const ref = useRef<any>();
 
   return (
-    <Col span={12} style={{ padding: "5px", paddingTop: "10px" }}>
+    <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>

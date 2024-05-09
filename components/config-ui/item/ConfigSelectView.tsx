@@ -2,11 +2,14 @@ import { Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 
-export type ConfigSelectViewOptions = { };
+export type ConfigSelectViewOptions = {};
 
-export type ConfigSelectViewProps = ConfigItemProps<'select-view', ConfigSelectViewOptions>;
+export type ConfigSelectViewProps = ConfigItemProps<
+  "select-view",
+  ConfigSelectViewOptions
+>;
 
-export default function ConfigSelectView(props:ConfigSelectViewProps) {
+export default function ConfigSelectView(props: ConfigSelectViewProps) {
   const {
     field,
     label,
@@ -15,12 +18,12 @@ export default function ConfigSelectView(props:ConfigSelectViewProps) {
     tip,
     onChange,
     target,
-    options
+    options,
   } = props;
   const ref = useRef<any>();
 
   return (
-    <Col span={12} style={{ padding: "5px", paddingTop: "10px" }}>
+    <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
