@@ -1,8 +1,15 @@
-import { Col, Input } from "@douyinfe/semi-ui";
+import { Col, Input, Select } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
+import ConfigObject from "./ConfigObject";
+import type { Node } from "../types";
+import { getDefaultValue, type NodeTypes } from "../ConfigRegister";
 
-export type ConfigSelectTabsOptions = {};
+export type ConfigSelectTabsOptions = {
+  label: string;
+  key: string;
+  value: any;
+}[];
 
 export type ConfigSelectTabsProps = ConfigItemProps<
   "select-tabs",
@@ -13,7 +20,7 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
   const {
     field,
     label,
-    default: defaultValue,
+    default: defaultKey,
     value,
     tip,
     onChange,
@@ -22,21 +29,50 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
   } = props;
   const ref = useRef<any>();
 
+  const subProperties =
+    options?.find?.((option) => option.key === value.key)?.value || [];
+
   return (
     <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
-      <Input
-        style={{ marginTop: "5px" }}
-        ref={ref}
-        defaultValue={defaultValue}
-        value={value}
-        type="text"
-        onChange={(v) => onChange(target, field, v)}
-      />
+      <Select
+        value={value.key || defaultKey}
+        style={{ marginTop: 5, width: "100%" }}
+        optionList={options?.map((option) => ({
+          label: option.label,
+          value: option.key,
+        }))}
+        onChange={(v) => {
+          const subTarget = Object.assign({}, target[field]);
+          subTarget.key = v;
+          const nextProperties =
+            options?.find((option) => option.key === v)?.value || [];
+          subTarget.value = getDefaultValue({
+            type: "object",
+            field: "",
+            properties: nextProperties,
+          });
+          console.log(subTarget);
+          onChange(target, field, subTarget);
+        }}
+      ></Select>
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
+      </div>
+      <div style={{ marginTop: "2px" }}>
+        <ConfigObject
+          type="object"
+          field={""}
+          value={value.value}
+          target={value.value}
+          onChange={(subTarget: any, subField: string, subVal: any) => {
+            value.value[subField] = subVal;
+            onChange(target, field, value);
+          }}
+          properties={subProperties}
+        ></ConfigObject>
       </div>
     </Col>
   );

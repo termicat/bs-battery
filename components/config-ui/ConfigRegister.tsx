@@ -18,7 +18,12 @@ import ConfigSelectTheme from "./item/ConfigSelectTheme";
 import type { ConfigCheckboxesOptions } from "./item/ConfigCheckboxes";
 import ConfigCheckboxes from "./item/ConfigCheckboxes";
 import ConfigLine from "./item/ConfigLine";
-
+import ConfigFieldList, {
+  type ConfigFieldListOptions,
+} from "./item/ConfigFieldList";
+import type { ConfigSelectFieldOptions } from "./item/ConfigSelectField";
+import ConfigSelectField from "./item/ConfigSelectField";
+import type { Node } from "./types";
 
 function reg<F>(fn: F) {
   return fn;
@@ -27,12 +32,14 @@ function reg<F>(fn: F) {
 export const ConfigRegister = {
   object: reg((p: ConfigObjectOptions) => ConfigObject),
   string: reg((p: ConfigStringOptions) => ConfigString),
-  'select-table': reg((p: ConfigSelectTableOptions) => ConfigSelectTable),
-  'select-view': reg((p: ConfigSelectViewOptions) => ConfigSelectView),
-  'select-tabs': reg((p: ConfigSelectTabsOptions) => ConfigSelectTabs),
-  'select-theme': reg((p: ConfigSelectThemeOptions) => ConfigSelectTheme),
-  'checkboxes': reg((p: ConfigCheckboxesOptions) => ConfigCheckboxes),
-  'line': reg(() => ConfigLine),
+  "select-table": reg((p: ConfigSelectTableOptions) => ConfigSelectTable),
+  "select-view": reg((p: ConfigSelectViewOptions) => ConfigSelectView),
+  "select-tabs": reg((p: ConfigSelectTabsOptions) => ConfigSelectTabs),
+  "select-theme": reg((p: ConfigSelectThemeOptions) => ConfigSelectTheme),
+  checkboxes: reg((p: ConfigCheckboxesOptions) => ConfigCheckboxes),
+  line: reg(() => ConfigLine),
+  "field-list": reg((p: ConfigFieldListOptions) => ConfigFieldList),
+  "select-field": reg((p: ConfigSelectFieldOptions) => ConfigSelectField),
 };
 
 export type NodeTypes = keyof typeof ConfigRegister;
@@ -40,3 +47,19 @@ export type NodeTypes = keyof typeof ConfigRegister;
 export type NodeOptions<T extends NodeTypes> = Parameters<
   (typeof ConfigRegister)[T]
 >[0];
+
+export function getDefaultValue(node: Node<NodeTypes>) {
+  const defaultValue = node.default;
+
+  if (node.type === "object") {
+    const obj = defaultValue || {};
+    const properties = node.properties || [];
+
+    return properties.reduce((acc, property) => {
+      acc[property.field] = getDefaultValue(property);
+      return acc;
+    }, obj);
+  }
+
+  return defaultValue;
+}
