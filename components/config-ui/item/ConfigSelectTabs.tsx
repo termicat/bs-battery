@@ -2,13 +2,13 @@ import { Col, Input, Select } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import ConfigObject from "./ConfigObject";
-import type { Node } from "../types";
+import type { Node, Scheme } from "../types";
 import { getDefaultValue, type NodeTypes } from "../ConfigRegister";
 
 export type ConfigSelectTabsOptions = {
   label: string;
   key: string;
-  value: any;
+  value: Scheme["properties"];
 }[];
 
 export type ConfigSelectTabsProps = ConfigItemProps<

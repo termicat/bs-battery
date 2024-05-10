@@ -106,7 +106,7 @@ const ColorContainer = styled.div`
 
 const ColorItem = styled.div`
   height: 100%;
-  width: 20px;
+  width: 30px;
   border: 0;
   margin: 0;
   padding: 0;
