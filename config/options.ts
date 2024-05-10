@@ -1,7 +1,7 @@
 import type { Node, Scheme } from "@/components/config-ui/types";
 
 export const scheme: Scheme = {
-  field: '',
+  field: "",
   type: "object",
   properties: [
     {
@@ -29,8 +29,22 @@ export const scheme: Scheme = {
       field: "selectTheme",
       label: "主题色",
       type: "select-theme",
-      default: "",
+      // default: "",
       // tip: "这是一个标题",
+      options: [
+        {
+          label: ["#ff0000", "#00ff00", "#0000ff"],
+          value: "p1",
+        },
+        {
+          label: ["#00ff2a", "#ffd000", "#0091ff"],
+          value: "p2",
+        },
+        {
+          label: ["#44ff00", "#3700ff", "#ff0037"],
+          value: "p3",
+        },
+      ],
     },
     {
       label: "图表选项",
@@ -49,12 +63,12 @@ export const scheme: Scheme = {
       default: {
         showLegend: true,
         showDataLabel: true,
-      }
+      },
       // tip: "添加一个表格组件",
     },
     {
-      field: '',
-      type: 'line',
+      field: "",
+      type: "line",
     },
     {
       label: "数据映射",
@@ -79,7 +93,7 @@ export const scheme: Scheme = {
                   label: "计算方式",
                   field: "calc",
                   type: "down-select",
-                  style: 'float: right; width: 200px;',
+                  style: "float: right; width: 200px;",
                   options: [
                     {
                       label: "最大值",
@@ -105,9 +119,9 @@ export const scheme: Scheme = {
                   field: "field",
                   type: "select-field",
                 },
-              ]
+              ],
             },
-          ]
+          ],
         },
         {
           label: "以记录聚合为类别，以字段为系列",
@@ -127,7 +141,7 @@ export const scheme: Scheme = {
                   label: "计算方式",
                   field: "calc",
                   type: "down-select",
-                  style: 'float: right; width: 200px;',
+                  style: "float: right; width: 200px;",
                   options: [
                     {
                       label: "最大值",
@@ -170,12 +184,12 @@ export const scheme: Scheme = {
                         label: "平均值",
                         value: "avg",
                       },
-                    ]
+                    ],
                   },
                 },
-              ]
+              ],
             },
-          ]
+          ],
         },
       ],
       default: "fieldCategory",
@@ -187,7 +201,7 @@ export const scheme: Scheme = {
 export const fieldCategory = {
   selectTable: "table1",
   selectView: "view1",
-  selectTheme: "theme1",
+  selectTheme: "p1",
   chartOptions: {
     showLegend: true,
     showDataLabel: true,
@@ -198,8 +212,8 @@ export const fieldCategory = {
       series: {
         calc: "max",
         field: "field2",
-      }
-    }
+      },
+    },
   },
 };
 
@@ -207,7 +221,7 @@ export const fieldCategory = {
 export const recordCategory = {
   selectTable: "table1",
   selectView: "view1",
-  selectTheme: "theme1",
+  selectTheme: "p2",
   chartOptions: {
     showLegend: true,
     showDataLabel: true,
@@ -225,9 +239,9 @@ export const recordCategory = {
           {
             field: "field3",
             calc: "min",
-          }
+          },
         ],
-      }
-    }
+      },
+    },
   },
-}
+};
