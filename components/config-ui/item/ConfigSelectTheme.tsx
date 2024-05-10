@@ -26,7 +26,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
   } = props;
   const ref = useRef<any>();
 
-  console.log(props);
+  // console.log(props);
 
   const renderSelectedItem = (p: any) => {
     const colors = options?.find((item) => item.value === p.value)?.label || [];
@@ -35,7 +35,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
   };
 
   const renderOptionItem = (p: any) => {
-    console.log(p);
+    // console.log(p);
 
     const colors = options?.find((item) => item.value === p.value)?.label || [];
     return (
@@ -77,7 +77,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
       <Select
         placeholder="请选择主题色"
         style={{ width: "100%", marginTop: "5px" }}
-        onChange={(v) => console.log(v)}
+        onChange={(v) => onChange(target, field, v)}
         defaultValue={value}
         renderSelectedItem={renderSelectedItem}
         renderOptionItem={renderOptionItem}
