@@ -230,10 +230,7 @@ export const scheme: Scheme = {
           value: "showDataLabel",
         },
       ],
-      default: {
-        showLegend: true,
-        showDataLabel: true,
-      },
+      default: ["showLegend", "showDataLabel"],
       // tip: "添加一个表格组件",
     },
     {
@@ -372,10 +369,7 @@ export const fieldCategory = {
   selectTable: "table1",
   selectView: "view1",
   selectTheme: "p1",
-  chartOptions: {
-    showLegend: true,
-    showDataLabel: true,
-  },
+  chartOptions: ["showLegend"],
   dataOptions: {
     fieldCategory: {
       cate: ["field1"],

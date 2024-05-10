@@ -1,8 +1,11 @@
-import { Col, Input } from "@douyinfe/semi-ui";
+import { CheckboxGroup, Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 
-export type ConfigCheckboxesOptions = {};
+export type ConfigCheckboxesOptions = {
+  label: string;
+  value: string;
+}[];
 
 export type ConfigCheckboxesProps = ConfigItemProps<
   "checkboxes",
@@ -27,14 +30,23 @@ export default function ConfigCheckboxes(props: ConfigCheckboxesProps) {
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
-      <Input
+      {/* <Input
         style={{ marginTop: "5px" }}
         ref={ref}
         defaultValue={defaultValue}
         value={value}
         type="text"
         onChange={(v) => onChange(target, field, v)}
+      /> */}
+      <CheckboxGroup
+        style={{ marginTop: "5px" }}
+        options={options}
+        direction="horizontal"
+        aria-label={tip}
+        value={value}
+        onChange={(v) => onChange(target, field, v)}
       />
+
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
