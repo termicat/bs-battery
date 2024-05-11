@@ -44,7 +44,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
           width: "97%",
           padding: "3px 8px",
           margin: "2px 5px",
-          background: p.selected ? "#e4e4fc" : "",
+          background: p.selected ? "#f1f1fc" : "",
           borderRadius: "4px",
         }}
         onClick={p.onClick}
