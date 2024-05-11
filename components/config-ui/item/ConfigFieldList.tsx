@@ -72,8 +72,9 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                   <div>
                     <MenuItem
                       onClick={() => {
-                        showUpdate[key] = true;
-                        setShowUpdate({ ...showUpdate });
+                        setShowUpdate({
+                          [key]: true,
+                        });
                       }}
                     >
                       修改字段
