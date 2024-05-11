@@ -33,7 +33,7 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
     options?.find?.((option) => option.key === value.key)?.value || [];
 
   return (
-    <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
+    <Col span={24} style={{ paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
@@ -61,7 +61,7 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
-      <div style={{ marginTop: "2px" }}>
+      <div style={{ marginTop: "10px" }}>
         <ConfigObject
           type="object"
           field={""}

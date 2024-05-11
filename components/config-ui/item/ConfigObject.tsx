@@ -4,12 +4,12 @@ import type { ConfigItemProps } from "../ConfigItemProps";
 
 export type ConfigObjectOptions = {};
 
-export type ConfigObjectProps = ConfigItemProps<'object', ConfigObjectOptions>;
+export type ConfigObjectProps = ConfigItemProps<"object", ConfigObjectOptions>;
 
 export default function ConfigObject(props: ConfigObjectProps) {
-  const { properties, label, value, onChange } = props;
+  const { properties, label, value, onChange, style } = props;
   return (
-    <div style={{ border: "1px solid #eee", padding: "10px" }}>
+    <div style={Object.assign({}, style)}>
       {label && <div style={{ marginBottom: "10px" }}>{label}</div>}
       <Row>
         {properties?.map((item: any) => {

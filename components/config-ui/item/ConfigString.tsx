@@ -2,11 +2,11 @@ import { Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 
-export type ConfigStringOptions = { };
+export type ConfigStringOptions = {};
 
-export type ConfigStringProps = ConfigItemProps<'string', ConfigStringOptions>;
+export type ConfigStringProps = ConfigItemProps<"string", ConfigStringOptions>;
 
-export default function ConfigString(props:ConfigStringProps) {
+export default function ConfigString(props: ConfigStringProps) {
   const {
     field,
     label,
@@ -15,12 +15,12 @@ export default function ConfigString(props:ConfigStringProps) {
     tip,
     onChange,
     target,
-    options
+    options,
   } = props;
   const ref = useRef<any>();
 
   return (
-    <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
+    <Col span={24} style={{ paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>

@@ -2,11 +2,14 @@ import { Col, Input } from "@douyinfe/semi-ui";
 import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 
-export type ConfigSelectTableOptions = { };
+export type ConfigSelectTableOptions = {};
 
-export type ConfigSelectTableProps = ConfigItemProps<'select-table', ConfigSelectTableOptions>;
+export type ConfigSelectTableProps = ConfigItemProps<
+  "select-table",
+  ConfigSelectTableOptions
+>;
 
-export default function ConfigSelectTable(props:ConfigSelectTableProps) {
+export default function ConfigSelectTable(props: ConfigSelectTableProps) {
   const {
     field,
     label,
@@ -15,12 +18,12 @@ export default function ConfigSelectTable(props:ConfigSelectTableProps) {
     tip,
     onChange,
     target,
-    options
+    options,
   } = props;
   const ref = useRef<any>();
 
   return (
-    <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
+    <Col span={24} style={{ paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
