@@ -1,5 +1,5 @@
 import { Col, Input, Select } from "@douyinfe/semi-ui";
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import { IconChevronDown } from "@douyinfe/semi-icons";
 import ReactDOM from "react-dom";
@@ -27,6 +27,11 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
     portal,
   } = props;
   const ref = useRef<any>();
+  const [visible, setVisible] = useState(0);
+
+  useEffect(() => {
+    setVisible(Date.now());
+  }, []);
 
   const triggerRender = ({ value, ...rest }: any) => {
     return (
@@ -58,16 +63,20 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
     );
   };
 
-  return mountPortal(
-    portal,
-    <Select
-      value={value}
-      onChange={(v) => {
-        onChange(target, field, v);
-      }}
-      triggerRender={triggerRender}
-      optionList={options}
-    ></Select>
+  return !visible ? (
+    <></>
+  ) : (
+    mountPortal(
+      portal,
+      <Select
+        value={value}
+        onChange={(v) => {
+          onChange(target, field, v);
+        }}
+        triggerRender={triggerRender}
+        optionList={options}
+      ></Select>
+    )
   );
 }
 
