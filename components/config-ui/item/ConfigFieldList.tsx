@@ -1,8 +1,14 @@
-import { Card, Col, Input, Tooltip } from "@douyinfe/semi-ui";
+import { Card, Col, Input, Popover, Tooltip } from "@douyinfe/semi-ui";
 import { useRef, useState } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import styled from "styled-components";
-import { IconHash, IconMore, IconPlus, IconSearch } from "@douyinfe/semi-icons";
+import {
+  IconClear,
+  IconHash,
+  IconMore,
+  IconPlus,
+  IconSearch,
+} from "@douyinfe/semi-icons";
 import Text from "@douyinfe/semi-ui/lib/es/typography/text";
 import { useTranslation } from "react-i18next";
 
@@ -36,14 +42,11 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
   }, {} as any);
 
   const [hideSearch, setHideSearch] = useState(true);
-  const [searchInput, setSearchInput] = useState("");
   const [showTip, setShowTip] = useState(false);
+  const [showUpdate, setShowUpdate] = useState({} as any);
 
   const notAddedOptions = options?.filter(
     (item) => !value.includes(item.value)
-  );
-  const filterOptions = notAddedOptions?.filter((item) =>
-    searchInput ? item.label.includes(searchInput) : true
   );
 
   return (
@@ -53,21 +56,63 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
       </div>
       <div style={{ marginTop: 15 }}>
         {value?.map((key: any) => (
-          <FieldItem key={key}>
-            <IconHash
-              style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
-            />
-            <span style={{ flex: 1 }}>{optionsMap[key]}</span>
-            <span style={{ fontSize: 14, color: "#8F959E" }}>最大值</span>
-            <IconMore
-              style={{
-                fontSize: 12,
-                transform: "rotate(90deg)",
-                color: "#646A73",
-                marginLeft: 5,
-              }}
-            />
-          </FieldItem>
+          <div key={key}>
+            <FieldItem>
+              <IconHash
+                style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
+              />
+              <span style={{ flex: 1 }}>{optionsMap[key]}</span>
+              <span style={{ fontSize: 14, color: "#8F959E" }}>最大值</span>
+              <Popover
+                showArrow
+                arrowPointAtCenter
+                position="bottomRight"
+                style={{ width: 100, padding: 0 }}
+                content={
+                  <div>
+                    <MenuItem
+                      onClick={() => {
+                        showUpdate[key] = true;
+                        setShowUpdate({ ...showUpdate });
+                      }}
+                    >
+                      修改字段
+                    </MenuItem>
+                    <MenuItem>移除字段</MenuItem>
+                    <MenuItem>上移字段</MenuItem>
+                    <MenuItem>下移字段</MenuItem>
+                  </div>
+                }
+              >
+                <IconMore
+                  style={{
+                    fontSize: 12,
+                    transform: "rotate(90deg)",
+                    color: "#646A73",
+                    marginLeft: 5,
+                  }}
+                />
+              </Popover>
+            </FieldItem>
+            {showUpdate[key] && (
+              <SearchList
+                list={notAddedOptions}
+                onClickItem={(v2) => {
+                  onChange(
+                    target,
+                    field,
+                    value.map((v: any) => (v === key ? v2 : v))
+                  );
+                  showUpdate[key] = false;
+                  setShowUpdate({ ...showUpdate });
+                }}
+                onClose={() => {
+                  showUpdate[key] = false;
+                  setShowUpdate({ ...showUpdate });
+                }}
+              ></SearchList>
+            )}
+          </div>
         ))}
       </div>
       <div style={{ marginTop: 10, userSelect: "none" }}>
@@ -88,7 +133,6 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
             onClick={() => {
               if (notAddedOptions?.length) {
                 setHideSearch(false);
-                setSearchInput("");
               } else {
                 setShowTip(true);
                 setTimeout(() => {
@@ -102,50 +146,81 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
         </Tooltip>
 
         {hideSearch || (
-          <Card
-            title={
-              <Input
-                prefix={<IconSearch />}
-                showClear
-                borderless
-                style={{ borderWidth: 0 }}
-                placeholder={"搜索字段"}
-                autoFocus
-                onClear={() => {
-                  setHideSearch(true);
-                }}
-                onChange={(e) => {
-                  setSearchInput(e);
-                }}
-              ></Input>
-            }
-            shadows="always"
-            style={{ marginTop: 5 }}
-            headerStyle={{ padding: 0 }}
-            bodyStyle={{ padding: 0 }}
-          >
-            {filterOptions?.map((option) => (
-              <FieldItem
-                key={option.value}
-                style={{ marginTop: 0, border: 0 }}
-                onClick={() => {
-                  onChange(target, field, [...value, option.value]);
-                  setHideSearch(true);
-                }}
-              >
-                <IconHash
-                  style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
-                />
-                <span style={{ flex: 1 }}>{option.label}</span>
-              </FieldItem>
-            ))}
-          </Card>
+          <SearchList
+            list={notAddedOptions}
+            onClickItem={(v) => {
+              onChange(target, field, [...value, v]);
+              setHideSearch(true);
+            }}
+            onClose={() => {
+              setHideSearch(true);
+            }}
+          ></SearchList>
         )}
       </div>
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
     </Col>
+  );
+}
+
+type SearchListProps = {
+  list?: ConfigFieldListOptions;
+  onClickItem?: (v: string, option: any) => void;
+  onClose?: () => void;
+};
+function SearchList(props: SearchListProps) {
+  const list = props?.list;
+  const [searchInput, setSearchInput] = useState("");
+
+  const filterOptions =
+    list?.filter((item) =>
+      searchInput ? item.label.includes(searchInput) : true
+    ) || [];
+  return (
+    <Card
+      title={
+        <Input
+          prefix={<IconSearch />}
+          suffix={
+            <IconClear
+              onClick={() => {
+                setSearchInput("");
+                props.onClose?.();
+              }}
+            />
+          }
+          showClear={false}
+          borderless
+          style={{ borderWidth: 0 }}
+          placeholder={"搜索字段"}
+          autoFocus
+          onChange={(e) => {
+            setSearchInput(e);
+          }}
+        ></Input>
+      }
+      shadows="always"
+      style={{ marginTop: 5 }}
+      headerStyle={{ padding: 0 }}
+      bodyStyle={{ padding: 0 }}
+    >
+      {filterOptions?.map((option: any) => (
+        <FieldItem
+          key={option.value}
+          style={{ marginTop: 0, border: 0 }}
+          onClick={() => {
+            props?.onClickItem?.(option.value, option);
+          }}
+        >
+          <IconHash
+            style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
+          />
+          <span style={{ flex: 1 }}>{option.label}</span>
+        </FieldItem>
+      ))}
+    </Card>
   );
 }
 
@@ -160,4 +235,16 @@ const FieldItem = styled.div`
   border-radius: 5px;
   padding: 0 10px;
   margin-top: 8px;
+`;
+
+const MenuItem = styled.div`
+  padding: 8px 16px;
+  font-size: 14px;
+  color: #1f2329;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  &:hover {
+    background-color: #f4f5f7;
+  }
 `;
