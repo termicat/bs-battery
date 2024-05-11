@@ -10,6 +10,7 @@ export type Node<T extends NodeTypes> = {
   style?: React.CSSProperties;
   // slots?: Record<string, any>;
   properties?: Node<NodeTypes>[];
+  portal?: string; // 移动当前节点到指定的节点
 };
 
 export type Scheme = Node<"object">;

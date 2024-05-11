@@ -429,10 +429,10 @@ export const scheme: Scheme = {
               ],
             },
             {
+              portal: "#cate-right",
               label: "计算方式",
               field: "calc",
               type: "down-select",
-              style: "float: right; width: 200px;",
               options: [
                 {
                   label: "最大值",
@@ -599,8 +599,8 @@ export const fieldCategory = {
     key: "fieldCategory",
     value: {
       cate: "field1",
+      calc: "max",
       series: {
-        calc: "max",
         field: "field2",
       },
     },

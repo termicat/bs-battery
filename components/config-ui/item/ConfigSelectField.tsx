@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import styled from "styled-components";
 import { IconHash } from "@douyinfe/semi-icons";
+import ConfigObject from "./ConfigObject";
 
 export type ConfigSelectFieldOptions = {
   label: string;
@@ -55,8 +56,17 @@ export default function ConfigSelectField(props: ConfigSelectFieldProps) {
 
   return (
     <Col span={24} style={{ paddingTop: "10px" }}>
-      <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
-        {label}
+      <div
+        style={{
+          fontSize: "14px",
+          fontWeight: "bold",
+          color: "#333",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ flex: 1 }}>{label}</div>
+        <div id={`${field}-right`}></div>
       </div>
 
       <Select

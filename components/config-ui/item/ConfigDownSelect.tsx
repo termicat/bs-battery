@@ -1,6 +1,8 @@
 import { Col, Input, Select } from "@douyinfe/semi-ui";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
+import { IconChevronDown } from "@douyinfe/semi-icons";
+import ReactDOM from "react-dom";
 
 export type ConfigDownSelectOptions = {
   label: string;
@@ -22,18 +24,57 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
     onChange,
     target,
     options,
+    portal,
   } = props;
   const ref = useRef<any>();
 
-  return (
-    <Col span={24} style={{ paddingTop: "10px" }}>
-      <Select
-        value={value}
-        // onChange={(value) => setVal(value)}
-        // triggerRender={triggerRender2}
-        optionList={options}
-        style={{ width: 240, marginTop: 20, outline: 0 }}
-      ></Select>
-    </Col>
+  const triggerRender = ({ value, ...rest }: any) => {
+    return (
+      <div
+        style={{
+          minWidth: "112",
+          height: 32,
+          display: "flex",
+          alignItems: "center",
+          paddingLeft: 8,
+          borderRadius: 3,
+        }}
+      >
+        <div
+          style={{
+            margin: 4,
+            whiteSpace: "nowrap",
+            textOverflow: "ellipsis",
+            flexGrow: 1,
+            overflow: "hidden",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
+          {value.map((item: { label: any }) => item.label).join(" , ")}
+          <IconChevronDown style={{ margin: "0 8px", flexShrink: 0 }} />
+        </div>
+      </div>
+    );
+  };
+
+  return mountPortal(
+    portal,
+    <Select
+      value={value}
+      onChange={(v) => {
+        onChange(target, field, v);
+      }}
+      triggerRender={triggerRender}
+      optionList={options}
+    ></Select>
   );
+}
+
+function mountPortal(portal: string | undefined, renderView: React.ReactNode) {
+  if (!portal) return renderView;
+  const target = document.querySelector(portal);
+  if (!target) return renderView;
+  console.log("portal", portal, target);
+  return ReactDOM.createPortal(renderView, target);
 }
