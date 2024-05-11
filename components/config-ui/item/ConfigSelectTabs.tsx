@@ -61,7 +61,7 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
-      <div style={{ marginTop: "10px" }}>
+      <div style={{ marginTop: "0px" }}>
         <ConfigObject
           type="object"
           field={""}
