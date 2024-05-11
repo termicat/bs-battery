@@ -287,7 +287,7 @@ body[theme-mode="dark"] {
   --c-I900: #d2d5fd;
 }
 
-html[theme-mode='dark'] {
+html {
   --ccmtoken-chart-aurora-b100: #bdd2ff;
   --ccmtoken-chart-aurora-b200: #8fb4ff;
   --ccmtoken-chart-aurora-b300: #4c88ff;
@@ -344,7 +344,7 @@ html[theme-mode='dark'] {
   --ccmtoken-chart-aurora-y600: #6f4a01;
 }
 
-body[theme-mode=dark] {
+body {
   --ccm-chart-B50: #151f33;
   --ccm-chart-B100: #192a4c;
   --ccm-chart-B200: #203e78;
