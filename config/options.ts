@@ -403,30 +403,8 @@ export const scheme: Scheme = {
             {
               label: "类别",
               field: "cate",
-              type: "field-list",
-              options: [
-                {
-                  label: "字段1",
-                  value: "field1",
-                },
-                {
-                  label: "字段2",
-                  value: "field2",
-                },
-                {
-                  label: "字段3",
-                  value: "field3",
-                },
-                {
-                  label: "字段4",
-                  value: "field4",
-                },
-                {
-                  label: "字段5",
-                  value: "field5",
-                },
-              ],
-              default: ["field1"],
+              type: "select-field",
+              default: "field2",
             },
             // {
             //   label: "系列",
@@ -474,8 +452,30 @@ export const scheme: Scheme = {
             {
               label: "类别",
               field: "cate",
-              type: "select-field",
-              default: "field2",
+              type: "field-list",
+              options: [
+                {
+                  label: "字段1",
+                  value: "field1",
+                },
+                {
+                  label: "字段2",
+                  value: "field2",
+                },
+                {
+                  label: "字段3",
+                  value: "field3",
+                },
+                {
+                  label: "字段4",
+                  value: "field4",
+                },
+                {
+                  label: "字段5",
+                  value: "field5",
+                },
+              ],
+              default: ["field1"],
             },
             // {
             //   label: "系列",
