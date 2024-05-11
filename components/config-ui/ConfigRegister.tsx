@@ -24,6 +24,8 @@ import ConfigFieldList, {
 import type { ConfigSelectFieldOptions } from "./item/ConfigSelectField";
 import ConfigSelectField from "./item/ConfigSelectField";
 import type { Node } from "./types";
+import type { ConfigDownSelectOptions } from "./item/ConfigDownSelect";
+import ConfigDownSelect from "./item/ConfigDownSelect";
 
 function reg<F>(fn: F) {
   return fn;
@@ -40,6 +42,7 @@ export const ConfigRegister = {
   line: reg(() => ConfigLine),
   "field-list": reg((p: ConfigFieldListOptions) => ConfigFieldList),
   "select-field": reg((p: ConfigSelectFieldOptions) => ConfigSelectField),
+  "down-select": reg((p: ConfigDownSelectOptions) => ConfigDownSelect),
 };
 
 export type NodeTypes = keyof typeof ConfigRegister;

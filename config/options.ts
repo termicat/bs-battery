@@ -428,6 +428,31 @@ export const scheme: Scheme = {
                 },
               ],
             },
+            {
+              label: "计算方式",
+              field: "calc",
+              type: "down-select",
+              style: "float: right; width: 200px;",
+              options: [
+                {
+                  label: "最大值",
+                  value: "max",
+                },
+                {
+                  label: "最小值",
+                  value: "min",
+                },
+                {
+                  label: "求和",
+                  value: "sum",
+                },
+                {
+                  label: "平均值",
+                  value: "avg",
+                },
+              ],
+              default: "max",
+            },
             // {
             //   label: "系列",
             //   field: "series",
