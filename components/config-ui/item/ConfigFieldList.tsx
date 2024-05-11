@@ -78,7 +78,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                         });
                       }}
                     >
-                      修改字段
+                      {t("Update Field")}
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
@@ -89,7 +89,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                         );
                       }}
                     >
-                      移除字段
+                      {t("Remove Field")}
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
@@ -102,7 +102,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                         }
                       }}
                     >
-                      上移字段
+                      {t("Up Field")}
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
@@ -115,7 +115,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                         }
                       }}
                     >
-                      下移字段
+                      {t("Down Field")}
                     </MenuItem>
                   </div>
                 }
