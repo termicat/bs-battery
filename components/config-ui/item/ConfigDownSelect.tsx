@@ -33,10 +33,10 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
       <div
         style={{
           minWidth: "112",
-          height: 32,
           display: "flex",
           alignItems: "center",
           paddingLeft: 8,
+          marginRight: -8,
           borderRadius: 3,
         }}
       >

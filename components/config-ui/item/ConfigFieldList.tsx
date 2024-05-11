@@ -11,6 +11,7 @@ import {
 } from "@douyinfe/semi-icons";
 import Text from "@douyinfe/semi-ui/lib/es/typography/text";
 import { useTranslation } from "react-i18next";
+import ConfigDownSelect from "./ConfigDownSelect";
 
 export type ConfigFieldListOptions = {
   list?: {
@@ -41,7 +42,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
     options,
   } = props;
   const list = options?.list || [];
-  const itemSelect = options?.itemSelectOptions || [];
+  const itemSelectOptions = options?.itemSelectOptions || [];
 
   const optionsMap = list.reduce((acc, cur) => {
     acc[cur.value] = cur.label;
@@ -51,6 +52,9 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
   const [hideSearch, setHideSearch] = useState(true);
   const [showTip, setShowTip] = useState(false);
   const [showUpdate, setShowUpdate] = useState({} as any);
+  const [innerItemSelect, setInnerItemSelect] = useState(
+    itemSelectOptions?.[0]?.value
+  );
 
   const notAddedOptions = list.filter(
     (item) => !scopeValue.some((sv: any) => sv.value === item.value)
@@ -58,8 +62,62 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
 
   return (
     <Col span={24} style={{ paddingTop: "10px" }}>
-      <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
-        {label}
+      <div
+        style={{
+          fontSize: "14px",
+          fontWeight: "bold",
+          color: "#333",
+          display: "flex",
+          alignItems: "center",
+        }}
+      >
+        <div style={{ flex: 1 }}>{label}</div>
+        <div>
+          {
+            itemSelectOptions?.[0].value && (
+              <ConfigDownSelect
+                field={""}
+                value={innerItemSelect}
+                target={undefined}
+                options={itemSelectOptions}
+                onChange={function (_2: any, _3: string, val: any): void {
+                  setInnerItemSelect(val);
+
+                  onChange(
+                    target,
+                    field,
+                    scopeValue.map((v: any) => {
+                      return {
+                        value: v.value,
+                        select: val,
+                      };
+                    })
+                  );
+                }}
+              ></ConfigDownSelect>
+            )
+
+            // <Select
+            //   value={itemSelect?.[0].value}
+            //   onChange={(v2) => {
+            //     onChange(
+            //       target,
+            //       field,
+            //       scopeValue.map((v: any) => {
+            //         return {
+            //           value: v.value,
+            //           select: v2,
+            //         };
+            //       })
+            //     );
+            //   }}
+            //   triggerRender={({ value }: any) => {
+            //     return <div>{value?.[0]?.label}</div>;
+            //   }}
+            //   optionList={itemSelect}
+            // ></Select>
+          }
+        </div>
       </div>
       <div style={{ marginTop: 15 }}>
         {scopeValue?.map(({ value, select }: any) => (
@@ -89,7 +147,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                   triggerRender={({ value }: any) => {
                     return <div>{value?.[0]?.label}</div>;
                   }}
-                  optionList={itemSelect}
+                  optionList={itemSelectOptions}
                 ></Select>
               </span>
               <Popover
