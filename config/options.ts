@@ -405,6 +405,28 @@ export const scheme: Scheme = {
               field: "cate",
               type: "select-field",
               default: "field2",
+              options: [
+                {
+                  label: "字段1",
+                  value: "field1",
+                },
+                {
+                  label: "字段2",
+                  value: "field2",
+                },
+                {
+                  label: "字段3",
+                  value: "field3",
+                },
+                {
+                  label: "字段4",
+                  value: "field4",
+                },
+                {
+                  label: "字段5",
+                  value: "field5",
+                },
+              ],
             },
             // {
             //   label: "系列",
@@ -551,7 +573,7 @@ export const fieldCategory = {
   dataOptions: {
     key: "fieldCategory",
     value: {
-      cate: ["field1", "field2"],
+      cate: "field1",
       series: {
         calc: "max",
         field: "field2",
