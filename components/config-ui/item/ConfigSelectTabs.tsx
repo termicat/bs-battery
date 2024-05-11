@@ -63,7 +63,6 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
       </div>
       <div style={{ marginTop: "0px" }}>
         <ConfigObject
-          type="object"
           field={""}
           value={value.value}
           target={value.value}

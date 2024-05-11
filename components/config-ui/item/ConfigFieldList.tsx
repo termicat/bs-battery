@@ -25,7 +25,7 @@ export type ConfigFieldListOptions = {
 };
 
 export type ConfigFieldListProps = ConfigItemProps<
-  "string",
+  "field-list",
   ConfigFieldListOptions
 >;
 

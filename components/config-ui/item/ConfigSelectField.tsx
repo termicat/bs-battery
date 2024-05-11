@@ -11,7 +11,7 @@ export type ConfigSelectFieldOptions = {
 }[];
 
 export type ConfigSelectFieldProps = ConfigItemProps<
-  "string",
+  "select-field",
   ConfigSelectFieldOptions
 >;
 

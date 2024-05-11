@@ -10,7 +10,7 @@ export type ConfigDownSelectOptions = {
 }[];
 
 export type ConfigDownSelectProps = ConfigItemProps<
-  "string",
+  "down-select",
   ConfigDownSelectOptions
 >;
 
