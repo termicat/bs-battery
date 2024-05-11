@@ -67,6 +67,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                 showArrow
                 arrowPointAtCenter
                 position="bottomRight"
+                clickToHide
                 style={{ width: 100, padding: 0 }}
                 content={
                   <div>
@@ -79,9 +80,43 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                     >
                       修改字段
                     </MenuItem>
-                    <MenuItem>移除字段</MenuItem>
-                    <MenuItem>上移字段</MenuItem>
-                    <MenuItem>下移字段</MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        onChange(
+                          target,
+                          field,
+                          value.filter((v: any) => v !== key)
+                        );
+                      }}
+                    >
+                      移除字段
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        const index = value.indexOf(key);
+                        if (index > 0) {
+                          const temp = value[index];
+                          value[index] = value[index - 1];
+                          value[index - 1] = temp;
+                          onChange(target, field, [...value]);
+                        }
+                      }}
+                    >
+                      上移字段
+                    </MenuItem>
+                    <MenuItem
+                      onClick={() => {
+                        const index = value.indexOf(key);
+                        if (index < value.length - 1) {
+                          const temp = value[index];
+                          value[index] = value[index + 1];
+                          value[index + 1] = temp;
+                          onChange(target, field, [...value]);
+                        }
+                      }}
+                    >
+                      下移字段
+                    </MenuItem>
                   </div>
                 }
               >
