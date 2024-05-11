@@ -498,31 +498,61 @@ export const scheme: Scheme = {
           value: [
             {
               label: "类别",
-              field: "cate",
+              field: "cates",
               type: "field-list",
-              options: [
+              options: {
+                list: [
+                  {
+                    label: "字段1",
+                    value: "field1",
+                    select: "max",
+                  },
+                  {
+                    label: "字段2",
+                    value: "field2",
+                    select: "max",
+                  },
+                  {
+                    label: "字段3",
+                    value: "field3",
+                    select: "max",
+                  },
+                  {
+                    label: "字段4",
+                    value: "field4",
+                    select: "max",
+                  },
+                  {
+                    label: "字段5",
+                    value: "field5",
+                    select: "max",
+                  },
+                ],
+                itemSelectOptions: [
+                  {
+                    label: "最大值",
+                    value: "max",
+                  },
+                  {
+                    label: "最小值",
+                    value: "min",
+                  },
+                  {
+                    label: "求和",
+                    value: "sum",
+                  },
+                  {
+                    label: "平均值",
+                    value: "avg",
+                  },
+                ],
+              },
+              default: [
                 {
-                  label: "字段1",
                   value: "field1",
-                },
-                {
-                  label: "字段2",
-                  value: "field2",
-                },
-                {
-                  label: "字段3",
-                  value: "field3",
-                },
-                {
-                  label: "字段4",
-                  value: "field4",
-                },
-                {
-                  label: "字段5",
-                  value: "field5",
+                  select: "max",
                 },
               ],
-              default: ["field1"],
             },
             // {
             //   label: "系列",
@@ -598,6 +628,12 @@ export const fieldCategory = {
   dataOptions: {
     key: "fieldCategory",
     value: {
+      cates: [
+        {
+          value: "field1",
+          select: "max",
+        },
+      ],
       cate: "field1",
       calc: "max",
       series: {

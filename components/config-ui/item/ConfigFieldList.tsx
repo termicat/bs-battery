@@ -1,4 +1,4 @@
-import { Card, Col, Input, Popover, Tooltip } from "@douyinfe/semi-ui";
+import { Card, Col, Input, Popover, Select, Tooltip } from "@douyinfe/semi-ui";
 import { useRef, useState } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import styled from "styled-components";
@@ -13,9 +13,15 @@ import Text from "@douyinfe/semi-ui/lib/es/typography/text";
 import { useTranslation } from "react-i18next";
 
 export type ConfigFieldListOptions = {
-  label: string;
-  value: string;
-}[];
+  list?: {
+    label: string;
+    value: string;
+  }[];
+  itemSelectOptions?: {
+    label: string;
+    value: string;
+  }[];
+};
 
 export type ConfigFieldListProps = ConfigItemProps<
   "string",
@@ -28,15 +34,16 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
     field,
     label,
     default: defaultValue,
-    value,
+    value: scopeValue,
     tip,
     onChange,
     target,
     options,
   } = props;
-  const ref = useRef<any>();
+  const list = options?.list || [];
+  const itemSelect = options?.itemSelectOptions || [];
 
-  const optionsMap = options?.reduce((acc, cur) => {
+  const optionsMap = list.reduce((acc, cur) => {
     acc[cur.value] = cur.label;
     return acc;
   }, {} as any);
@@ -45,8 +52,8 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
   const [showTip, setShowTip] = useState(false);
   const [showUpdate, setShowUpdate] = useState({} as any);
 
-  const notAddedOptions = options?.filter(
-    (item) => !value.includes(item.value)
+  const notAddedOptions = list.filter(
+    (item) => !scopeValue.some((sv: any) => sv.value === item.value)
   );
 
   return (
@@ -55,14 +62,36 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
         {label}
       </div>
       <div style={{ marginTop: 15 }}>
-        {value?.map((key: any) => (
-          <div key={key}>
+        {scopeValue?.map(({ value, select }: any) => (
+          <div key={value}>
             <FieldItem>
               <IconHash
                 style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
               />
-              <span style={{ flex: 1 }}>{optionsMap[key]}</span>
-              <span style={{ fontSize: 14, color: "#8F959E" }}>最大值</span>
+              <span style={{ flex: 1 }}>{optionsMap[value]}</span>
+              <span style={{ fontSize: 14, color: "#8F959E" }}>
+                <Select
+                  value={select}
+                  onChange={(v2) => {
+                    onChange(
+                      target,
+                      field,
+                      scopeValue.map((v: any) =>
+                        v.value === value
+                          ? {
+                              value,
+                              select: v2,
+                            }
+                          : v
+                      )
+                    );
+                  }}
+                  triggerRender={({ value }: any) => {
+                    return <div>{value?.[0]?.label}</div>;
+                  }}
+                  optionList={itemSelect}
+                ></Select>
+              </span>
               <Popover
                 showArrow
                 arrowPointAtCenter
@@ -74,7 +103,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                     <MenuItem
                       onClick={() => {
                         setShowUpdate({
-                          [key]: true,
+                          [value]: true,
                         });
                       }}
                     >
@@ -85,7 +114,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                         onChange(
                           target,
                           field,
-                          value.filter((v: any) => v !== key)
+                          scopeValue.filter((v: any) => v.value !== value)
                         );
                       }}
                     >
@@ -93,12 +122,14 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        const index = value.indexOf(key);
+                        const index = scopeValue
+                          .map((item: any) => item.value)
+                          .indexOf(value);
                         if (index > 0) {
-                          const temp = value[index];
-                          value[index] = value[index - 1];
-                          value[index - 1] = temp;
-                          onChange(target, field, [...value]);
+                          const temp = scopeValue[index];
+                          scopeValue[index] = scopeValue[index - 1];
+                          scopeValue[index - 1] = temp;
+                          onChange(target, field, [...scopeValue]);
                         }
                       }}
                     >
@@ -106,12 +137,14 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        const index = value.indexOf(key);
-                        if (index < value.length - 1) {
-                          const temp = value[index];
-                          value[index] = value[index + 1];
-                          value[index + 1] = temp;
-                          onChange(target, field, [...value]);
+                        const index = scopeValue
+                          .map((item: any) => item.value)
+                          .indexOf(value);
+                        if (index < scopeValue.length - 1) {
+                          const temp = scopeValue[index];
+                          scopeValue[index] = scopeValue[index + 1];
+                          scopeValue[index + 1] = temp;
+                          onChange(target, field, [...scopeValue]);
                         }
                       }}
                     >
@@ -130,20 +163,27 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                 />
               </Popover>
             </FieldItem>
-            {showUpdate[key] && (
+            {showUpdate[value] && (
               <SearchList
                 list={notAddedOptions}
                 onClickItem={(v2) => {
                   onChange(
                     target,
                     field,
-                    value.map((v: any) => (v === key ? v2 : v))
+                    scopeValue.map((v: any) =>
+                      v.value === value
+                        ? {
+                            value: v2,
+                            select: v.select,
+                          }
+                        : v
+                    )
                   );
-                  showUpdate[key] = false;
+                  showUpdate[value] = false;
                   setShowUpdate({ ...showUpdate });
                 }}
                 onClose={() => {
-                  showUpdate[key] = false;
+                  showUpdate[value] = false;
                   setShowUpdate({ ...showUpdate });
                 }}
               ></SearchList>
@@ -184,8 +224,11 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
         {hideSearch || (
           <SearchList
             list={notAddedOptions}
-            onClickItem={(v) => {
-              onChange(target, field, [...value, v]);
+            onClickItem={(v, item) => {
+              onChange(target, field, [
+                ...scopeValue,
+                { value: v, select: item?.select },
+              ]);
               setHideSearch(true);
             }}
             onClose={() => {
@@ -202,7 +245,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
 }
 
 type SearchListProps = {
-  list?: ConfigFieldListOptions;
+  list?: ConfigFieldListOptions["list"];
   onClickItem?: (v: string, option: any) => void;
   onClose?: () => void;
 };
