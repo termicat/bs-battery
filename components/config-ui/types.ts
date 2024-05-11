@@ -7,7 +7,9 @@ export type Node<T extends NodeTypes> = {
   tip?: string;
   default?: any;
   options?: NodeOptions<T>;
+  style?: React.CSSProperties;
+  // slots?: Record<string, any>;
   properties?: Node<NodeTypes>[];
-}
+};
 
-export type Scheme = Node<'object'>;
+export type Scheme = Node<"object">;
