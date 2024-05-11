@@ -1,9 +1,10 @@
-import { Card, Col, Input } from "@douyinfe/semi-ui";
+import { Card, Col, Input, Tooltip } from "@douyinfe/semi-ui";
 import { useRef, useState } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import styled from "styled-components";
 import { IconHash, IconMore, IconPlus, IconSearch } from "@douyinfe/semi-icons";
 import Text from "@douyinfe/semi-ui/lib/es/typography/text";
+import { useTranslation } from "react-i18next";
 
 export type ConfigFieldListOptions = {
   label: string;
@@ -16,6 +17,7 @@ export type ConfigFieldListProps = ConfigItemProps<
 >;
 
 export default function ConfigFieldList(props: ConfigFieldListProps) {
+  const [t] = useTranslation();
   const {
     field,
     label,
@@ -35,6 +37,14 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
 
   const [hideSearch, setHideSearch] = useState(true);
   const [searchInput, setSearchInput] = useState("");
+  const [showTip, setShowTip] = useState(false);
+
+  const notAddedOptions = options?.filter(
+    (item) => !value.includes(item.value)
+  );
+  const filterOptions = notAddedOptions?.filter((item) =>
+    searchInput ? item.label.includes(searchInput) : true
+  );
 
   return (
     <Col span={24} style={{ padding: "5px", paddingTop: "10px" }}>
@@ -61,14 +71,36 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
         ))}
       </div>
       <div style={{ marginTop: 10, userSelect: "none" }}>
-        <Text
-          link
-          icon={<IconPlus style={{ fontSize: 14 }} />}
-          onClick={() => setHideSearch(false)}
-          onChange={(e) => {}}
+        <Tooltip
+          content={
+            <article>
+              <p>{t("only number field")}</p>
+            </article>
+          }
+          arrowPointAtCenter={false}
+          trigger="custom"
+          visible={showTip}
         >
-          添加字段
-        </Text>
+          <Text
+            link={Boolean(notAddedOptions?.length)}
+            icon={<IconPlus style={{ fontSize: 14 }} />}
+            style={{ color: "#aaa" }}
+            onClick={() => {
+              if (notAddedOptions?.length) {
+                setHideSearch(false);
+                setSearchInput("");
+              } else {
+                setShowTip(true);
+                setTimeout(() => {
+                  setShowTip(false);
+                }, 2000);
+              }
+            }}
+          >
+            添加字段
+          </Text>
+        </Tooltip>
+
         {hideSearch || (
           <Card
             title={
@@ -78,12 +110,11 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                 borderless
                 style={{ borderWidth: 0 }}
                 placeholder={"搜索字段"}
+                autoFocus
                 onClear={() => {
                   setHideSearch(true);
                 }}
                 onChange={(e) => {
-                  console.log(e);
-
                   setSearchInput(e);
                 }}
               ></Input>
@@ -93,27 +124,21 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
             headerStyle={{ padding: 0 }}
             bodyStyle={{ padding: 0 }}
           >
-            {options
-              ?.filter(
-                (item) =>
-                  !value.includes(item.value) &&
-                  (searchInput ? item.label.includes(searchInput) : true)
-              )
-              ?.map((option) => (
-                <FieldItem
-                  key={option.value}
-                  style={{ marginTop: 0, border: 0 }}
-                  onClick={() => {
-                    onChange(target, field, [...value, option.value]);
-                    setHideSearch(true);
-                  }}
-                >
-                  <IconHash
-                    style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
-                  />
-                  <span style={{ flex: 1 }}>{option.label}</span>
-                </FieldItem>
-              ))}
+            {filterOptions?.map((option) => (
+              <FieldItem
+                key={option.value}
+                style={{ marginTop: 0, border: 0 }}
+                onClick={() => {
+                  onChange(target, field, [...value, option.value]);
+                  setHideSearch(true);
+                }}
+              >
+                <IconHash
+                  style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
+                />
+                <span style={{ flex: 1 }}>{option.label}</span>
+              </FieldItem>
+            ))}
           </Card>
         )}
       </div>
