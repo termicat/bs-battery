@@ -15,7 +15,7 @@ let glang = "zh";
 export default function App() {
   const router = useRouter();
   const [t, i18n] = useTranslation();
-  const [value, setValue] = useState(fieldCategory);
+  const [value, setValue] = useState({});
 
   return (
     <div
