@@ -1,5 +1,5 @@
 import { Col, Input, Select } from "@douyinfe/semi-ui";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import ConfigObject from "./ConfigObject";
 import type { Node, Scheme } from "../types";
@@ -27,10 +27,24 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
     target,
     options,
   } = props;
-  const ref = useRef<any>();
 
   const subProperties =
-    options?.find?.((option) => option.key === value.key)?.value || [];
+    options?.find?.((option) => option.key === value?.key)?.value || [];
+
+  useEffect(() => {
+    if (!value?.key && defaultKey) {
+      const subTarget = Object.assign({}, target[field]);
+      subTarget.key = defaultKey;
+      const nextProperties =
+        options?.find((option) => option.key === defaultKey)?.value || [];
+      subTarget.value = getDefaultValue({
+        type: "object",
+        field: "",
+        properties: nextProperties,
+      });
+      onChange(target, field, subTarget);
+    }
+  }, []);
 
   return (
     <Col span={24} style={{ paddingTop: "10px" }}>
@@ -38,7 +52,7 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
         {label}
       </div>
       <Select
-        value={value.key || defaultKey}
+        value={value?.key || defaultKey}
         style={{ marginTop: 5, width: "100%" }}
         optionList={options?.map((option) => ({
           label: option.label,
@@ -64,8 +78,8 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
       <div style={{ marginTop: "0px" }}>
         <ConfigObject
           field={""}
-          value={value.value}
-          target={value.value}
+          value={value?.value}
+          target={value?.value}
           onChange={(subTarget: any, subField: string, subVal: any) => {
             value.value[subField] = subVal;
             onChange(target, field, value);

@@ -1,9 +1,10 @@
 import { Col, Input, Row, Select } from "@douyinfe/semi-ui";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import styled from "styled-components";
 import { IconHash } from "@douyinfe/semi-icons";
 import ConfigObject from "./ConfigObject";
+import { If } from "../utils/If";
 
 export type ConfigSelectFieldOptions = {
   label: string;
@@ -26,7 +27,17 @@ export default function ConfigSelectField(props: ConfigSelectFieldProps) {
     target,
     options,
   } = props;
-  const ref = useRef<any>();
+
+  useEffect(() => {
+    if (!value && defaultValue) {
+      onChange(target, field, defaultValue);
+    } else if (
+      !options?.find((item) => item.value === value) &&
+      options?.length
+    ) {
+      onChange(target, field, options?.[0]?.value);
+    }
+  }, []);
 
   const renderSelectedItem = (p: any) => {
     return (
@@ -68,21 +79,21 @@ export default function ConfigSelectField(props: ConfigSelectFieldProps) {
         <div style={{ flex: 1 }}>{label}</div>
         <div id={`${field}-right`}></div>
       </div>
-
-      <Select
-        prefix={<IconHash style={{ color: "#666" }}></IconHash>}
-        placeholder="请选择"
-        style={{ width: "100%", marginTop: "5px" }}
-        onChange={(v) => onChange(target, field, v)}
-        defaultValue={value}
-        renderSelectedItem={renderSelectedItem}
-        renderOptionItem={renderOptionItem}
-      >
-        {options?.map((item, index) => (
-          <Select.Option key={item.value} value={item.value}></Select.Option>
-        ))}
-      </Select>
-
+      <If condition={value}>
+        <Select
+          prefix={<IconHash style={{ color: "#666" }}></IconHash>}
+          placeholder="请选择"
+          style={{ width: "100%", marginTop: "5px" }}
+          onChange={(v) => onChange(target, field, v)}
+          defaultValue={value}
+          renderSelectedItem={renderSelectedItem}
+          renderOptionItem={renderOptionItem}
+        >
+          {options?.map((item, index) => (
+            <Select.Option key={item.value} value={item.value}></Select.Option>
+          ))}
+        </Select>
+      </If>
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>

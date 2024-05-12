@@ -12,6 +12,7 @@ import {
 import Text from "@douyinfe/semi-ui/lib/es/typography/text";
 import { useTranslation } from "react-i18next";
 import ConfigDownSelect from "./ConfigDownSelect";
+import { If } from "../utils/If";
 
 export type ConfigFieldListOptions = {
   list?: {
@@ -73,50 +74,28 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
       >
         <div style={{ flex: 1 }}>{label}</div>
         <div>
-          {
-            itemSelectOptions?.[0].value && (
-              <ConfigDownSelect
-                field={""}
-                value={innerItemSelect}
-                target={undefined}
-                options={itemSelectOptions}
-                onChange={function (_2: any, _3: string, val: any): void {
-                  setInnerItemSelect(val);
+          <If condition={innerItemSelect}>
+            <ConfigDownSelect
+              field={""}
+              value={innerItemSelect}
+              target={undefined}
+              options={itemSelectOptions}
+              onChange={function (_2: any, _3: string, val: any): void {
+                setInnerItemSelect(val);
 
-                  onChange(
-                    target,
-                    field,
-                    scopeValue.map((v: any) => {
-                      return {
-                        value: v.value,
-                        select: val,
-                      };
-                    })
-                  );
-                }}
-              ></ConfigDownSelect>
-            )
-
-            // <Select
-            //   value={itemSelect?.[0].value}
-            //   onChange={(v2) => {
-            //     onChange(
-            //       target,
-            //       field,
-            //       scopeValue.map((v: any) => {
-            //         return {
-            //           value: v.value,
-            //           select: v2,
-            //         };
-            //       })
-            //     );
-            //   }}
-            //   triggerRender={({ value }: any) => {
-            //     return <div>{value?.[0]?.label}</div>;
-            //   }}
-            //   optionList={itemSelect}
-            // ></Select>
-          }
+                onChange(
+                  target,
+                  field,
+                  scopeValue.map((v: any) => {
+                    return {
+                      value: v.value,
+                      select: val,
+                    };
+                  })
+                );
+              }}
+            ></ConfigDownSelect>
+          </If>
         </div>
       </div>
       <div style={{ marginTop: 15 }}>
@@ -127,29 +106,31 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                 style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
               />
               <span style={{ flex: 1 }}>{optionsMap[value]}</span>
-              <span style={{ fontSize: 14, color: "#8F959E" }}>
-                <Select
-                  value={select}
-                  onChange={(v2) => {
-                    onChange(
-                      target,
-                      field,
-                      scopeValue.map((v: any) =>
-                        v.value === value
-                          ? {
-                              value,
-                              select: v2,
-                            }
-                          : v
-                      )
-                    );
-                  }}
-                  triggerRender={({ value }: any) => {
-                    return <div>{value?.[0]?.label}</div>;
-                  }}
-                  optionList={itemSelectOptions}
-                ></Select>
-              </span>
+              <If condition={itemSelectOptions.length}>
+                <span style={{ fontSize: 14, color: "#8F959E" }}>
+                  <Select
+                    value={select}
+                    onChange={(v2) => {
+                      onChange(
+                        target,
+                        field,
+                        scopeValue.map((v: any) =>
+                          v.value === value
+                            ? {
+                                value,
+                                select: v2,
+                              }
+                            : v
+                        )
+                      );
+                    }}
+                    triggerRender={({ value }: any) => {
+                      return <div>{value?.[0]?.label}</div>;
+                    }}
+                    optionList={itemSelectOptions}
+                  ></Select>
+                </span>
+              </If>
               <Popover
                 showArrow
                 arrowPointAtCenter

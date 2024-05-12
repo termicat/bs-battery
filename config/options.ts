@@ -402,6 +402,104 @@ export const scheme: Scheme = {
           value: [
             {
               label: "类别",
+              field: "cates",
+              type: "field-list",
+              options: {
+                list: [
+                  {
+                    label: "字段1",
+                    value: "field1",
+                    select: "max",
+                  },
+                  {
+                    label: "字段2",
+                    value: "field2",
+                    select: "max",
+                  },
+                  {
+                    label: "字段3",
+                    value: "field3",
+                    select: "max",
+                  },
+                  {
+                    label: "字段4",
+                    value: "field4",
+                    select: "max",
+                  },
+                  {
+                    label: "字段5",
+                    value: "field5",
+                    select: "max",
+                  },
+                ],
+              },
+              default: [
+                {
+                  value: "field1",
+                  select: "max",
+                },
+              ],
+            },
+            {
+              label: "系列",
+              field: "series",
+              type: "select-field",
+              options: [
+                {
+                  label: "字段1",
+                  value: "field1",
+                },
+                {
+                  label: "字段2",
+                  value: "field2",
+                },
+                {
+                  label: "字段3",
+                  value: "field3",
+                },
+                {
+                  label: "字段4",
+                  value: "field4",
+                },
+                {
+                  label: "字段5",
+                  value: "field5",
+                },
+              ],
+            },
+            {
+              portal: "#series-right",
+              label: "计算方式",
+              field: "calc",
+              type: "down-select",
+              options: [
+                {
+                  label: "最大值",
+                  value: "max",
+                },
+                {
+                  label: "最小值",
+                  value: "min",
+                },
+                {
+                  label: "求和",
+                  value: "sum",
+                },
+                {
+                  label: "平均值",
+                  value: "avg",
+                },
+              ],
+              default: "max",
+            },
+          ],
+        },
+        {
+          label: "以记录聚合为类别，以字段为系列",
+          key: "recordCategory",
+          value: [
+            {
+              label: "类别",
               field: "cate",
               type: "select-field",
               default: "field2",
@@ -429,76 +527,8 @@ export const scheme: Scheme = {
               ],
             },
             {
-              portal: "#cate-right",
-              label: "计算方式",
-              field: "calc",
-              type: "down-select",
-              options: [
-                {
-                  label: "最大值",
-                  value: "max",
-                },
-                {
-                  label: "最小值",
-                  value: "min",
-                },
-                {
-                  label: "求和",
-                  value: "sum",
-                },
-                {
-                  label: "平均值",
-                  value: "avg",
-                },
-              ],
-              default: "max",
-            },
-            // {
-            //   label: "系列",
-            //   field: "series",
-            //   type: "object",
-            //   properties: [
-            //     {
-            //       label: "计算方式",
-            //       field: "calc",
-            //       type: "down-select",
-            //       style: "float: right; width: 200px;",
-            //       options: [
-            //         {
-            //           label: "最大值",
-            //           value: "max",
-            //         },
-            //         {
-            //           label: "最小值",
-            //           value: "min",
-            //         },
-            //         {
-            //           label: "求和",
-            //           value: "sum",
-            //         },
-            //         {
-            //           label: "平均值",
-            //           value: "avg",
-            //         },
-            //       ],
-            //       default: "max",
-            //     },
-            //     {
-            //       label: "字段",
-            //       field: "field",
-            //       type: "select-field",
-            //     },
-            //   ],
-            // },
-          ],
-        },
-        {
-          label: "以记录聚合为类别，以字段为系列",
-          key: "recordCategory",
-          value: [
-            {
-              label: "类别",
-              field: "cates",
+              label: "系列",
+              field: "series",
               type: "field-list",
               options: {
                 list: [
@@ -554,67 +584,10 @@ export const scheme: Scheme = {
                 },
               ],
             },
-            // {
-            //   label: "系列",
-            //   field: "series",
-            //   type: "object",
-            //   properties: [
-            //     {
-            //       label: "计算方式",
-            //       field: "calc",
-            //       type: "down-select",
-            //       style: "float: right; width: 200px;",
-            //       options: [
-            //         {
-            //           label: "最大值",
-            //           value: "max",
-            //         },
-            //         {
-            //           label: "最小值",
-            //           value: "min",
-            //         },
-            //         {
-            //           label: "求和",
-            //           value: "sum",
-            //         },
-            //         {
-            //           label: "平均值",
-            //           value: "avg",
-            //         },
-            //       ],
-            //       default: "max",
-            //     },
-            //     {
-            //       label: "字段",
-            //       field: "fields",
-            //       type: "field-list",
-            //       config: {
-            //         itemCalcOptions: [
-            //           {
-            //             label: "最大值",
-            //             value: "max",
-            //           },
-            //           {
-            //             label: "最小值",
-            //             value: "min",
-            //           },
-            //           {
-            //             label: "求和",
-            //             value: "sum",
-            //           },
-            //           {
-            //             label: "平均值",
-            //             value: "avg",
-            //           },
-            //         ],
-            //       },
-            //     },
-            //   ],
-            // },
           ],
         },
       ],
-      default: "fieldCategory",
+      default: "recordCategory",
     },
   ],
 };
@@ -626,19 +599,27 @@ export const fieldCategory = {
   selectTheme: "p1",
   chartOptions: ["showLegend"],
   dataOptions: {
-    key: "fieldCategory",
+    // key: "recordCategory",
+    // value: {
+    //   cates: [
+    //     {
+    //       value: "field1",
+    //       select: "max",
+    //     },
+    //   ],
+    //   cate: "field1",
+    //   calc: "max",
+    //   // series: "field1",
+    // },
+    key: "recordCategory",
     value: {
-      cates: [
+      cate: "field2",
+      series: [
         {
           value: "field1",
           select: "max",
         },
       ],
-      cate: "field1",
-      calc: "max",
-      series: {
-        field: "field2",
-      },
     },
   },
 };
