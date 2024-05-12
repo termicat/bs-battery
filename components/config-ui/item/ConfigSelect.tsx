@@ -34,12 +34,12 @@ export default function ConfigSelect(props: ConfigSelectProps) {
     ) {
       onChange(target, field, options?.[0]?.value);
     }
-  }, []);
+  }, [defaultValue, field, onChange, options, target, value]);
 
   const renderSelectedItem = (p: any) => {
     return (
       <div>
-        <div>{p.label}</div>
+        <div>{p.label === p.value ? "" : p.label}</div>
       </div>
     );
   };
@@ -76,13 +76,13 @@ export default function ConfigSelect(props: ConfigSelectProps) {
         <div style={{ flex: 1 }}>{label}</div>
         <div id={`${field}-right`}></div>
       </div>
-      <If condition={value}>
+      <If condition={options?.length}>
         <Select
           prefix={<IconHash style={{ color: "#666" }}></IconHash>}
           placeholder="请选择"
           style={{ width: "100%", marginTop: "5px" }}
           onChange={(v) => onChange(target, field, v)}
-          defaultValue={value}
+          value={value}
           renderSelectedItem={renderSelectedItem}
           renderOptionItem={renderOptionItem}
         >
@@ -94,6 +94,12 @@ export default function ConfigSelect(props: ConfigSelectProps) {
             ></Select.Option>
           ))}
         </Select>
+      </If>
+      <If condition={!options?.length}>
+        <Select
+          placeholder="暂未选项"
+          style={{ width: "100%", marginTop: "5px" }}
+        ></Select>
       </If>
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}

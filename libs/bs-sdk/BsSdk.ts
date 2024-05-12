@@ -7,6 +7,7 @@ import {
   IGetRecordsParams,
   IRecord,
   IFieldMeta,
+  type IView,
 } from "@lark-base-open/js-sdk";
 import { format } from "date-fns";
 import { Emitter } from "./Emitter";
@@ -17,6 +18,18 @@ export type InitEmitter = (sdk: BsSdk) => any;
 
 export interface BIField extends IField {
   name: string;
+}
+
+export interface BITable {
+  id: string;
+  name: string;
+  raw?: ITable;
+}
+
+export interface BIView {
+  id: string;
+  name: string;
+  raw?: IView;
 }
 
 export class BsSdk {
@@ -59,7 +72,36 @@ export class BsSdk {
   }
 
   async getTableList() {
-    return await bitable.base.getTableList();
+    return await Promise.all(
+      (
+        await bitable.base.getTableList()
+      ).map(async (table) => {
+        const name = await table.getName();
+        const id = table.id;
+        return { id, name, raw: table } as BITable;
+      })
+    );
+  }
+
+  async getViewList(tableId: string) {
+    const table = await this.getTableById(tableId);
+    const viewList = (await table.raw?.getViewList()) || [];
+    return await Promise.all(
+      viewList.map(async (view) => {
+        const name = await view.getName();
+        const id = view.id;
+        return { id, name, raw: view } as BIView;
+      })
+    );
+  }
+
+  async getTableById(tableId: string) {
+    const table = await bitable.base.getTableById(tableId);
+    return {
+      id: table.id,
+      name: await table.getName(),
+      raw: table,
+    } as BITable;
   }
 
   async getFieldList(table: ITable) {
