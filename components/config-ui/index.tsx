@@ -17,7 +17,6 @@ export default function ConfigUI<Value>(props: ConfigUIProps<Value>) {
       options={props.scheme.options}
       target={props.value}
       onChange={(target: any, field: string, val: any) => {
-        target[field] = val;
         props.onChange?.(target, field, val);
       }}
     ></ConfigObject>

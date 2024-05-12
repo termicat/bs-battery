@@ -1,5 +1,5 @@
 import { Card, Col, Input, Popover, Select, Tooltip } from "@douyinfe/semi-ui";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import styled from "styled-components";
 import {
@@ -35,7 +35,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
   const {
     field,
     label,
-    default: defaultValue,
+    default: defaultValue = [],
     value: scopeValue,
     tip,
     onChange,
@@ -58,8 +58,14 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
   );
 
   const notAddedOptions = list.filter(
-    (item) => !scopeValue.some((sv: any) => sv.value === item.value)
+    (item) => !scopeValue?.some((sv: any) => sv.value === item.value)
   );
+
+  useEffect(() => {
+    if (!scopeValue && defaultValue) {
+      onChange(target, field, defaultValue);
+    }
+  }, [defaultValue, field, onChange, scopeValue, target]);
 
   return (
     <Col span={24} style={{ paddingTop: "10px" }}>

@@ -1,9 +1,58 @@
 import ConfigUI from "@/components/config-ui";
-import { scheme } from "./options";
-import { useState } from "react";
+import { createScheme } from "./options";
+import { useEffect, useState } from "react";
+
+const defaultScheme = createScheme("fieldCategory");
+
+// const defaultScheme = {
+//   type: "object",
+//   field: "",
+//   default: {},
+//   properties: [
+//     {
+//       type: "select",
+//       field: "select",
+//       label: "Select Table",
+//       options: [
+//         { label: "Table1", value: "table1" },
+//         { label: "Table2", value: "table2" },
+//       ],
+//     },
+//     {
+//       type: "select",
+//       field: "selectView",
+//       label: "Select View",
+//       options: [],
+//     },
+//     {
+//       type: "object",
+//       field: "obj",
+//       label: "Object",
+//       default: {},
+//       properties: [
+//         {
+//           type: "select",
+//           field: "select",
+//           label: "Select",
+//           options: [
+//             { label: "Option1", value: "option1" },
+//             { label: "Option2", value: "option2" },
+//           ],
+//         },
+//       ],
+//     },
+//   ],
+// };
 
 export default function Demo() {
-  const [value, setValue] = useState({});
+  const [value, setValue] = useState({
+    mapOptions: {},
+  });
+  const [scheme, setScheme] = useState(defaultScheme);
+
+  // useEffect(() => {
+  //   setScheme(createScheme("fieldCategory"));
+  // }, []);
 
   return (
     <div
@@ -20,11 +69,11 @@ export default function Demo() {
           <ConfigUI
             scheme={scheme}
             value={value}
-            onChange={(target, field, value) => {
-              console.log("Root onChange", target, field, value);
+            onChange={(target, field, val) => {
+              console.log("Root onChange", JSON.stringify(target), field, val);
 
-              target[field] = value;
-              setValue({ ...target });
+              value[field] = val;
+              setValue(value);
             }}
           ></ConfigUI>
         </div>
