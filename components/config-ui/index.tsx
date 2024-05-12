@@ -10,7 +10,6 @@ type ConfigUIProps<Value> = {
 export default function ConfigUI<Value>(props: ConfigUIProps<Value>) {
   return (
     <ConfigObject
-      type={"object"}
       label={props.scheme.label}
       field={props.scheme.field}
       properties={props.scheme.properties}
