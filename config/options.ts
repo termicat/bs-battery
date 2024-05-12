@@ -344,8 +344,30 @@ export const scheme: Scheme = {
     {
       field: "selectTable",
       label: "数据源",
-      type: "select-table",
-      default: "",
+      type: "select",
+      default: "field2",
+      options: [
+        {
+          label: "字段1",
+          value: "field1",
+        },
+        {
+          label: "字段2",
+          value: "field2",
+        },
+        {
+          label: "字段3",
+          value: "field3",
+        },
+        {
+          label: "字段4",
+          value: "field4",
+        },
+        {
+          label: "字段5",
+          value: "field5",
+        },
+      ],
       // tip: "这是一个标题",
     },
     // {
@@ -358,8 +380,30 @@ export const scheme: Scheme = {
     {
       field: "selectView",
       label: "数据范围",
-      type: "select-view",
-      default: "",
+      type: "select",
+      default: "field2",
+      options: [
+        {
+          label: "字段1",
+          value: "field1",
+        },
+        {
+          label: "字段2",
+          value: "field2",
+        },
+        {
+          label: "字段3",
+          value: "field3",
+        },
+        {
+          label: "字段4",
+          value: "field4",
+        },
+        {
+          label: "字段5",
+          value: "field5",
+        },
+      ],
       // tip: "这是一个标题",
     },
     {
@@ -443,7 +487,7 @@ export const scheme: Scheme = {
             {
               label: "系列",
               field: "series",
-              type: "select-field",
+              type: "select",
               options: [
                 {
                   label: "字段1",
@@ -501,7 +545,7 @@ export const scheme: Scheme = {
             {
               label: "类别",
               field: "cate",
-              type: "select-field",
+              type: "select",
               default: "field2",
               options: [
                 {

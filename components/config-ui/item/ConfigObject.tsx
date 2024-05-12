@@ -1,5 +1,5 @@
 import { Row } from "@douyinfe/semi-ui";
-import { ConfigRegister } from "../ConfigRegister";
+import { ConfigRegister, getConfigRegister } from "../ConfigRegister";
 import type { ConfigItemProps } from "../ConfigItemProps";
 
 export type ConfigObjectOptions = {};
@@ -14,7 +14,7 @@ export default function ConfigObject(props: ConfigObjectProps) {
       <Row>
         {properties?.map((item: any) => {
           const { type, field } = item;
-          const Component = (ConfigRegister as any)[type]();
+          const Component = getConfigRegister(type);
           return (
             <Component
               {...item}

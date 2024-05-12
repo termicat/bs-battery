@@ -7,10 +7,6 @@ import ConfigEnums from "./item/ConfigEnums";
 import ConfigObject, { type ConfigObjectOptions } from "./item/ConfigObject";
 import ConfigInteger from "./item/ConfigInteger";
 import type { ConfigItemProps } from "./ConfigItemProps";
-import type { ConfigSelectTableOptions } from "./item/ConfigSelectTable";
-import ConfigSelectTable from "./item/ConfigSelectTable";
-import type { ConfigSelectViewOptions } from "./item/ConfigSelectView";
-import ConfigSelectView from "./item/ConfigSelectView";
 import type { ConfigSelectTabsOptions } from "./item/ConfigSelectTabs";
 import ConfigSelectTabs from "./item/ConfigSelectTabs";
 import type { ConfigSelectThemeOptions } from "./item/ConfigSelectTheme";
@@ -21,8 +17,9 @@ import ConfigLine from "./item/ConfigLine";
 import ConfigFieldList, {
   type ConfigFieldListOptions,
 } from "./item/ConfigFieldList";
-import type { ConfigSelectFieldOptions } from "./item/ConfigSelectField";
-import ConfigSelectField from "./item/ConfigSelectField";
+import ConfigSelectField, {
+  type ConfigSelectOptions,
+} from "./item/ConfigSelect";
 import type { Node } from "./types";
 import type { ConfigDownSelectOptions } from "./item/ConfigDownSelect";
 import ConfigDownSelect from "./item/ConfigDownSelect";
@@ -34,16 +31,21 @@ function reg<F>(fn: F) {
 export const ConfigRegister = {
   object: reg((p: ConfigObjectOptions) => ConfigObject),
   string: reg((p: ConfigStringOptions) => ConfigString),
-  "select-table": reg((p: ConfigSelectTableOptions) => ConfigSelectTable),
-  "select-view": reg((p: ConfigSelectViewOptions) => ConfigSelectView),
   "select-tabs": reg((p: ConfigSelectTabsOptions) => ConfigSelectTabs),
   "select-theme": reg((p: ConfigSelectThemeOptions) => ConfigSelectTheme),
   checkboxes: reg((p: ConfigCheckboxesOptions) => ConfigCheckboxes),
   line: reg(() => ConfigLine),
   "field-list": reg((p: ConfigFieldListOptions) => ConfigFieldList),
-  "select-field": reg((p: ConfigSelectFieldOptions) => ConfigSelectField),
+  select: reg((p: ConfigSelectOptions) => ConfigSelectField),
   "down-select": reg((p: ConfigDownSelectOptions) => ConfigDownSelect),
 };
+
+export function getConfigRegister(type: NodeTypes): any {
+  if (!ConfigRegister[type]) {
+    console.error(`未找到注册的组件: ${type}`);
+  }
+  return (ConfigRegister[type] as any)();
+}
 
 export type NodeTypes = keyof typeof ConfigRegister;
 

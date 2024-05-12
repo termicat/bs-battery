@@ -6,17 +6,14 @@ import { IconHash } from "@douyinfe/semi-icons";
 import ConfigObject from "./ConfigObject";
 import { If } from "../utils/If";
 
-export type ConfigSelectFieldOptions = {
+export type ConfigSelectOptions = {
   label: string;
   value: string;
 }[];
 
-export type ConfigSelectFieldProps = ConfigItemProps<
-  "select-field",
-  ConfigSelectFieldOptions
->;
+export type ConfigSelectProps = ConfigItemProps<"select", ConfigSelectOptions>;
 
-export default function ConfigSelectField(props: ConfigSelectFieldProps) {
+export default function ConfigSelect(props: ConfigSelectProps) {
   const {
     field,
     label,
@@ -25,7 +22,7 @@ export default function ConfigSelectField(props: ConfigSelectFieldProps) {
     tip,
     onChange,
     target,
-    options,
+    options = [],
   } = props;
 
   useEffect(() => {
@@ -90,7 +87,11 @@ export default function ConfigSelectField(props: ConfigSelectFieldProps) {
           renderOptionItem={renderOptionItem}
         >
           {options?.map((item, index) => (
-            <Select.Option key={item.value} value={item.value}></Select.Option>
+            <Select.Option
+              key={item.value}
+              value={item.value}
+              label={item.label}
+            ></Select.Option>
           ))}
         </Select>
       </If>
