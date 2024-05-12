@@ -1,4 +1,6 @@
+import type { NodeTypes } from "@/components/config-ui/ConfigRegister";
 import type { Node, Scheme } from "@/components/config-ui/types";
+import { tranBIData } from "@/libs/helper/config-ui";
 
 const theme = {
   light: [
@@ -437,106 +439,12 @@ export const scheme: Scheme = {
     },
     {
       label: "数据映射",
-      field: "dataOptions",
+      field: "mapType",
       type: "select-tabs",
       options: [
         {
           label: "以字段为类别，以记录聚合为系列",
           key: "fieldCategory",
-          value: [
-            {
-              label: "类别",
-              field: "cates",
-              type: "field-list",
-              options: {
-                list: [
-                  {
-                    label: "字段1",
-                    value: "field1",
-                    select: "max",
-                  },
-                  {
-                    label: "字段2",
-                    value: "field2",
-                    select: "max",
-                  },
-                  {
-                    label: "字段3",
-                    value: "field3",
-                    select: "max",
-                  },
-                  {
-                    label: "字段4",
-                    value: "field4",
-                    select: "max",
-                  },
-                  {
-                    label: "字段5",
-                    value: "field5",
-                    select: "max",
-                  },
-                ],
-              },
-              default: [
-                {
-                  value: "field1",
-                  select: "max",
-                },
-              ],
-            },
-            {
-              label: "系列",
-              field: "series",
-              type: "select",
-              options: [
-                {
-                  label: "字段1",
-                  value: "field1",
-                },
-                {
-                  label: "字段2",
-                  value: "field2",
-                },
-                {
-                  label: "字段3",
-                  value: "field3",
-                },
-                {
-                  label: "字段4",
-                  value: "field4",
-                },
-                {
-                  label: "字段5",
-                  value: "field5",
-                },
-              ],
-            },
-            {
-              portal: "#series-right",
-              label: "计算方式",
-              field: "calc",
-              type: "down-select",
-              options: [
-                {
-                  label: "最大值",
-                  value: "max",
-                },
-                {
-                  label: "最小值",
-                  value: "min",
-                },
-                {
-                  label: "求和",
-                  value: "sum",
-                },
-                {
-                  label: "平均值",
-                  value: "avg",
-                },
-              ],
-              default: "max",
-            },
-          ],
         },
         {
           label: "以记录聚合为类别，以字段为系列",
@@ -633,8 +541,286 @@ export const scheme: Scheme = {
       ],
       default: "recordCategory",
     },
+    {
+      label: "",
+      field: "mapOptions",
+      type: "object",
+      properties: [
+        {
+          label: "类别",
+          field: "cates",
+          type: "field-list",
+          options: {
+            list: [
+              {
+                label: "字段1",
+                value: "field1",
+                select: "max",
+              },
+              {
+                label: "字段2",
+                value: "field2",
+                select: "max",
+              },
+              {
+                label: "字段3",
+                value: "field3",
+                select: "max",
+              },
+              {
+                label: "字段4",
+                value: "field4",
+                select: "max",
+              },
+              {
+                label: "字段5",
+                value: "field5",
+                select: "max",
+              },
+            ],
+          },
+          default: [
+            {
+              value: "field1",
+              select: "max",
+            },
+          ],
+        },
+        {
+          label: "系列",
+          field: "series",
+          type: "select",
+          options: [
+            {
+              label: "字段1",
+              value: "field1",
+            },
+            {
+              label: "字段2",
+              value: "field2",
+            },
+            {
+              label: "字段3",
+              value: "field3",
+            },
+            {
+              label: "字段4",
+              value: "field4",
+            },
+            {
+              label: "字段5",
+              value: "field5",
+            },
+          ],
+        },
+        {
+          portal: "#series-right",
+          label: "计算方式",
+          field: "calc",
+          type: "down-select",
+          options: [
+            {
+              label: "最大值",
+              value: "max",
+            },
+            {
+              label: "最小值",
+              value: "min",
+            },
+            {
+              label: "求和",
+              value: "sum",
+            },
+            {
+              label: "平均值",
+              value: "avg",
+            },
+          ],
+          default: "max",
+        },
+      ],
+    },
   ],
 };
+
+export type CreateSchemeProps = {
+  tables: any;
+};
+
+export function createScheme(p: CreateSchemeProps) {
+  const scheme: Scheme = {
+    field: "",
+    type: "object",
+    properties: [
+      {
+        field: "selectTable",
+        label: "数据源",
+        type: "select",
+        // default: "field2",
+        options: tranBIData(p.tables),
+        // tip: "这是一个标题",
+      },
+      // {
+      //   field: "range",
+      //   label: "数据范围",
+      //   type: "select-table",
+      //   default: "",
+      //   // tip: "这是一个标题",
+      // },
+      {
+        field: "selectView",
+        label: "数据范围",
+        type: "select",
+        // default: "field2",
+        options: [],
+        // tip: "这是一个标题",
+      },
+      {
+        field: "selectTheme",
+        label: "主题色",
+        type: "select-theme",
+        // default: "",
+        // tip: "这是一个标题",
+        options: theme.light,
+      },
+      {
+        label: "图表选项",
+        field: "chartOptions",
+        type: "checkboxes",
+        options: [
+          {
+            label: "图例",
+            value: "showLegend",
+          },
+          {
+            label: "数据标签",
+            value: "showDataLabel",
+          },
+        ],
+        default: ["showLegend", "showDataLabel"],
+        // tip: "添加一个表格组件",
+      },
+      {
+        field: "",
+        type: "line",
+      },
+      {
+        label: "数据映射",
+        field: "dataOptions",
+        type: "select-tabs",
+        options: [
+          {
+            label: "以字段为类别，以记录聚合为系列",
+            key: "fieldCategory",
+            value: [
+              {
+                label: "类别",
+                field: "cates",
+                type: "field-list",
+                options: {
+                  list: [],
+                },
+                default: [],
+              },
+              {
+                label: "系列",
+                field: "series",
+                type: "select",
+                options: [],
+              },
+              {
+                portal: "#series-right",
+                label: "计算方式",
+                field: "calc",
+                type: "down-select",
+                options: [
+                  {
+                    label: "最大值",
+                    value: "max",
+                  },
+                  {
+                    label: "最小值",
+                    value: "min",
+                  },
+                  {
+                    label: "求和",
+                    value: "sum",
+                  },
+                  {
+                    label: "平均值",
+                    value: "avg",
+                  },
+                ],
+                default: "max",
+              },
+            ],
+          },
+          {
+            label: "以记录聚合为类别，以字段为系列",
+            key: "recordCategory",
+            value: [
+              {
+                label: "类别",
+                field: "cate",
+                type: "select",
+                default: "field2",
+                options: [],
+              },
+              {
+                label: "系列",
+                field: "series",
+                type: "field-list",
+                options: {
+                  list: [],
+                  itemSelectOptions: [
+                    {
+                      label: "最大值",
+                      value: "max",
+                    },
+                    {
+                      label: "最小值",
+                      value: "min",
+                    },
+                    {
+                      label: "求和",
+                      value: "sum",
+                    },
+                    {
+                      label: "平均值",
+                      value: "avg",
+                    },
+                  ],
+                },
+                default: [],
+              },
+            ],
+          },
+        ],
+        default: "fieldCategory",
+      },
+    ],
+  };
+  return scheme;
+}
+
+export function updateScheme(
+  scheme: Scheme,
+  path: string,
+  node: Node<NodeTypes>
+) {
+  const paths = path.split(".");
+  let current: any = scheme;
+  for (let i = 0; i < paths.length; i++) {
+    const field = paths[i];
+    const fieldIndex = current.properties?.findIndex(
+      (item: any) => item.field === field
+    );
+    if (fieldIndex === -1) {
+      return;
+    }
+    current;
+  }
+}
 
 // fieldCategory
 export const fieldCategory = {
