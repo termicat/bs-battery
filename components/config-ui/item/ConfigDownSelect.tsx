@@ -71,6 +71,7 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
       <Select
         value={value}
         onChange={(v) => {
+          target[field] = v;
           onChange(target, field, v);
         }}
         triggerRender={triggerRender}
@@ -84,6 +85,5 @@ function mountPortal(portal: string | undefined, renderView: React.ReactNode) {
   if (!portal) return renderView;
   const target = document.querySelector(portal);
   if (!target) return renderView;
-  console.log("portal", portal, target);
   return ReactDOM.createPortal(renderView, target);
 }

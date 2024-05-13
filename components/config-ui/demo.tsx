@@ -27,12 +27,12 @@ const defaultScheme = createScheme("fieldCategory");
 //     {
 //       type: "object",
 //       field: "obj",
-//       label: "Object",
+//       label: "对象",
 //       default: {},
 //       properties: [
 //         {
 //           type: "select",
-//           field: "select",
+//           field: "selectField",
 //           label: "Select",
 //           options: [
 //             { label: "Option1", value: "option1" },
@@ -46,7 +46,10 @@ const defaultScheme = createScheme("fieldCategory");
 
 export default function Demo() {
   const [value, setValue] = useState({
-    mapOptions: {},
+    root: {
+      // chartOptions: ["showLegend"],
+      // mapOptions: {},
+    },
   });
   const [scheme, setScheme] = useState(defaultScheme);
 
@@ -70,10 +73,14 @@ export default function Demo() {
             scheme={scheme}
             value={value}
             onChange={(target, field, val) => {
-              console.log("Root onChange", JSON.stringify(target), field, val);
-
-              value[field] = val;
-              setValue(value);
+              console.log(
+                "Root onChange",
+                JSON.stringify(target),
+                field,
+                val,
+                target === value
+              );
+              setValue({ ...target });
             }}
           ></ConfigUI>
         </div>

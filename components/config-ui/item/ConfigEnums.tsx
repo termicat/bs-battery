@@ -14,7 +14,7 @@ export default function ConfigString(props: any) {
   } = props;
 
   return (
-    <Col span={12} style={{ padding: "5px", paddingTop: "10px" }}>
+    <div span={12} style={{ padding: "5px", paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
@@ -28,6 +28,6 @@ export default function ConfigString(props: any) {
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
-    </Col>
+    </div>
   );
 }

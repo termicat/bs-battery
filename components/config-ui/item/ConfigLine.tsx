@@ -8,8 +8,8 @@ export type ConfigLineProps = ConfigItemProps<"line", ConfigLineOptions>;
 
 export default function ConfigLine(props: ConfigLineProps) {
   return (
-    <Col span={24} style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "10px" }}>
       <Divider></Divider>
-    </Col>
+    </div>
   );
 }

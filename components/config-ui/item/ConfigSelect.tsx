@@ -25,16 +25,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
     options = [],
   } = props;
 
-  useEffect(() => {
-    if (!value && defaultValue) {
-      onChange(target, field, defaultValue);
-    } else if (
-      !options?.find((item) => item.value === value) &&
-      options?.length
-    ) {
-      onChange(target, field, options?.[0]?.value);
-    }
-  }, [defaultValue, field, onChange, options, target, value]);
+  // console.log("ConfigSelect", field, value, target);
 
   const renderSelectedItem = (p: any) => {
     return (
@@ -63,7 +54,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
   };
 
   return (
-    <Col span={24} style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "10px" }}>
       <div
         style={{
           fontSize: "14px",
@@ -81,7 +72,9 @@ export default function ConfigSelect(props: ConfigSelectProps) {
           prefix={<IconHash style={{ color: "#666" }}></IconHash>}
           placeholder="请选择"
           style={{ width: "100%", marginTop: "5px" }}
-          onChange={(v) => onChange(target, field, v)}
+          onChange={(v) => {
+            onChange(target, field, v);
+          }}
           value={value}
           renderSelectedItem={renderSelectedItem}
           renderOptionItem={renderOptionItem}
@@ -104,7 +97,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
-    </Col>
+    </div>
   );
 }
 

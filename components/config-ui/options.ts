@@ -343,46 +343,46 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
       label: "以字段为类别，以记录聚合为系列",
       key: "fieldCategory",
       value: [
-        // {
-        //   label: "类别",
-        //   field: "cates",
-        //   type: "field-list",
-        //   options: {
-        //     list: [
-        //       {
-        //         label: "字段1",
-        //         value: "field1",
-        //         select: "max",
-        //       },
-        //       {
-        //         label: "字段2",
-        //         value: "field2",
-        //         select: "max",
-        //       },
-        //       {
-        //         label: "字段3",
-        //         value: "field3",
-        //         select: "max",
-        //       },
-        //       {
-        //         label: "字段4",
-        //         value: "field4",
-        //         select: "max",
-        //       },
-        //       {
-        //         label: "字段5",
-        //         value: "field5",
-        //         select: "max",
-        //       },
-        //     ],
-        //   },
-        //   default: [
-        //     {
-        //       value: "field1",
-        //       select: "max",
-        //     },
-        //   ],
-        // },
+        {
+          label: "类别",
+          field: "cates",
+          type: "field-list",
+          options: {
+            list: [
+              {
+                label: "字段1",
+                value: "field1",
+                select: "max",
+              },
+              {
+                label: "字段2",
+                value: "field2",
+                select: "max",
+              },
+              {
+                label: "字段3",
+                value: "field3",
+                select: "max",
+              },
+              {
+                label: "字段4",
+                value: "field4",
+                select: "max",
+              },
+              {
+                label: "字段5",
+                value: "field5",
+                select: "max",
+              },
+            ],
+          },
+          default: [
+            {
+              value: "field1",
+              select: "max",
+            },
+          ],
+        },
         {
           label: "系列",
           field: "series",
@@ -531,7 +531,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
     },
   ];
   return {
-    field: "",
+    field: "root",
     type: "object",
     properties: [
       {
@@ -596,7 +596,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
         field: "selectTheme",
         label: "主题色",
         type: "select-theme",
-        // default: "",
+        default: "p1",
         // tip: "这是一个标题",
         options: theme.light,
       },

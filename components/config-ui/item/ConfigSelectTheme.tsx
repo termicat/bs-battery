@@ -24,7 +24,6 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
     target,
     options,
   } = props;
-  const ref = useRef<any>();
 
   // console.log(props);
 
@@ -61,24 +60,18 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
   };
 
   return (
-    <Col span={24} style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
-      {/* <Input
-        style={{ marginTop: "5px" }}
-        ref={ref}
-        defaultValue={defaultValue}
-        value={value}
-        type="text"
-        onChange={(v) => onChange(target, field, v)}
-      /> */}
 
       <Select
         placeholder="请选择主题色"
         style={{ width: "100%", marginTop: "5px" }}
-        onChange={(v) => onChange(target, field, v)}
-        defaultValue={value}
+        onChange={(v) => {
+          onChange(target, field, v);
+        }}
+        value={value}
         renderSelectedItem={renderSelectedItem}
         renderOptionItem={renderOptionItem}
       >
@@ -89,7 +82,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
-    </Col>
+    </div>
   );
 }
 

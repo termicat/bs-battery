@@ -61,6 +61,7 @@ export function getDefaultValue(node: Node<NodeTypes>) {
     const properties = node.properties || [];
 
     return properties.reduce((acc, property) => {
+      if (!property.field) return acc;
       acc[property.field] = getDefaultValue(property);
       return acc;
     }, obj);

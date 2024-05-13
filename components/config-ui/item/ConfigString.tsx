@@ -20,7 +20,7 @@ export default function ConfigString(props: ConfigStringProps) {
   const ref = useRef<any>();
 
   return (
-    <Col span={24} style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
@@ -35,6 +35,6 @@ export default function ConfigString(props: ConfigStringProps) {
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
-    </Col>
+    </div>
   );
 }

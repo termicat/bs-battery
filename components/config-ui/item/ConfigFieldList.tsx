@@ -61,14 +61,14 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
     (item) => !scopeValue?.some((sv: any) => sv.value === item.value)
   );
 
-  useEffect(() => {
-    if (!scopeValue && defaultValue) {
-      onChange(target, field, defaultValue);
-    }
-  }, [defaultValue, field, onChange, scopeValue, target]);
+  // useEffect(() => {
+  //   if (!scopeValue && defaultValue) {
+  //     onChange(target, field, defaultValue);
+  //   }
+  // }, [defaultValue, field, onChange, scopeValue, target]);
 
   return (
-    <Col span={24} style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "10px" }}>
       <div
         style={{
           fontSize: "14px",
@@ -156,11 +156,10 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                     </MenuItem>
                     <MenuItem
                       onClick={() => {
-                        onChange(
-                          target,
-                          field,
-                          scopeValue.filter((v: any) => v.value !== value)
+                        target[field] = scopeValue.filter(
+                          (v: any) => v.value !== value
                         );
+                        onChange(target, field, target[field]);
                       }}
                     >
                       {t("Remove Field")}
@@ -174,7 +173,8 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                           const temp = scopeValue[index];
                           scopeValue[index] = scopeValue[index - 1];
                           scopeValue[index - 1] = temp;
-                          onChange(target, field, [...scopeValue]);
+                          target[field] = [...scopeValue];
+                          onChange(target, field, target[field]);
                         }
                       }}
                     >
@@ -189,7 +189,8 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                           const temp = scopeValue[index];
                           scopeValue[index] = scopeValue[index + 1];
                           scopeValue[index + 1] = temp;
-                          onChange(target, field, [...scopeValue]);
+                          target[field] = [...scopeValue];
+                          onChange(target, field, target[field]);
                         }
                       }}
                     >
@@ -212,18 +213,15 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
               <SearchList
                 list={notAddedOptions}
                 onClickItem={(v2) => {
-                  onChange(
-                    target,
-                    field,
-                    scopeValue.map((v: any) =>
-                      v.value === value
-                        ? {
-                            value: v2,
-                            select: v.select,
-                          }
-                        : v
-                    )
+                  target[field] = scopeValue.map((v: any) =>
+                    v.value === value
+                      ? {
+                          value: v2,
+                          select: v.select,
+                        }
+                      : v
                   );
+                  onChange(target, field, target[field]);
                   showUpdate[value] = false;
                   setShowUpdate({ ...showUpdate });
                 }}
@@ -270,10 +268,11 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
           <SearchList
             list={notAddedOptions}
             onClickItem={(v, item) => {
-              onChange(target, field, [
+              target[field] = [
                 ...scopeValue,
                 { value: v, select: item?.select },
-              ]);
+              ];
+              onChange(target, field, target[field]);
               setHideSearch(true);
             }}
             onClose={() => {
@@ -285,7 +284,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
-    </Col>
+    </div>
   );
 }
 

@@ -31,23 +31,8 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
   const subProperties =
     options?.find?.((option) => option.key === value?.key)?.value || [];
 
-  useEffect(() => {
-    if (!value?.key && defaultKey) {
-      const subTarget = Object.assign({}, target[field]);
-      subTarget.key = defaultKey;
-      const nextProperties =
-        options?.find((option) => option.key === defaultKey)?.value || [];
-      subTarget.value = getDefaultValue({
-        type: "object",
-        field: "",
-        properties: nextProperties,
-      });
-      onChange(target, field, subTarget);
-    }
-  }, []);
-
   return (
-    <Col span={24} style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
@@ -68,7 +53,6 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
             field: "",
             properties: nextProperties,
           });
-          console.log(subTarget);
           onChange(target, field, subTarget);
         }}
       ></Select>
@@ -87,6 +71,6 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
           properties={subProperties}
         ></ConfigObject>
       </div>
-    </Col>
+    </div>
   );
 }
