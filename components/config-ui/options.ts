@@ -348,67 +348,69 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           field: "cates",
           type: "field-list",
           options: {
-            list: [
-              {
-                label: "字段1",
-                value: "field1",
-                select: "max",
-              },
-              {
-                label: "字段2",
-                value: "field2",
-                select: "max",
-              },
-              {
-                label: "字段3",
-                value: "field3",
-                select: "max",
-              },
-              {
-                label: "字段4",
-                value: "field4",
-                select: "max",
-              },
-              {
-                label: "字段5",
-                value: "field5",
-                select: "max",
-              },
-            ],
+            list: [],
+            // list: [
+            //   {
+            //     label: "字段1",
+            //     value: "field1",
+            //     select: "max",
+            //   },
+            //   {
+            //     label: "字段2",
+            //     value: "field2",
+            //     select: "max",
+            //   },
+            //   {
+            //     label: "字段3",
+            //     value: "field3",
+            //     select: "max",
+            //   },
+            //   {
+            //     label: "字段4",
+            //     value: "field4",
+            //     select: "max",
+            //   },
+            //   {
+            //     label: "字段5",
+            //     value: "field5",
+            //     select: "max",
+            //   },
+            // ],
           },
           default: [
-            {
-              value: "field1",
-              select: "max",
-            },
+            // {
+            //   value: "field1",
+            //   select: "max",
+            // },
           ],
         },
         {
           label: "系列",
           field: "series",
           type: "select",
-          options: [
-            {
-              label: "字段1",
-              value: "field1",
-            },
-            {
-              label: "字段2",
-              value: "field2",
-            },
-            {
-              label: "字段3",
-              value: "field3",
-            },
-            {
-              label: "字段4",
-              value: "field4",
-            },
-            {
-              label: "字段5",
-              value: "field5",
-            },
-          ],
+          options: [],
+          // options: [
+          //   {
+          //     label: "字段1",
+          //     value: "field1",
+          //   },
+          //   {
+          //     label: "字段2",
+          //     value: "field2",
+          //   },
+          //   {
+          //     label: "字段3",
+          //     value: "field3",
+          //   },
+          //   {
+          //     label: "字段4",
+          //     value: "field4",
+          //   },
+          //   {
+          //     label: "字段5",
+          //     value: "field5",
+          //   },
+          // ],
           default: [],
         },
         {
@@ -446,87 +448,87 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           label: "类别",
           field: "cate",
           type: "select",
-          default: "field2",
-          options: [
-            {
-              label: "字段1",
-              value: "field1",
-            },
-            {
-              label: "字段2",
-              value: "field2",
-            },
-            {
-              label: "字段3",
-              value: "field3",
-            },
-            {
-              label: "字段4",
-              value: "field4",
-            },
-            {
-              label: "字段5",
-              value: "field5",
-            },
-          ],
+          // default: "field2",
+          // options: [
+          //   {
+          //     label: "字段1",
+          //     value: "field1",
+          //   },
+          //   {
+          //     label: "字段2",
+          //     value: "field2",
+          //   },
+          //   {
+          //     label: "字段3",
+          //     value: "field3",
+          //   },
+          //   {
+          //     label: "字段4",
+          //     value: "field4",
+          //   },
+          //   {
+          //     label: "字段5",
+          //     value: "field5",
+          //   },
+          // ],
         },
         {
           label: "系列",
           field: "series",
           type: "field-list",
-          options: {
-            list: [
-              {
-                label: "字段1",
-                value: "field1",
-                select: "max",
-              },
-              {
-                label: "字段2",
-                value: "field2",
-                select: "max",
-              },
-              {
-                label: "字段3",
-                value: "field3",
-                select: "max",
-              },
-              {
-                label: "字段4",
-                value: "field4",
-                select: "max",
-              },
-              {
-                label: "字段5",
-                value: "field5",
-                select: "max",
-              },
-            ],
-            itemSelectOptions: [
-              {
-                label: "最大值",
-                value: "max",
-              },
-              {
-                label: "最小值",
-                value: "min",
-              },
-              {
-                label: "求和",
-                value: "sum",
-              },
-              {
-                label: "平均值",
-                value: "avg",
-              },
-            ],
-          },
-          default: [
-            {
-              value: "field1",
-              select: "max",
-            },
-          ],
+          // options: {
+          //   list: [
+          //     {
+          //       label: "字段1",
+          //       value: "field1",
+          //       select: "max",
+          //     },
+          //     {
+          //       label: "字段2",
+          //       value: "field2",
+          //       select: "max",
+          //     },
+          //     {
+          //       label: "字段3",
+          //       value: "field3",
+          //       select: "max",
+          //     },
+          //     {
+          //       label: "字段4",
+          //       value: "field4",
+          //       select: "max",
+          //     },
+          //     {
+          //       label: "字段5",
+          //       value: "field5",
+          //       select: "max",
+          //     },
+          //   ],
+          //   itemSelectOptions: [
+          //     {
+          //       label: "最大值",
+          //       value: "max",
+          //     },
+          //     {
+          //       label: "最小值",
+          //       value: "min",
+          //     },
+          //     {
+          //       label: "求和",
+          //       value: "sum",
+          //     },
+          //     {
+          //       label: "平均值",
+          //       value: "avg",
+          //     },
+          //   ],
+          // },
+          // default: [
+          //   {
+          //     value: "field1",
+          //     select: "max",
+          //   },
+          // ],
         },
       ],
     },
@@ -539,58 +541,60 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
         field: "selectTable",
         label: "数据源",
         type: "select",
-        default: "field2",
-        options: [
-          {
-            label: "字段1",
-            value: "field1",
-          },
-          {
-            label: "字段2",
-            value: "field2",
-          },
-          {
-            label: "字段3",
-            value: "field3",
-          },
-          {
-            label: "字段4",
-            value: "field4",
-          },
-          {
-            label: "字段5",
-            value: "field5",
-          },
-        ],
+        // default: "field2",
+        // options: [
+        //   {
+        //     label: "字段1",
+        //     value: "field1",
+        //   },
+        //   {
+        //     label: "字段2",
+        //     value: "field2",
+        //   },
+        //   {
+        //     label: "字段3",
+        //     value: "field3",
+        //   },
+        //   {
+        //     label: "字段4",
+        //     value: "field4",
+        //   },
+        //   {
+        //     label: "字段5",
+        //     value: "field5",
+        //   },
+        // ],
+        options: [],
         // tip: "这是一个标题",
       },
       {
         field: "selectView",
         label: "数据范围",
         type: "select",
-        default: "field2",
-        options: [
-          {
-            label: "字段1",
-            value: "field1",
-          },
-          {
-            label: "字段2",
-            value: "field2",
-          },
-          {
-            label: "字段3",
-            value: "field3",
-          },
-          {
-            label: "字段4",
-            value: "field4",
-          },
-          {
-            label: "字段5",
-            value: "field5",
-          },
-        ],
+        // default: "field2",
+        // options: [
+        //   {
+        //     label: "字段1",
+        //     value: "field1",
+        //   },
+        //   {
+        //     label: "字段2",
+        //     value: "field2",
+        //   },
+        //   {
+        //     label: "字段3",
+        //     value: "field3",
+        //   },
+        //   {
+        //     label: "字段4",
+        //     value: "field4",
+        //   },
+        //   {
+        //     label: "字段5",
+        //     value: "field5",
+        //   },
+        // ],
+        options: [],
         // tip: "这是一个标题",
       },
       {
@@ -630,7 +634,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           label: item.label,
           value: item.key,
         })),
-        default: "recordCategory",
+        default: "fieldCategory",
       },
       {
         field: "mapOptions",

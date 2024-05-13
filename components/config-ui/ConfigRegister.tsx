@@ -70,17 +70,21 @@ export function getDefaultValue(node: Node<NodeTypes>) {
   return defaultValue;
 }
 
-export function setScheme(scheme: Scheme, path: string, node: Node<NodeTypes>) {
+export function setSchemeByPath(
+  scheme: Scheme,
+  path: string,
+  node: Partial<Node<NodeTypes>>
+) {
   const paths = path.split(".");
   let current: any = scheme;
   for (let i = 0; i < paths.length; i++) {
     const p = paths[i];
-    const currentNode = current.properties.find(
+    const currentNode = current.properties?.find(
       (item: any) => item.field === p
     );
     if (!currentNode) {
       console.error(`未找到路径: ${path}`);
-      return;
+      break;
     }
     current = currentNode;
   }
@@ -91,12 +95,12 @@ export function setScheme(scheme: Scheme, path: string, node: Node<NodeTypes>) {
   };
 }
 
-export function getScheme(scheme: Scheme, path: string) {
+export function getSchemeByPath(scheme: Scheme, path: string) {
   const paths = path.split(".");
   let current: any = scheme;
   for (let i = 0; i < paths.length; i++) {
     const p = paths[i];
-    const currentNode = current.properties.find(
+    const currentNode = current.properties?.find(
       (item: any) => item.field === p
     );
     if (!currentNode) {

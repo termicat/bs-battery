@@ -16,8 +16,11 @@ import { transDisplayRecord } from "./shared";
 export type SelectionChangeEmitter = (event: IEventCbCtx<Selection>) => any;
 export type InitEmitter = (sdk: BsSdk) => any;
 
-export interface BIField extends IField {
+export interface BIField {
+  id: string;
   name: string;
+  type: IFieldMeta["type"];
+  raw?: IFieldMeta;
 }
 
 export interface BITable {
@@ -104,12 +107,28 @@ export class BsSdk {
     } as BITable;
   }
 
-  async getFieldList(table: ITable) {
-    const fieldList: BIField[] = await table.getFieldList();
-    for (let i = 0; i < fieldList.length; i++) {
-      const field = fieldList[i];
-      field.name = await field.getName();
-    }
+  // async getFieldList(table: ITable) {
+  //   const fieldList: BIField[] = await table.getFieldList();
+  //   for (let i = 0; i < fieldList.length; i++) {
+  //     const field = fieldList[i];
+  //     field.name = await field.getName();
+  //   }
+  //   return fieldList;
+  // }
+
+  async getFiledListByViewId(tableId: string, viewId: string) {
+    const table = await this.getTableById(tableId);
+    const view = await table.raw?.getViewById(viewId);
+    const fieldList: BIField[] = ((await view?.getFieldMetaList()) ?? []).map(
+      (field) => {
+        return {
+          name: field.name,
+          id: field.id,
+          type: field.type,
+          raw: field,
+        } as BIField;
+      }
+    );
     return fieldList;
   }
 

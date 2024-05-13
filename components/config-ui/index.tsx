@@ -15,18 +15,17 @@ export default function ConfigUI<Value extends Record<string, unknown>>(
 ) {
   useEffect(() => {
     const defaultValue = getDefaultValue(props.scheme);
-    if (!props.value[props.scheme.field]) {
-      props.value = {
-        ...props.value,
-        [props.scheme.field]: {},
-      };
-    }
-    const mergeValue = deepmerge(
-      defaultValue,
-      (props.value as any)[props.scheme.field],
-      { arrayMerge: (dest, source) => source }
-    );
-    (props.value as any)[props.scheme.field] = mergeValue;
+    const newValue: any = props.value[props.scheme.field]
+      ? {
+          [props.scheme.field]: props.value[props.scheme.field],
+        }
+      : {
+          [props.scheme.field]: {},
+        };
+    const mergeValue = deepmerge(defaultValue, newValue[props.scheme.field], {
+      arrayMerge: (dest, source) => source,
+    });
+    newValue[props.scheme.field] = mergeValue;
     console.log("ConfigUI onChange", defaultValue, mergeValue);
     props.onChange?.(props.value, props.scheme.field, mergeValue);
   }, [props.scheme]);

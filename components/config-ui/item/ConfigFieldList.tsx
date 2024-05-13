@@ -57,6 +57,10 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
     itemSelectOptions?.[0]?.value
   );
 
+  useEffect(() => {
+    setInnerItemSelect(itemSelectOptions?.[0]?.value);
+  }, [itemSelectOptions]);
+
   const notAddedOptions = list.filter(
     (item) => !scopeValue?.some((sv: any) => sv.value === item.value)
   );
@@ -173,7 +177,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                           const temp = scopeValue[index];
                           scopeValue[index] = scopeValue[index - 1];
                           scopeValue[index - 1] = temp;
-                          target[field] = [...scopeValue];
+                          target[field] = scopeValue ? [...scopeValue] : [];
                           onChange(target, field, target[field]);
                         }
                       }}
@@ -189,7 +193,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                           const temp = scopeValue[index];
                           scopeValue[index] = scopeValue[index + 1];
                           scopeValue[index + 1] = temp;
-                          target[field] = [...scopeValue];
+                          target[field] = scopeValue ? [...scopeValue] : [];
                           onChange(target, field, target[field]);
                         }
                       }}
@@ -268,10 +272,12 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
           <SearchList
             list={notAddedOptions}
             onClickItem={(v, item) => {
-              target[field] = [
-                ...scopeValue,
-                { value: v, select: item?.select },
-              ];
+              target[field] = scopeValue
+                ? [
+                    ...scopeValue,
+                    { value: v, select: item?.select ?? innerItemSelect },
+                  ]
+                : [{ value: v, select: item?.select ?? innerItemSelect }];
               onChange(target, field, target[field]);
               setHideSearch(true);
             }}

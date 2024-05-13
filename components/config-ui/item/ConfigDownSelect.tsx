@@ -71,7 +71,6 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
       <Select
         value={value}
         onChange={(v) => {
-          target[field] = v;
           onChange(target, field, v);
         }}
         triggerRender={triggerRender}
