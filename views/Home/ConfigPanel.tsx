@@ -39,6 +39,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       const data = await bsSdk.getPreviewData(config.dataConditions as any);
       console.log("getPreviewData", data);
       setEchartsOption(createEChartsOption(data, config.customConfig));
+      bsSdk.triggerDashRendered();
     }
     updatePreview();
   }, [configValue]);
