@@ -9,6 +9,7 @@ import {
   IFieldMeta,
   type IView,
   type IConfig,
+  type IDataCondition,
 } from "@lark-base-open/js-sdk";
 import { format } from "date-fns";
 import { Emitter } from "./Emitter";
@@ -70,6 +71,10 @@ export class BsSdk {
 
   getData() {
     return this.bitable.dashboard.getData();
+  }
+
+  getPreviewData(dataCondition: IDataCondition) {
+    return this.bitable.dashboard.getPreviewData(dataCondition);
   }
 
   async getRecordIds(table?: ITable) {

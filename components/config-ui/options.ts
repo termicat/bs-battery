@@ -435,10 +435,6 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
               label: "平均值",
               value: "AVERAGE",
             },
-            {
-              label: "数量",
-              value: "COUNT",
-            },
           ],
           default: "MAX",
         },

@@ -19,12 +19,82 @@ import {
   SourceType,
   type IConfig,
 } from "@lark-base-open/js-sdk";
+import ECharts from "@/components/echarts";
 
 const bsSdk = new BsSdk({});
 
 let btId = "";
 let btUrl = "";
 let glang = "zh";
+
+function createEChartsOption(data: any[][], config: any) {
+  const type = config.mapType;
+  if (type === "fieldCategory") {
+    const echartsOption = {
+      legend: config.chartOptions.includes("showLegend")
+        ? {
+            data: data[0]?.slice(1)?.map?.((item) => item.text),
+          }
+        : undefined,
+      radar: {
+        // shape: 'circle',
+        indicator: data.slice(1).map((item) => {
+          return {
+            name: item[0].text,
+            // max: 10,
+          };
+        }),
+      },
+      series: [
+        {
+          name: "Data",
+          type: "radar",
+          data: data[0]?.slice(1)?.map?.((item, index) => {
+            return {
+              value: data.slice(1).map((item) => item[index + 1].value),
+              name: item.text,
+            };
+          }),
+        },
+      ],
+    };
+    console.log("echartsOption", echartsOption);
+
+    return echartsOption;
+  } else {
+    const echartsOption = {
+      legend: config.chartOptions.includes("showLegend")
+        ? {
+            data: data.slice(1).map((item) => item[0].text),
+          }
+        : undefined,
+      radar: {
+        // shape: 'circle',
+        indicator: data[0]?.slice(1)?.map((item) => {
+          return {
+            name: item.text,
+            // max: 10,
+          };
+        }),
+      },
+      series: [
+        {
+          name: "Data",
+          type: "radar",
+          data: data.slice(1).map((item) => {
+            return {
+              value: item.slice(1).map((item) => item.value),
+              name: item[0].text,
+            };
+          }),
+        },
+      ],
+    };
+    console.log("echartsOption2", echartsOption);
+
+    return echartsOption;
+  }
+}
 
 export default function App() {
   const router = useRouter();
@@ -35,13 +105,23 @@ export default function App() {
     field: "",
   });
   const [initd, setInitd] = useState(false);
+  const [echartsOption, setEchartsOption] = useState({} as any);
+
+  useEffect(() => {
+    async function updatePreview() {
+      const config = getConfig();
+      const data = await bsSdk.getPreviewData(config.dataConditions as any);
+      console.log("getPreviewData", data);
+      setEchartsOption(createEChartsOption(data, config.customConfig));
+    }
+    updatePreview();
+  }, [configValue]);
 
   useEffect(() => {
     async function initConfigValue() {
       const config = await bsSdk.getConfig();
       console.log("getConfig", config);
       const customConfig = config.customConfig;
-      const dataConditions = config.dataConditions;
       setConfigValue({ root: customConfig });
     }
     if (initd) {
@@ -158,10 +238,6 @@ export default function App() {
                 label: "平均值",
                 value: "AVERAGE",
               },
-              {
-                label: "数量",
-                value: "COUNT",
-              },
             ],
           },
           default: [],
@@ -199,122 +275,106 @@ export default function App() {
     });
   }, [configValue?.root?.mapType]);
 
+  const getConfig = () => {
+    if (configValue.root.mapType === "fieldCategory") {
+      const config: IConfig = {
+        dataConditions: {
+          tableId: configValue.root.tableId,
+          dataRange: JSON.parse(configValue.root.dataRange),
+          groups: [
+            {
+              fieldId: configValue.root.mapOptions.series,
+              sort: {
+                order: ORDER.ASCENDING,
+                sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+              },
+              mode: GroupMode.ENUMERATED,
+            },
+          ],
+          series: configValue.root.mapOptions.cates.map((cate: any) => {
+            return {
+              fieldId: cate.value,
+              rollup: configValue.root.mapOptions.calc,
+            };
+          }),
+        },
+        customConfig: configValue.root,
+      };
+      return config;
+    } else {
+      const config: IConfig = {
+        dataConditions: {
+          tableId: configValue.root.tableId,
+          dataRange: JSON.parse(configValue.root.dataRange),
+          groups: [
+            {
+              fieldId: configValue.root.mapOptions.cate,
+              sort: {
+                order: ORDER.ASCENDING,
+                sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+              },
+              mode: GroupMode.ENUMERATED,
+            },
+          ],
+          series: configValue.root.mapOptions.series.map((series: any) => {
+            return {
+              fieldId: series.value,
+              rollup: series.select,
+            };
+          }),
+        },
+        customConfig: configValue.root,
+      };
+      return config;
+    }
+  };
+
   return (
     <div
       style={{
         display: "flex",
         flexDirection: "row",
-        justifyContent: "center",
-        alignItems: "center",
         height: "100vh",
-        marginTop: 100,
+        // marginTop: 50,
       }}
     >
-      <div style={{ display: "flex", flexDirection: "row" }}>
-        <div style={{ width: 340 }}>
-          <ConfigUI
-            scheme={scheme}
-            value={configValue}
-            onChange={(target, field, value) => {
-              console.log("Root onChange", target, field, value);
+      <div style={{ flex: 1 }}>
+        <ECharts option={echartsOption}></ECharts>
+      </div>
+      <div style={{ width: 340, padding: "0 20px" }}>
+        <ConfigUI
+          scheme={scheme}
+          value={configValue}
+          onChange={(target, field, value) => {
+            console.log("Root onChange", target, field, value);
 
-              target[field] = value;
-              setConfigValue({ ...target });
-            }}
-          ></ConfigUI>
-          <Button
-            type="primary"
-            onClick={() => {
-              // bsSdk.saveConfig(value.root);
-              if (configValue.root.mapType === "fieldCategory") {
-                const config: IConfig = {
-                  dataConditions: {
-                    tableId: configValue.root.tableId,
-                    dataRange: JSON.parse(configValue.root.dataRange),
-                    groups: [
-                      {
-                        fieldId: configValue.root.mapOptions.series,
-                        sort: {
-                          order: ORDER.ASCENDING,
-                          sortType: DATA_SOURCE_SORT_TYPE.VIEW,
-                        },
-                        mode: GroupMode.ENUMERATED,
-                      },
-                    ],
-                    // series: [
-                    //   {
-                    //     fieldId: value.root.mapOptions.series,
-                    //     rollup: value.root.mapOptions.calc,
-                    //   },
-                    // ],
-                    series: configValue.root.mapOptions.cates.map(
-                      (cate: any) => {
-                        return {
-                          fieldId: cate.value,
-                          rollup: configValue.root.mapOptions.calc,
-                        };
-                      }
-                    ),
-                  },
-                  customConfig: configValue.root,
-                };
-                bsSdk.saveConfig(config);
-              } else {
-                const config: IConfig = {
-                  dataConditions: {
-                    tableId: configValue.root.tableId,
-                    dataRange: JSON.parse(configValue.root.dataRange),
-                    groups: [
-                      {
-                        fieldId: configValue.root.mapOptions.cate,
-                        sort: {
-                          order: ORDER.ASCENDING,
-                          sortType: DATA_SOURCE_SORT_TYPE.VIEW,
-                        },
-                        mode: GroupMode.ENUMERATED,
-                      },
-                    ],
-                    series: configValue.root.mapOptions.series.map(
-                      (series: any) => {
-                        return {
-                          fieldId: series.value,
-                          rollup: series.select,
-                        };
-                      }
-                    ),
-                  },
-                  customConfig: configValue.root,
-                };
-                bsSdk.saveConfig(config);
-              }
-            }}
-          >
-            创建
-          </Button>
-          <Button
-            onClick={async () => {
-              bsSdk.getConfig().then((config) => {
-                console.log("getConfig", config);
-              });
-              bsSdk.getData().then((data) => {
-                console.log("getData", data);
-              });
-            }}
-          >
-            获取配置
-          </Button>
-        </div>
-
-        <pre
-          style={{
-            width: 340,
-            marginLeft: 10,
-            padding: 10,
-            border: "1px solid #eee",
+            target[field] = value;
+            setConfigValue({ ...target });
+          }}
+        ></ConfigUI>
+        <Button
+          type="primary"
+          onClick={() => {
+            const config = getConfig();
+            bsSdk.saveConfig(config).then((res) => {
+              console.log("setConfig", res);
+            });
           }}
         >
-          {JSON.stringify(configValue, null, 2)}
-        </pre>
+          创建
+        </Button>
+        <Button
+          onClick={async () => {
+            bsSdk.getConfig().then((config) => {
+              console.log("getConfig", config);
+            });
+            bsSdk.getData().then((data) => {
+              console.log("getData", data);
+            });
+          }}
+        >
+          获取配置
+        </Button>
       </div>
     </div>
   );
