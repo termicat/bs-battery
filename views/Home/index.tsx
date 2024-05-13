@@ -354,6 +354,8 @@ export default function App() {
         ></ConfigUI>
         <Button
           type="primary"
+          theme="solid"
+          style={{ float: "right", marginTop: 20 }}
           onClick={() => {
             const config = getConfig();
             bsSdk.saveConfig(config).then((res) => {
@@ -361,9 +363,9 @@ export default function App() {
             });
           }}
         >
-          创建
+          确定
         </Button>
-        <Button
+        {/* <Button
           onClick={async () => {
             bsSdk.getConfig().then((config) => {
               console.log("getConfig", config);
@@ -374,7 +376,7 @@ export default function App() {
           }}
         >
           获取配置
-        </Button>
+        </Button> */}
       </div>
     </div>
   );
