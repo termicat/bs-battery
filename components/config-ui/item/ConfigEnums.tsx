@@ -14,7 +14,7 @@ export default function ConfigString(props: any) {
   } = props;
 
   return (
-    <div span={12} style={{ padding: "5px", paddingTop: "10px" }}>
+    <div style={{ padding: "5px", paddingTop: "10px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
