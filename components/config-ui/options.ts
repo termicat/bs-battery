@@ -421,22 +421,26 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           options: [
             {
               label: "最大值",
-              value: "max",
+              value: "MAX",
             },
             {
               label: "最小值",
-              value: "min",
+              value: "MIN",
             },
             {
               label: "求和",
-              value: "sum",
+              value: "SUM",
             },
             {
               label: "平均值",
-              value: "avg",
+              value: "AVERAGE",
+            },
+            {
+              label: "数量",
+              value: "COUNT",
             },
           ],
-          default: "max",
+          default: "MAX",
         },
       ],
     },

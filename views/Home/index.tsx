@@ -12,7 +12,13 @@ import {
   getSchemeByPath,
   setSchemeByPath,
 } from "@/components/config-ui/ConfigRegister";
-import { SourceType } from "@lark-base-open/js-sdk";
+import {
+  DATA_SOURCE_SORT_TYPE,
+  GroupMode,
+  ORDER,
+  SourceType,
+  type IConfig,
+} from "@lark-base-open/js-sdk";
 
 const bsSdk = new BsSdk({});
 
@@ -55,11 +61,11 @@ export default function App() {
 
         const options = tranBIData(views).map((view) => {
           return {
-            value: {
+            value: JSON.stringify({
               viewId: view.value,
               viewName: view.label,
               type: SourceType.VIEW,
-            },
+            }),
             label: view.label,
           };
         });
@@ -81,9 +87,13 @@ export default function App() {
   useEffect(() => {
     async function updateFields() {
       console.log("updateFields", value.root.dataRange);
+      if (!value.root.dataRange) {
+        return;
+      }
+      const dataRange = JSON.parse(value.root.dataRange);
       const fields = await bsSdk.getFiledListByViewId(
         value.root.tableId,
-        value.root.dataRange.viewId
+        dataRange.viewId
       );
       console.log("getFieldList", fields);
 
@@ -117,19 +127,23 @@ export default function App() {
             itemSelectOptions: [
               {
                 label: "最大值",
-                value: "max",
+                value: "MAX",
               },
               {
                 label: "最小值",
-                value: "min",
+                value: "MIN",
               },
               {
                 label: "求和",
-                value: "sum",
+                value: "SUM",
               },
               {
                 label: "平均值",
-                value: "avg",
+                value: "AVERAGE",
+              },
+              {
+                label: "数量",
+                value: "COUNT",
               },
             ],
           },
@@ -147,7 +161,7 @@ export default function App() {
       setScheme({ ...scheme });
     }
     updateFields();
-  }, [value?.root?.dataRange?.viewId, value?.root?.mapType]);
+  }, [value?.root?.dataRange, value?.root?.mapType]);
 
   useEffect(() => {
     setScheme((oldScheme) => {
@@ -193,7 +207,32 @@ export default function App() {
             style={{ marginTop: 20, float: "right" }}
             type="primary"
             onClick={() => {
-              bsSdk.saveConfig(value.root);
+              // bsSdk.saveConfig(value.root);
+              const config: IConfig = {
+                dataConditions: {
+                  tableId: value.root.tableId,
+                  dataRange: JSON.parse(value.root.dataRange),
+                  groups: [
+                    {
+                      fieldId: value.root.mapOptions.series,
+                      sort: {
+                        order: ORDER.ASCENDING,
+                        sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+                      },
+                      mode: GroupMode.ENUMERATED,
+                    },
+                  ],
+                  series: [
+                    {
+                      fieldId: value.root.mapOptions.series,
+                      rollup: value.root.mapOptions.calc,
+                    },
+                  ],
+                },
+                customConfig: value.root,
+              };
+
+              bsSdk.saveConfig(config);
             }}
           >
             创建

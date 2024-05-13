@@ -8,6 +8,7 @@ import {
   IRecord,
   IFieldMeta,
   type IView,
+  type IConfig,
 } from "@lark-base-open/js-sdk";
 import { format } from "date-fns";
 import { Emitter } from "./Emitter";
@@ -59,9 +60,8 @@ export class BsSdk {
     }
   }
 
-  saveConfig(root: any) {
-    console.log("saveConfig", root);
-    this.bitable.dashboard.saveConfig(root);
+  saveConfig(config: IConfig) {
+    return this.bitable.dashboard.saveConfig(config);
   }
 
   async getRecordIds(table?: ITable) {
