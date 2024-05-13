@@ -29,11 +29,26 @@ let glang = "zh";
 export default function App() {
   const router = useRouter();
   const [t, i18n] = useTranslation();
-  const [value, setValue] = useState({ root: {} as any });
+  const [configValue, setConfigValue] = useState({ root: {} as any });
   const [scheme, setScheme] = useState<Scheme>({
     type: "object",
     field: "",
   });
+  const [initd, setInitd] = useState(false);
+
+  useEffect(() => {
+    async function initConfigValue() {
+      const config = await bsSdk.getConfig();
+      console.log("getConfig", config);
+      const customConfig = config.customConfig;
+      const dataConditions = config.dataConditions;
+      setConfigValue({ root: customConfig });
+    }
+    if (initd) {
+      console.log("configValue", configValue);
+      initConfigValue();
+    }
+  }, [initd]);
 
   useEffect(() => {
     async function init() {
@@ -52,7 +67,7 @@ export default function App() {
 
   useEffect(() => {
     async function updateViews() {
-      const { tableId } = value.root;
+      const { tableId } = configValue.root;
       if (tableId) {
         const table = tableId;
         console.log("tableId", table);
@@ -77,29 +92,31 @@ export default function App() {
           default: defaultView,
         });
 
-        setValue({ root: { ...value.root, dataRange: defaultView } });
+        setConfigValue({
+          root: { ...configValue.root, dataRange: defaultView },
+        });
         setScheme({ ...scheme });
       }
     }
     updateViews();
-  }, [value?.root?.tableId]);
+  }, [configValue?.root?.tableId]);
 
   useEffect(() => {
     async function updateFields() {
-      console.log("updateFields", value.root.dataRange);
-      if (!value.root.dataRange) {
+      console.log("updateFields", configValue.root.dataRange);
+      if (!configValue.root.dataRange) {
         return;
       }
-      const dataRange = JSON.parse(value.root.dataRange);
+      const dataRange = JSON.parse(configValue.root.dataRange);
       const fields = await bsSdk.getFiledListByViewId(
-        value.root.tableId,
+        configValue.root.tableId,
         dataRange.viewId
       );
       console.log("getFieldList", fields);
 
       const fieldsOptions = tranBIData(fields);
 
-      if (value?.root?.mapType === "fieldCategory") {
+      if (configValue?.root?.mapType === "fieldCategory") {
         setSchemeByPath(scheme, "mapOptions.cates", {
           options: {
             list: fieldsOptions,
@@ -110,9 +127,9 @@ export default function App() {
           default: fieldsOptions[0].value,
         });
         const mapOptions = getSchemeByPath(scheme, "mapOptions");
-        setValue({
+        setConfigValue({
           root: {
-            ...value.root,
+            ...configValue.root,
             mapOptions: getDefaultValue(mapOptions),
           },
         });
@@ -150,36 +167,37 @@ export default function App() {
           default: [],
         });
         const mapOptions = getSchemeByPath(scheme, "mapOptions");
-        setValue({
+        setConfigValue({
           root: {
-            ...value.root,
+            ...configValue.root,
             mapOptions: getDefaultValue(mapOptions),
           },
         });
       }
 
       setScheme({ ...scheme });
+      setInitd(true);
     }
     updateFields();
-  }, [value?.root?.dataRange, value?.root?.mapType]);
+  }, [configValue?.root?.dataRange, configValue?.root?.mapType]);
 
   useEffect(() => {
     setScheme((oldScheme) => {
       const newScheme = oldScheme;
       const mapOptions = getSchemeByPath(
-        createScheme(value.root.mapType),
+        createScheme(configValue.root.mapType),
         "mapOptions"
       );
-      setValue({
+      setConfigValue({
         root: {
-          ...value.root,
+          ...configValue.root,
           mapOptions: getDefaultValue(mapOptions),
         },
       });
       setSchemeByPath(newScheme, "mapOptions", mapOptions);
       return newScheme;
     });
-  }, [value?.root?.mapType]);
+  }, [configValue?.root?.mapType]);
 
   return (
     <div
@@ -189,53 +207,101 @@ export default function App() {
         justifyContent: "center",
         alignItems: "center",
         height: "100vh",
+        marginTop: 100,
       }}
     >
       <div style={{ display: "flex", flexDirection: "row" }}>
         <div style={{ width: 340 }}>
           <ConfigUI
             scheme={scheme}
-            value={value}
+            value={configValue}
             onChange={(target, field, value) => {
               console.log("Root onChange", target, field, value);
 
               target[field] = value;
-              setValue({ ...target });
+              setConfigValue({ ...target });
             }}
           ></ConfigUI>
           <Button
-            style={{ marginTop: 20, float: "right" }}
             type="primary"
             onClick={() => {
               // bsSdk.saveConfig(value.root);
-              const config: IConfig = {
-                dataConditions: {
-                  tableId: value.root.tableId,
-                  dataRange: JSON.parse(value.root.dataRange),
-                  groups: [
-                    {
-                      fieldId: value.root.mapOptions.series,
-                      sort: {
-                        order: ORDER.ASCENDING,
-                        sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+              if (configValue.root.mapType === "fieldCategory") {
+                const config: IConfig = {
+                  dataConditions: {
+                    tableId: configValue.root.tableId,
+                    dataRange: JSON.parse(configValue.root.dataRange),
+                    groups: [
+                      {
+                        fieldId: configValue.root.mapOptions.series,
+                        sort: {
+                          order: ORDER.ASCENDING,
+                          sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+                        },
+                        mode: GroupMode.ENUMERATED,
                       },
-                      mode: GroupMode.ENUMERATED,
-                    },
-                  ],
-                  series: [
-                    {
-                      fieldId: value.root.mapOptions.series,
-                      rollup: value.root.mapOptions.calc,
-                    },
-                  ],
-                },
-                customConfig: value.root,
-              };
-
-              bsSdk.saveConfig(config);
+                    ],
+                    // series: [
+                    //   {
+                    //     fieldId: value.root.mapOptions.series,
+                    //     rollup: value.root.mapOptions.calc,
+                    //   },
+                    // ],
+                    series: configValue.root.mapOptions.cates.map(
+                      (cate: any) => {
+                        return {
+                          fieldId: cate.value,
+                          rollup: configValue.root.mapOptions.calc,
+                        };
+                      }
+                    ),
+                  },
+                  customConfig: configValue.root,
+                };
+                bsSdk.saveConfig(config);
+              } else {
+                const config: IConfig = {
+                  dataConditions: {
+                    tableId: configValue.root.tableId,
+                    dataRange: JSON.parse(configValue.root.dataRange),
+                    groups: [
+                      {
+                        fieldId: configValue.root.mapOptions.cate,
+                        sort: {
+                          order: ORDER.ASCENDING,
+                          sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+                        },
+                        mode: GroupMode.ENUMERATED,
+                      },
+                    ],
+                    series: configValue.root.mapOptions.series.map(
+                      (series: any) => {
+                        return {
+                          fieldId: series.value,
+                          rollup: series.select,
+                        };
+                      }
+                    ),
+                  },
+                  customConfig: configValue.root,
+                };
+                bsSdk.saveConfig(config);
+              }
             }}
           >
             创建
+          </Button>
+          <Button
+            onClick={async () => {
+              bsSdk.getConfig().then((config) => {
+                console.log("getConfig", config);
+              });
+              bsSdk.getData().then((data) => {
+                console.log("getData", data);
+              });
+            }}
+          >
+            获取配置
           </Button>
         </div>
 
@@ -247,7 +313,7 @@ export default function App() {
             border: "1px solid #eee",
           }}
         >
-          {JSON.stringify(value, null, 2)}
+          {JSON.stringify(configValue, null, 2)}
         </pre>
       </div>
     </div>
