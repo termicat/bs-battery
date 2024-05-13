@@ -77,6 +77,10 @@ export class BsSdk {
     return this.bitable.dashboard.getPreviewData(dataCondition);
   }
 
+  getDashState() {
+    return this.bitable.dashboard.state;
+  }
+
   async getRecordIds(table?: ITable) {
     if (!table) table = await this.getActiveTable();
     return await table.getRecordIdList();
