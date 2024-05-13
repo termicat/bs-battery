@@ -4,58 +4,21 @@ import { useEffect, useState } from "react";
 
 const defaultScheme = createScheme("fieldCategory");
 
-// const defaultScheme = {
-//   type: "object",
-//   field: "",
-//   default: {},
-//   properties: [
-//     {
-//       type: "select",
-//       field: "select",
-//       label: "Select Table",
-//       options: [
-//         { label: "Table1", value: "table1" },
-//         { label: "Table2", value: "table2" },
-//       ],
-//     },
-//     {
-//       type: "select",
-//       field: "selectView",
-//       label: "Select View",
-//       options: [],
-//     },
-//     {
-//       type: "object",
-//       field: "obj",
-//       label: "对象",
-//       default: {},
-//       properties: [
-//         {
-//           type: "select",
-//           field: "selectField",
-//           label: "Select",
-//           options: [
-//             { label: "Option1", value: "option1" },
-//             { label: "Option2", value: "option2" },
-//           ],
-//         },
-//       ],
-//     },
-//   ],
-// };
-
 export default function Demo() {
   const [value, setValue] = useState({
-    root: {
-      // chartOptions: ["showLegend"],
-      // mapOptions: {},
-    },
-  });
+    root: {},
+  } as any);
   const [scheme, setScheme] = useState(defaultScheme);
 
-  // useEffect(() => {
-  //   setScheme(createScheme("fieldCategory"));
-  // }, []);
+  useEffect(() => {
+    setValue({
+      root: {
+        ...value.root,
+        mapOptions: {},
+      },
+    });
+    setScheme(createScheme(value.root.mapType));
+  }, [value.root.mapType]);
 
   return (
     <div

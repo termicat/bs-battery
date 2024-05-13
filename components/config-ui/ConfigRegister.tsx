@@ -20,7 +20,7 @@ import ConfigFieldList, {
 import ConfigSelectField, {
   type ConfigSelectOptions,
 } from "./item/ConfigSelect";
-import type { Node } from "./types";
+import type { Node, Scheme } from "./types";
 import type { ConfigDownSelectOptions } from "./item/ConfigDownSelect";
 import ConfigDownSelect from "./item/ConfigDownSelect";
 
@@ -68,4 +68,42 @@ export function getDefaultValue(node: Node<NodeTypes>) {
   }
 
   return defaultValue;
+}
+
+export function setScheme(scheme: Scheme, path: string, node: Node<NodeTypes>) {
+  const paths = path.split(".");
+  let current: any = scheme;
+  for (let i = 0; i < paths.length; i++) {
+    const p = paths[i];
+    const currentNode = current.properties.find(
+      (item: any) => item.field === p
+    );
+    if (!currentNode) {
+      console.error(`未找到路径: ${path}`);
+      return;
+    }
+    current = currentNode;
+  }
+  Object.assign(current, node);
+  return {
+    scheme,
+    current,
+  };
+}
+
+export function getScheme(scheme: Scheme, path: string) {
+  const paths = path.split(".");
+  let current: any = scheme;
+  for (let i = 0; i < paths.length; i++) {
+    const p = paths[i];
+    const currentNode = current.properties.find(
+      (item: any) => item.field === p
+    );
+    if (!currentNode) {
+      console.error(`未找到路径: ${path}`);
+      return;
+    }
+    current = currentNode;
+  }
+  return current;
 }

@@ -409,6 +409,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
               value: "field5",
             },
           ],
+          default: [],
         },
         {
           portal: "#series-right",
