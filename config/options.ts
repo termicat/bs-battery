@@ -1,40 +1,15 @@
-import type { NodeTypes } from "@/components/config-ui/ConfigRegister";
-import type { Node, Scheme } from "@/components/config-ui/types";
-import { tranBIData } from "@/libs/helper/config-ui";
-
-const theme = {
+export const theme = {
   light: [
     {
-      label: [
-        "var(--ccm-chart-B400)",
-        "var(--ccm-chart-W400)",
-        "var(--ccm-chart-P400)",
-        "var(--ccm-chart-Y400)",
-        "var(--ccm-chart-R400)",
-        "var(--ccm-chart-O400)",
-      ],
+      label: ["#2e65d1", "#50cefb", "#935af6", "#fad355", "#f54a45", "#ffa53d"],
       value: "p1",
     },
     {
-      label: [
-        "var(--ccm-chart-B400)",
-        "var(--ccm-chart-W400)",
-        "var(--ccm-chart-T400)",
-        "var(--ccm-chart-G400)",
-        "var(--ccm-chart-L400)",
-        "var(--ccm-chart-Y400)",
-      ],
+      label: ["#2e65d1", "#50cefb", "#14e1c6", "#62d256", "#c3dd40", "#fad355"],
       value: "p2",
     },
     {
-      label: [
-        "var(--ccm-chart-B500)",
-        "var(--ccm-chart-O500)",
-        "var(--ccm-chart-W500)",
-        "var(--ccm-chart-Y500)",
-        "var(--ccm-chart-G500)",
-        "var(--ccm-chart-N500)",
-      ],
+      label: ["#3370ff", "#f80", "#50cefb", "#fad355", "#62d256", "#8f959e"],
       value: "p3",
     },
     {
@@ -49,47 +24,19 @@ const theme = {
       value: "p4",
     },
     {
-      label: [
-        "var(--ccm-chart-B400)",
-        "var(--ccm-chart-R400)",
-        "var(--ccm-chart-N400)",
-        "var(--ccm-chart-I400)",
-        "var(--ccm-chart-C400)",
-        "var(--ccm-chart-P400)",
-      ],
+      label: ["#2e65d1", "#f54a45", "#8f959e", "#4954e6", "#00d6b9", "#935af6"],
       value: "p5",
     },
     {
-      label: [
-        "var(--ccm-chart-B200)",
-        "var(--ccm-chart-W200)",
-        "var(--ccm-chart-T200)",
-        "var(--ccm-chart-G200)",
-        "var(--ccm-chart-L200)",
-        "var(--ccm-chart-Y200)",
-      ],
+      label: ["#bacefd", "#d9f3fd", "#14e1c6", "#62d256", "#eef6c6", "#f8e6ab"],
       value: "p6",
     },
     {
-      label: [
-        "var(--ccmtoken-chart-aurora-t500)",
-        "var(--ccmtoken-chart-aurora-t400)",
-        "var(--ccmtoken-chart-aurora-b400)",
-        "var(--ccmtoken-chart-aurora-p300)",
-        "var(--ccmtoken-chart-aurora-p400)",
-        "var(--ccmtoken-chart-aurora-p200)",
-      ],
+      label: ["#0f8575", "#10a893", "#3370eb", "#a575fa", "#8c55ec", "#6c39c6"],
       value: "p7",
     },
     {
-      label: [
-        "var(--ccmtoken-chart-aurora-w400)",
-        "var(--ccmtoken-chart-aurora-b300)",
-        "var(--ccmtoken-chart-aurora-b500)",
-        "var(--ccmtoken-chart-aurora-c200)",
-        "var(--ccmtoken-chart-aurora-c300)",
-        "var(--ccmtoken-chart-aurora-c400)",
-      ],
+      label: ["#1099cc", "#4c88ff", "#2655b6", "#fc94cf", "#ed77ba", "#c24a8e"],
       value: "p8",
     },
     {
@@ -172,36 +119,15 @@ const theme = {
   ],
   dark: [
     {
-      label: [
-        "var(--ccm-chart-B400)",
-        "var(--ccm-chart-W400)",
-        "var(--ccm-chart-P400)",
-        "var(--ccm-chart-Y400)",
-        "var(--ccm-chart-R400)",
-        "var(--ccm-chart-O400)",
-      ],
+      label: ["#2e65d1", "#50cefb", "#935af6", "#fad355", "#f54a45", "#ffa53d"],
       value: "p1",
     },
     {
-      label: [
-        "var(--ccm-chart-B400)",
-        "var(--ccm-chart-W400)",
-        "var(--ccm-chart-T400)",
-        "var(--ccm-chart-G400)",
-        "var(--ccm-chart-L400)",
-        "var(--ccm-chart-Y400)",
-      ],
+      label: ["#2e65d1", "#50cefb", "#14e1c6", "#62d256", "#c3dd40", "#fad355"],
       value: "p2",
     },
     {
-      label: [
-        "var(--ccm-chart-B500)",
-        "var(--ccm-chart-O500)",
-        "var(--ccm-chart-W500)",
-        "var(--ccm-chart-Y500)",
-        "var(--ccm-chart-G500)",
-        "var(--ccm-chart-N500)",
-      ],
+      label: ["#3370ff", "#f80", "#50cefb", "#fad355", "#62d256", "#8f959e"],
       value: "p3",
     },
     {
@@ -216,47 +142,19 @@ const theme = {
       value: "p4",
     },
     {
-      label: [
-        "var(--ccm-chart-B400)",
-        "var(--ccm-chart-R400)",
-        "var(--ccm-chart-N400)",
-        "var(--ccm-chart-I400)",
-        "var(--ccm-chart-C400)",
-        "var(--ccm-chart-P400)",
-      ],
+      label: ["#2e65d1", "#f54a45", "#8f959e", "#4954e6", "#00d6b9", "#935af6"],
       value: "p5",
     },
     {
-      label: [
-        "var(--ccm-chart-B200)",
-        "var(--ccm-chart-W200)",
-        "var(--ccm-chart-T200)",
-        "var(--ccm-chart-G200)",
-        "var(--ccm-chart-L200)",
-        "var(--ccm-chart-Y200)",
-      ],
+      label: ["#bacefd", "#d9f3fd", "#14e1c6", "#62d256", "#eef6c6", "#f8e6ab"],
       value: "p6",
     },
     {
-      label: [
-        "var(--ccmtoken-chart-aurora-t500)",
-        "var(--ccmtoken-chart-aurora-t400)",
-        "var(--ccmtoken-chart-aurora-b400)",
-        "var(--ccmtoken-chart-aurora-p300)",
-        "var(--ccmtoken-chart-aurora-p400)",
-        "var(--ccmtoken-chart-aurora-p200)",
-      ],
+      label: ["#0f8575", "#10a893", "#3370eb", "#a575fa", "#8c55ec", "#6c39c6"],
       value: "p7",
     },
     {
-      label: [
-        "var(--ccmtoken-chart-aurora-w400)",
-        "var(--ccmtoken-chart-aurora-b300)",
-        "var(--ccmtoken-chart-aurora-b500)",
-        "var(--ccmtoken-chart-aurora-c200)",
-        "var(--ccmtoken-chart-aurora-c300)",
-        "var(--ccmtoken-chart-aurora-c400)",
-      ],
+      label: ["#1099cc", "#4c88ff", "#2655b6", "#fc94cf", "#ed77ba", "#c24a8e"],
       value: "p8",
     },
     {
@@ -338,547 +236,3 @@ const theme = {
     },
   ],
 };
-
-export const scheme: Scheme = {
-  field: "",
-  type: "object",
-  properties: [
-    {
-      field: "tableId",
-      label: "数据源",
-      type: "select",
-      default: "field2",
-      options: [
-        {
-          label: "字段1",
-          value: "field1",
-        },
-        {
-          label: "字段2",
-          value: "field2",
-        },
-        {
-          label: "字段3",
-          value: "field3",
-        },
-        {
-          label: "字段4",
-          value: "field4",
-        },
-        {
-          label: "字段5",
-          value: "field5",
-        },
-      ],
-      // tip: "这是一个标题",
-    },
-    // {
-    //   field: "range",
-    //   label: "数据范围",
-    //   type: "select-table",
-    //   default: "",
-    //   // tip: "这是一个标题",
-    // },
-    {
-      field: "dataRange",
-      label: "数据范围",
-      type: "select",
-      default: "field2",
-      options: [
-        {
-          label: "字段1",
-          value: "field1",
-        },
-        {
-          label: "字段2",
-          value: "field2",
-        },
-        {
-          label: "字段3",
-          value: "field3",
-        },
-        {
-          label: "字段4",
-          value: "field4",
-        },
-        {
-          label: "字段5",
-          value: "field5",
-        },
-      ],
-      // tip: "这是一个标题",
-    },
-    {
-      field: "selectTheme",
-      label: "主题色",
-      type: "select-theme",
-      // default: "",
-      // tip: "这是一个标题",
-      options: theme.light,
-    },
-    {
-      label: "图表选项",
-      field: "chartOptions",
-      type: "checkboxes",
-      options: [
-        {
-          label: "图例",
-          value: "showLegend",
-        },
-        {
-          label: "数据标签",
-          value: "showDataLabel",
-        },
-      ],
-      default: ["showLegend", "showDataLabel"],
-      // tip: "添加一个表格组件",
-    },
-    {
-      field: "",
-      type: "line",
-    },
-    {
-      label: "数据映射",
-      field: "mapType",
-      type: "select-tabs",
-      options: [
-        {
-          label: "以字段为类别，以记录聚合为系列",
-          key: "fieldCategory",
-        },
-        {
-          label: "以记录聚合为类别，以字段为系列",
-          key: "recordCategory",
-          value: [
-            {
-              label: "类别",
-              field: "cate",
-              type: "select",
-              default: "field2",
-              options: [
-                {
-                  label: "字段1",
-                  value: "field1",
-                },
-                {
-                  label: "字段2",
-                  value: "field2",
-                },
-                {
-                  label: "字段3",
-                  value: "field3",
-                },
-                {
-                  label: "字段4",
-                  value: "field4",
-                },
-                {
-                  label: "字段5",
-                  value: "field5",
-                },
-              ],
-            },
-            {
-              label: "系列",
-              field: "series",
-              type: "field-list",
-              options: {
-                list: [
-                  {
-                    label: "字段1",
-                    value: "field1",
-                    select: "max",
-                  },
-                  {
-                    label: "字段2",
-                    value: "field2",
-                    select: "max",
-                  },
-                  {
-                    label: "字段3",
-                    value: "field3",
-                    select: "max",
-                  },
-                  {
-                    label: "字段4",
-                    value: "field4",
-                    select: "max",
-                  },
-                  {
-                    label: "字段5",
-                    value: "field5",
-                    select: "max",
-                  },
-                ],
-                itemSelectOptions: [
-                  {
-                    label: "最大值",
-                    value: "max",
-                  },
-                  {
-                    label: "最小值",
-                    value: "min",
-                  },
-                  {
-                    label: "求和",
-                    value: "sum",
-                  },
-                  {
-                    label: "平均值",
-                    value: "avg",
-                  },
-                ],
-              },
-              default: [
-                {
-                  value: "field1",
-                  select: "max",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      default: "recordCategory",
-    },
-    {
-      label: "",
-      field: "mapOptions",
-      type: "object",
-      properties: [
-        {
-          label: "类别",
-          field: "cates",
-          type: "field-list",
-          options: {
-            list: [
-              {
-                label: "字段1",
-                value: "field1",
-                select: "max",
-              },
-              {
-                label: "字段2",
-                value: "field2",
-                select: "max",
-              },
-              {
-                label: "字段3",
-                value: "field3",
-                select: "max",
-              },
-              {
-                label: "字段4",
-                value: "field4",
-                select: "max",
-              },
-              {
-                label: "字段5",
-                value: "field5",
-                select: "max",
-              },
-            ],
-          },
-          default: [
-            {
-              value: "field1",
-              select: "max",
-            },
-          ],
-        },
-        {
-          label: "系列",
-          field: "series",
-          type: "select",
-          options: [
-            {
-              label: "字段1",
-              value: "field1",
-            },
-            {
-              label: "字段2",
-              value: "field2",
-            },
-            {
-              label: "字段3",
-              value: "field3",
-            },
-            {
-              label: "字段4",
-              value: "field4",
-            },
-            {
-              label: "字段5",
-              value: "field5",
-            },
-          ],
-        },
-        {
-          portal: "#series-right",
-          label: "计算方式",
-          field: "calc",
-          type: "down-select",
-          options: [
-            {
-              label: "最大值",
-              value: "max",
-            },
-            {
-              label: "最小值",
-              value: "min",
-            },
-            {
-              label: "求和",
-              value: "sum",
-            },
-            {
-              label: "平均值",
-              value: "avg",
-            },
-          ],
-          default: "max",
-        },
-      ],
-    },
-  ],
-};
-
-export type CreateSchemeProps = {
-  tables: any;
-};
-
-export function createScheme(p: CreateSchemeProps) {
-  const scheme: Scheme = {
-    field: "",
-    type: "object",
-    properties: [
-      {
-        field: "tableId",
-        label: "数据源",
-        type: "select",
-        // default: "field2",
-        options: tranBIData(p.tables),
-        // tip: "这是一个标题",
-      },
-      // {
-      //   field: "range",
-      //   label: "数据范围",
-      //   type: "select-table",
-      //   default: "",
-      //   // tip: "这是一个标题",
-      // },
-      {
-        field: "dataRange",
-        label: "数据范围",
-        type: "select",
-        // default: "field2",
-        options: [],
-        // tip: "这是一个标题",
-      },
-      {
-        field: "selectTheme",
-        label: "主题色",
-        type: "select-theme",
-        // default: "",
-        // tip: "这是一个标题",
-        options: theme.light,
-      },
-      {
-        label: "图表选项",
-        field: "chartOptions",
-        type: "checkboxes",
-        options: [
-          {
-            label: "图例",
-            value: "showLegend",
-          },
-          {
-            label: "数据标签",
-            value: "showDataLabel",
-          },
-        ],
-        default: ["showLegend", "showDataLabel"],
-        // tip: "添加一个表格组件",
-      },
-      {
-        field: "",
-        type: "line",
-      },
-      {
-        label: "数据映射",
-        field: "dataOptions",
-        type: "select-tabs",
-        options: [
-          {
-            label: "以字段为类别，以记录聚合为系列",
-            key: "fieldCategory",
-            value: [
-              {
-                label: "类别",
-                field: "cates",
-                type: "field-list",
-                options: {
-                  list: [],
-                },
-                default: [],
-              },
-              {
-                label: "系列",
-                field: "series",
-                type: "select",
-                options: [],
-              },
-              {
-                portal: "#series-right",
-                label: "计算方式",
-                field: "calc",
-                type: "down-select",
-                options: [
-                  {
-                    label: "最大值",
-                    value: "max",
-                  },
-                  {
-                    label: "最小值",
-                    value: "min",
-                  },
-                  {
-                    label: "求和",
-                    value: "sum",
-                  },
-                  {
-                    label: "平均值",
-                    value: "avg",
-                  },
-                ],
-                default: "max",
-              },
-            ],
-          },
-          {
-            label: "以记录聚合为类别，以字段为系列",
-            key: "recordCategory",
-            value: [
-              {
-                label: "类别",
-                field: "cate",
-                type: "select",
-                default: "field2",
-                options: [],
-              },
-              {
-                label: "系列",
-                field: "series",
-                type: "field-list",
-                options: {
-                  list: [],
-                  itemSelectOptions: [
-                    {
-                      label: "最大值",
-                      value: "max",
-                    },
-                    {
-                      label: "最小值",
-                      value: "min",
-                    },
-                    {
-                      label: "求和",
-                      value: "sum",
-                    },
-                    {
-                      label: "平均值",
-                      value: "avg",
-                    },
-                  ],
-                },
-                default: [],
-              },
-            ],
-          },
-        ],
-        default: "fieldCategory",
-      },
-    ],
-  };
-  return scheme;
-}
-
-export function updateScheme(
-  scheme: Scheme,
-  path: string,
-  node: Node<NodeTypes>
-) {
-  const paths = path.split(".");
-  let current: any = scheme;
-  for (let i = 0; i < paths.length; i++) {
-    const field = paths[i];
-    const fieldIndex = current.properties?.findIndex(
-      (item: any) => item.field === field
-    );
-    if (fieldIndex === -1) {
-      return;
-    }
-    current;
-  }
-}
-
-// fieldCategory
-export const fieldCategory = {
-  tableId: "table1",
-  dataRange: "view1",
-  selectTheme: "p1",
-  chartOptions: ["showLegend"],
-  dataOptions: {
-    // key: "recordCategory",
-    // value: {
-    //   cates: [
-    //     {
-    //       value: "field1",
-    //       select: "max",
-    //     },
-    //   ],
-    //   cate: "field1",
-    //   calc: "max",
-    //   // series: "field1",
-    // },
-    key: "recordCategory",
-    value: {
-      cate: "field2",
-      series: [
-        {
-          value: "field1",
-          select: "max",
-        },
-      ],
-    },
-  },
-};
-
-// recordCategory
-// export const recordCategory = {
-//   tableId: "table1",
-//   dataRange: "view1",
-//   selectTheme: "p2",
-//   chartOptions: {
-//     showLegend: true,
-//     showDataLabel: true,
-//   },
-//   dataOptions: {
-//     recordCategory: {
-//       cate: "field1",
-//       series: {
-//         calc: "max",
-//         fields: [
-//           {
-//             field: "field2",
-//             calc: "max",
-//           },
-//           {
-//             field: "field3",
-//             calc: "min",
-//           },
-//         ],
-//       },
-//     },
-//   },
-// };

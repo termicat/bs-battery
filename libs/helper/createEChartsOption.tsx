@@ -2,6 +2,7 @@ export function createEChartsOption(data: any[][], configRoot: any) {
   const type = configRoot.mapType;
   if (type === "fieldCategory") {
     const echartsOption = {
+      theme: configRoot.selectTheme,
       legend: configRoot.chartOptions.includes("showLegend")
         ? {
             data: data[0]?.slice(1)?.map?.((item) => item.text),

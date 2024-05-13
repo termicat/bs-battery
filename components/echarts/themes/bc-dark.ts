@@ -1,141 +1,368 @@
-export default {
-  version: 1,
-  themeName: "bc-dark",
-  theme: {
-    seriesCnt: "3",
-    backgroundColor: "#05192e",
-    titleColor: "#ffffff",
-    subtitleColor: "#dddddd",
-    textColorShow: false,
-    textColor: "#333",
-    markTextColor: "#293441",
-    color: [
-      "#fc97af",
-      "#87f7cf",
-      "#f7f494",
-      "#72ccff",
-      "#f7c5a0",
-      "#d4a4eb",
-      "#d2f5a6",
-      "#76f2f2",
-    ],
-    borderColor: "#ccc",
-    borderWidth: 0,
-    visualMapColor: ["#fc97af", "#87f7cf"],
-    legendTextColor: "#999999",
-    kColor: "#fc97af",
-    kColor0: "transparent",
-    kBorderColor: "#fc97af",
-    kBorderColor0: "#87f7cf",
-    kBorderWidth: "2",
-    lineWidth: "3",
-    symbolSize: "0",
-    symbol: "circle",
-    symbolBorderWidth: "4",
-    lineSmooth: true,
-    graphLineWidth: "1",
-    graphLineColor: "#ffffff",
-    mapLabelColor: "#893448",
-    mapLabelColorE: "rgb(137,52,72)",
-    mapBorderColor: "#999999",
-    mapBorderColorE: "#eb8146",
-    mapBorderWidth: 0.5,
-    mapBorderWidthE: 1,
-    mapAreaColor: "#f3f3f3",
-    mapAreaColorE: "rgba(255,178,72,1)",
-    axes: [
-      {
-        type: "all",
-        name: "通用坐标轴",
-        axisLineShow: true,
-        axisLineColor: "#666666",
-        axisTickShow: false,
-        axisTickColor: "#333",
-        axisLabelShow: true,
-        axisLabelColor: "#aaaaaa",
-        splitLineShow: false,
-        splitLineColor: ["#e6e6e6"],
-        splitAreaShow: false,
-        splitAreaColor: ["rgba(250,250,250,0.05)", "rgba(200,200,200,0.02)"],
+import { theme } from "@/config/options";
+
+export default (themeKey: string) => {
+  const themeItem = theme.light.find((item) => item.value === themeKey);
+  return {
+    color: themeItem?.label,
+    backgroundColor: "rgba(255,255,255,0)",
+    textStyle: {},
+    title: {
+      textStyle: {
+        color: "#ffffff",
       },
-      {
-        type: "category",
-        name: "类目坐标轴",
-        axisLineShow: true,
-        axisLineColor: "#333",
-        axisTickShow: true,
-        axisTickColor: "#333",
-        axisLabelShow: true,
-        axisLabelColor: "#333",
-        splitLineShow: false,
-        splitLineColor: ["#ccc"],
-        splitAreaShow: false,
-        splitAreaColor: ["rgba(250,250,250,0.3)", "rgba(200,200,200,0.3)"],
+      subtextStyle: {
+        color: "#dddddd",
       },
-      {
-        type: "value",
-        name: "数值坐标轴",
-        axisLineShow: true,
-        axisLineColor: "#333",
-        axisTickShow: true,
-        axisTickColor: "#333",
-        axisLabelShow: true,
-        axisLabelColor: "#333",
-        splitLineShow: true,
-        splitLineColor: ["#ccc"],
-        splitAreaShow: false,
-        splitAreaColor: ["rgba(250,250,250,0.3)", "rgba(200,200,200,0.3)"],
+    },
+    line: {
+      itemStyle: {
+        borderWidth: "4",
       },
-      {
-        type: "log",
-        name: "对数坐标轴",
-        axisLineShow: true,
-        axisLineColor: "#333",
-        axisTickShow: true,
-        axisTickColor: "#333",
-        axisLabelShow: true,
-        axisLabelColor: "#333",
-        splitLineShow: true,
-        splitLineColor: ["#ccc"],
-        splitAreaShow: false,
-        splitAreaColor: ["rgba(250,250,250,0.3)", "rgba(200,200,200,0.3)"],
+      lineStyle: {
+        width: "3",
       },
-      {
-        type: "time",
-        name: "时间坐标轴",
-        axisLineShow: true,
-        axisLineColor: "#333",
-        axisTickShow: true,
-        axisTickColor: "#333",
-        axisLabelShow: true,
-        axisLabelColor: "#333",
-        splitLineShow: true,
-        splitLineColor: ["#ccc"],
-        splitAreaShow: false,
-        splitAreaColor: ["rgba(250,250,250,0.3)", "rgba(200,200,200,0.3)"],
+      symbolSize: "0",
+      symbol: "circle",
+      smooth: true,
+    },
+    radar: {
+      itemStyle: {
+        borderWidth: "4",
       },
-    ],
-    axisSeperateSetting: false,
-    toolboxColor: "#999999",
-    toolboxEmphasisColor: "#666666",
-    tooltipAxisColor: "#cccccc",
-    tooltipAxisWidth: 1,
-    timelineLineColor: "#87f7cf",
-    timelineLineWidth: 1,
-    timelineItemColor: "#87f7cf",
-    timelineItemColorE: "#f7f494",
-    timelineCheckColor: "#fc97af",
-    timelineCheckBorderColor: "#fc97af",
-    timelineItemBorderWidth: 1,
-    timelineControlColor: "#87f7cf",
-    timelineControlBorderColor: "#87f7cf",
-    timelineControlBorderWidth: 0.5,
-    timelineLabelColor: "#87f7cf",
-    datazoomBackgroundColor: "rgba(255,255,255,0)",
-    datazoomDataColor: "rgba(114,204,255,1)",
-    datazoomFillColor: "rgba(114,204,255,0.2)",
-    datazoomHandleColor: "#72ccff",
-    datazoomHandleWidth: "100",
-    datazoomLabelColor: "#333333",
-  },
+      lineStyle: {
+        width: "3",
+      },
+      symbolSize: "0",
+      symbol: "circle",
+      smooth: true,
+    },
+    bar: {
+      itemStyle: {
+        barBorderWidth: 0,
+        barBorderColor: "#ccc",
+      },
+    },
+    pie: {
+      itemStyle: {
+        borderWidth: 0,
+        borderColor: "#ccc",
+      },
+    },
+    scatter: {
+      itemStyle: {
+        borderWidth: 0,
+        borderColor: "#ccc",
+      },
+    },
+    boxplot: {
+      itemStyle: {
+        borderWidth: 0,
+        borderColor: "#ccc",
+      },
+    },
+    parallel: {
+      itemStyle: {
+        borderWidth: 0,
+        borderColor: "#ccc",
+      },
+    },
+    sankey: {
+      itemStyle: {
+        borderWidth: 0,
+        borderColor: "#ccc",
+      },
+    },
+    funnel: {
+      itemStyle: {
+        borderWidth: 0,
+        borderColor: "#ccc",
+      },
+    },
+    gauge: {
+      itemStyle: {
+        borderWidth: 0,
+        borderColor: "#ccc",
+      },
+    },
+    candlestick: {
+      itemStyle: {
+        color: "#fc97af",
+        color0: "transparent",
+        borderColor: "#fc97af",
+        borderColor0: "#87f7cf",
+        borderWidth: "2",
+      },
+    },
+    graph: {
+      itemStyle: {
+        borderWidth: 0,
+        borderColor: "#ccc",
+      },
+      lineStyle: {
+        width: "1",
+        color: "#ffffff",
+      },
+      symbolSize: "0",
+      symbol: "circle",
+      smooth: true,
+      color: [
+        "#fc97af",
+        "#87f7cf",
+        "#f7f494",
+        "#72ccff",
+        "#f7c5a0",
+        "#d4a4eb",
+        "#d2f5a6",
+        "#76f2f2",
+      ],
+      label: {
+        color: "#293441",
+      },
+    },
+    map: {
+      itemStyle: {
+        areaColor: "#f3f3f3",
+        borderColor: "#999999",
+        borderWidth: 0.5,
+      },
+      label: {
+        color: "#893448",
+      },
+      emphasis: {
+        itemStyle: {
+          areaColor: "rgba(255,178,72,1)",
+          borderColor: "#eb8146",
+          borderWidth: 1,
+        },
+        label: {
+          color: "rgb(137,52,72)",
+        },
+      },
+    },
+    geo: {
+      itemStyle: {
+        areaColor: "#f3f3f3",
+        borderColor: "#999999",
+        borderWidth: 0.5,
+      },
+      label: {
+        color: "#893448",
+      },
+      emphasis: {
+        itemStyle: {
+          areaColor: "rgba(255,178,72,1)",
+          borderColor: "#eb8146",
+          borderWidth: 1,
+        },
+        label: {
+          color: "rgb(137,52,72)",
+        },
+      },
+    },
+    categoryAxis: {
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: "#666666",
+        },
+      },
+      axisTick: {
+        show: false,
+        lineStyle: {
+          color: "#333",
+        },
+      },
+      axisLabel: {
+        show: true,
+        color: "#aaaaaa",
+      },
+      splitLine: {
+        show: false,
+        lineStyle: {
+          color: ["#e6e6e6"],
+        },
+      },
+      splitArea: {
+        show: false,
+        areaStyle: {
+          color: ["rgba(250,250,250,0.05)", "rgba(200,200,200,0.02)"],
+        },
+      },
+    },
+    valueAxis: {
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: "#666666",
+        },
+      },
+      axisTick: {
+        show: false,
+        lineStyle: {
+          color: "#333",
+        },
+      },
+      axisLabel: {
+        show: true,
+        color: "#aaaaaa",
+      },
+      splitLine: {
+        show: false,
+        lineStyle: {
+          color: ["#e6e6e6"],
+        },
+      },
+      splitArea: {
+        show: false,
+        areaStyle: {
+          color: ["rgba(250,250,250,0.05)", "rgba(200,200,200,0.02)"],
+        },
+      },
+    },
+    logAxis: {
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: "#666666",
+        },
+      },
+      axisTick: {
+        show: false,
+        lineStyle: {
+          color: "#333",
+        },
+      },
+      axisLabel: {
+        show: true,
+        color: "#aaaaaa",
+      },
+      splitLine: {
+        show: false,
+        lineStyle: {
+          color: ["#e6e6e6"],
+        },
+      },
+      splitArea: {
+        show: false,
+        areaStyle: {
+          color: ["rgba(250,250,250,0.05)", "rgba(200,200,200,0.02)"],
+        },
+      },
+    },
+    timeAxis: {
+      axisLine: {
+        show: true,
+        lineStyle: {
+          color: "#666666",
+        },
+      },
+      axisTick: {
+        show: false,
+        lineStyle: {
+          color: "#333",
+        },
+      },
+      axisLabel: {
+        show: true,
+        color: "#aaaaaa",
+      },
+      splitLine: {
+        show: false,
+        lineStyle: {
+          color: ["#e6e6e6"],
+        },
+      },
+      splitArea: {
+        show: false,
+        areaStyle: {
+          color: ["rgba(250,250,250,0.05)", "rgba(200,200,200,0.02)"],
+        },
+      },
+    },
+    toolbox: {
+      iconStyle: {
+        borderColor: "#999999",
+      },
+      emphasis: {
+        iconStyle: {
+          borderColor: "#666666",
+        },
+      },
+    },
+    legend: {
+      textStyle: {
+        color: "#999999",
+      },
+    },
+    tooltip: {
+      axisPointer: {
+        lineStyle: {
+          color: "#cccccc",
+          width: 1,
+        },
+        crossStyle: {
+          color: "#cccccc",
+          width: 1,
+        },
+      },
+    },
+    timeline: {
+      lineStyle: {
+        color: "#87f7cf",
+        width: 1,
+      },
+      itemStyle: {
+        color: "#87f7cf",
+        borderWidth: 1,
+      },
+      controlStyle: {
+        color: "#87f7cf",
+        borderColor: "#87f7cf",
+        borderWidth: 0.5,
+      },
+      checkpointStyle: {
+        color: "#fc97af",
+        borderColor: "#fc97af",
+      },
+      label: {
+        color: "#87f7cf",
+      },
+      emphasis: {
+        itemStyle: {
+          color: "#f7f494",
+        },
+        controlStyle: {
+          color: "#87f7cf",
+          borderColor: "#87f7cf",
+          borderWidth: 0.5,
+        },
+        label: {
+          color: "#87f7cf",
+        },
+      },
+    },
+    visualMap: {
+      color: ["#fc97af", "#87f7cf"],
+    },
+    dataZoom: {
+      backgroundColor: "rgba(255,255,255,0)",
+      dataBackgroundColor: "rgba(114,204,255,1)",
+      fillerColor: "rgba(114,204,255,0.2)",
+      handleColor: "#72ccff",
+      handleSize: "100%",
+      textStyle: {
+        color: "#333333",
+      },
+    },
+    markPoint: {
+      label: {
+        color: "#293441",
+      },
+      emphasis: {
+        label: {
+          color: "#293441",
+        },
+      },
+    },
+  };
 };
