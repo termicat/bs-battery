@@ -344,7 +344,7 @@ export const scheme: Scheme = {
   type: "object",
   properties: [
     {
-      field: "selectTable",
+      field: "tableId",
       label: "数据源",
       type: "select",
       default: "field2",
@@ -380,7 +380,7 @@ export const scheme: Scheme = {
     //   // tip: "这是一个标题",
     // },
     {
-      field: "selectView",
+      field: "dataRange",
       label: "数据范围",
       type: "select",
       default: "field2",
@@ -653,7 +653,7 @@ export function createScheme(p: CreateSchemeProps) {
     type: "object",
     properties: [
       {
-        field: "selectTable",
+        field: "tableId",
         label: "数据源",
         type: "select",
         // default: "field2",
@@ -668,7 +668,7 @@ export function createScheme(p: CreateSchemeProps) {
       //   // tip: "这是一个标题",
       // },
       {
-        field: "selectView",
+        field: "dataRange",
         label: "数据范围",
         type: "select",
         // default: "field2",
@@ -824,8 +824,8 @@ export function updateScheme(
 
 // fieldCategory
 export const fieldCategory = {
-  selectTable: "table1",
-  selectView: "view1",
+  tableId: "table1",
+  dataRange: "view1",
   selectTheme: "p1",
   chartOptions: ["showLegend"],
   dataOptions: {
@@ -856,8 +856,8 @@ export const fieldCategory = {
 
 // recordCategory
 // export const recordCategory = {
-//   selectTable: "table1",
-//   selectView: "view1",
+//   tableId: "table1",
+//   dataRange: "view1",
 //   selectTheme: "p2",
 //   chartOptions: {
 //     showLegend: true,

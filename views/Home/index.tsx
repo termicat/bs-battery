@@ -12,6 +12,7 @@ import {
   getSchemeByPath,
   setSchemeByPath,
 } from "@/components/config-ui/ConfigRegister";
+import { SourceType } from "@lark-base-open/js-sdk";
 
 const bsSdk = new BsSdk({});
 
@@ -34,7 +35,7 @@ export default function App() {
       console.log("getTableList", tables);
       const o1 = tranBIData(tables);
       const newScheme = createScheme("fieldCategory");
-      setSchemeByPath(newScheme, "selectTable", {
+      setSchemeByPath(newScheme, "tableId", {
         default: o1[0].value,
         options: o1,
       });
@@ -45,34 +46,44 @@ export default function App() {
 
   useEffect(() => {
     async function updateViews() {
-      const { selectTable } = value.root;
-      if (selectTable) {
-        const table = selectTable;
-        console.log("selectTable", table);
+      const { tableId } = value.root;
+      if (tableId) {
+        const table = tableId;
+        console.log("tableId", table);
 
         const views = await bsSdk.getViewList(table);
 
-        const defaultViewId = views[0].id;
+        const options = tranBIData(views).map((view) => {
+          return {
+            value: {
+              viewId: view.value,
+              viewName: view.label,
+              type: SourceType.VIEW,
+            },
+            label: view.label,
+          };
+        });
+        const defaultView = options[0].value;
 
         // console.log("getViewList", views);
-        setSchemeByPath(scheme, "selectView", {
-          options: tranBIData(views),
-          default: defaultViewId,
+        setSchemeByPath(scheme, "dataRange", {
+          options,
+          default: defaultView,
         });
 
-        setValue({ root: { ...value.root, selectView: defaultViewId } });
+        setValue({ root: { ...value.root, dataRange: defaultView } });
         setScheme({ ...scheme });
       }
     }
     updateViews();
-  }, [value?.root?.selectTable]);
+  }, [value?.root?.tableId]);
 
   useEffect(() => {
     async function updateFields() {
-      console.log("updateFields", value.root.selectView);
+      console.log("updateFields", value.root.dataRange);
       const fields = await bsSdk.getFiledListByViewId(
-        value.root.selectTable,
-        value.root.selectView
+        value.root.tableId,
+        value.root.dataRange
       );
       console.log("getFieldList", fields);
 
@@ -136,7 +147,7 @@ export default function App() {
       setScheme({ ...scheme });
     }
     updateFields();
-  }, [value?.root?.selectView, value?.root?.mapType]);
+  }, [value?.root?.dataRange, value?.root?.mapType]);
 
   useEffect(() => {
     setScheme((oldScheme) => {
@@ -178,7 +189,17 @@ export default function App() {
               setValue({ ...target });
             }}
           ></ConfigUI>
+          <Button
+            style={{ marginTop: 20, float: "right" }}
+            type="primary"
+            onClick={() => {
+              bsSdk.saveConfig(value.root);
+            }}
+          >
+            创建
+          </Button>
         </div>
+
         <pre
           style={{
             width: 340,

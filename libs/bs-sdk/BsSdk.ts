@@ -59,6 +59,11 @@ export class BsSdk {
     }
   }
 
+  saveConfig(root: any) {
+    console.log("saveConfig", root);
+    this.bitable.dashboard.saveConfig(root);
+  }
+
   async getRecordIds(table?: ITable) {
     if (!table) table = await this.getActiveTable();
     return await table.getRecordIdList();

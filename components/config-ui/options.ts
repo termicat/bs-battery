@@ -538,62 +538,16 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
     type: "object",
     properties: [
       {
-        field: "selectTable",
+        field: "tableId",
         label: "数据源",
         type: "select",
-        // default: "field2",
-        // options: [
-        //   {
-        //     label: "字段1",
-        //     value: "field1",
-        //   },
-        //   {
-        //     label: "字段2",
-        //     value: "field2",
-        //   },
-        //   {
-        //     label: "字段3",
-        //     value: "field3",
-        //   },
-        //   {
-        //     label: "字段4",
-        //     value: "field4",
-        //   },
-        //   {
-        //     label: "字段5",
-        //     value: "field5",
-        //   },
-        // ],
         options: [],
         // tip: "这是一个标题",
       },
       {
-        field: "selectView",
+        field: "dataRange",
         label: "数据范围",
         type: "select",
-        // default: "field2",
-        // options: [
-        //   {
-        //     label: "字段1",
-        //     value: "field1",
-        //   },
-        //   {
-        //     label: "字段2",
-        //     value: "field2",
-        //   },
-        //   {
-        //     label: "字段3",
-        //     value: "field3",
-        //   },
-        //   {
-        //     label: "字段4",
-        //     value: "field4",
-        //   },
-        //   {
-        //     label: "字段5",
-        //     value: "field5",
-        //   },
-        // ],
         options: [],
         // tip: "这是一个标题",
       },
@@ -648,8 +602,8 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
 };
 
 export const example = {
-  selectTable: "table1",
-  selectView: "view1",
+  tableId: "table1",
+  dataRange: "view1",
   selectTheme: "p1",
   chartOptions: ["showLegend"],
   dataOptions: {
