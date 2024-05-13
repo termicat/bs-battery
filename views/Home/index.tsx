@@ -83,7 +83,7 @@ export default function App() {
       console.log("updateFields", value.root.dataRange);
       const fields = await bsSdk.getFiledListByViewId(
         value.root.tableId,
-        value.root.dataRange
+        value.root.dataRange.viewId
       );
       console.log("getFieldList", fields);
 
@@ -147,7 +147,7 @@ export default function App() {
       setScheme({ ...scheme });
     }
     updateFields();
-  }, [value?.root?.dataRange, value?.root?.mapType]);
+  }, [value?.root?.dataRange?.viewId, value?.root?.mapType]);
 
   useEffect(() => {
     setScheme((oldScheme) => {
