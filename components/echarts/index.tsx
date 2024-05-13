@@ -1,6 +1,9 @@
 import * as echarts from "echarts";
 import { useEffect, useRef } from "react";
 import { withResizeDetector } from "react-resize-detector";
+import bcDark from "./themes/bc-dark";
+
+echarts.registerTheme("bc-dark", bcDark);
 
 export default withResizeDetector(function ECharts(props: any) {
   const { option, width } = props;
@@ -8,8 +11,10 @@ export default withResizeDetector(function ECharts(props: any) {
   const echartsInstance = useRef<echarts.ECharts>();
   useEffect(() => {
     // 接听元素宽度变化
-    const chart = echarts.init(chartRef.current!);
-    console.log(chart);
+    const chart = echarts.init(
+      chartRef.current!,
+      document.body.getAttribute("theme-mode") === "dark" ? "dark" : ""
+    );
     chart.setOption(option);
     if (props.refInstance) props.refInstance.current = chart;
     echartsInstance.current = chart;
