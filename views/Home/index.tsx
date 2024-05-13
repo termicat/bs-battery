@@ -27,11 +27,11 @@ let btId = "";
 let btUrl = "";
 let glang = "zh";
 
-function createEChartsOption(data: any[][], config: any) {
-  const type = config.mapType;
+function createEChartsOption(data: any[][], configRoot: any) {
+  const type = configRoot.mapType;
   if (type === "fieldCategory") {
     const echartsOption = {
-      legend: config.chartOptions.includes("showLegend")
+      legend: configRoot.chartOptions.includes("showLegend")
         ? {
             data: data[0]?.slice(1)?.map?.((item) => item.text),
           }
@@ -63,7 +63,7 @@ function createEChartsOption(data: any[][], config: any) {
     return echartsOption;
   } else {
     const echartsOption = {
-      legend: config.chartOptions.includes("showLegend")
+      legend: configRoot.chartOptions.includes("showLegend")
         ? {
             data: data.slice(1).map((item) => item[0].text),
           }
