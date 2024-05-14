@@ -1,0 +1,7 @@
+{
+  "name": "@bc/helper",
+  "version": "1.0.0",
+  "description": "SDK for the BS API",
+  "module": "./index.ts",
+  "types": "./index.ts"
+}

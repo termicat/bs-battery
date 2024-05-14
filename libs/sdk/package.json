@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "name": "@bc/sdk",
+  "version": "1.0.0",
+  "description": "SDK for the BS API",
+  "module": "./index.ts",
+  "types": "./index.ts",
+  "dependencies": {
+    "@lark-base-open/js-sdk": "0.4.0-alpha.1"
+  }
+}
