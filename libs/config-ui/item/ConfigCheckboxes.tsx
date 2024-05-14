@@ -32,7 +32,13 @@ export default function ConfigCheckboxes(props: ConfigCheckboxesProps) {
       </div>
 
       <CheckboxGroup
-        style={{ marginTop: "8px" }}
+        style={{
+          marginTop: "8px",
+          width: "100%",
+          display: "grid",
+          gridTemplateColumns: "repeat(auto-fill, minmax(110px, 1fr))",
+          justifyContent: "space-between",
+        }}
         options={options}
         direction="horizontal"
         aria-label={tip}
