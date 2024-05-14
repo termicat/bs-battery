@@ -1,13 +1,14 @@
 export function createEChartsOption(data: any[][], configRoot: any) {
+  const common = {
+    theme: configRoot.selectTheme,
+  };
   const type = configRoot.mapType;
   if (type === "fieldCategory") {
     const echartsOption = {
-      theme: configRoot.selectTheme,
-      legend: configRoot.chartOptions.includes("showLegend")
-        ? {
-            data: data[0]?.slice(1)?.map?.((item) => item.text),
-          }
-        : undefined,
+      ...common,
+      legend: when(configRoot.chartOptions.includes("showLegend"), {
+        data: data[0]?.slice(1)?.map?.((item) => item.text),
+      }),
       radar: {
         // shape: 'circle',
         indicator: data.slice(1).map((item) => {
@@ -25,6 +26,9 @@ export function createEChartsOption(data: any[][], configRoot: any) {
             return {
               value: data.slice(1).map((item) => item[index + 1].value),
               name: item.text,
+              label: when(configRoot.chartOptions.includes("showDataLabel"), {
+                show: true,
+              }),
             };
           }),
         },
@@ -35,12 +39,10 @@ export function createEChartsOption(data: any[][], configRoot: any) {
     return echartsOption;
   } else {
     const echartsOption = {
-      theme: configRoot.selectTheme,
-      legend: configRoot.chartOptions.includes("showLegend")
-        ? {
-            data: data.slice(1).map((item) => item[0].text),
-          }
-        : undefined,
+      ...common,
+      legend: when(configRoot.chartOptions.includes("showLegend"), {
+        data: data.slice(1).map((item) => item[0].text),
+      }),
       radar: {
         // shape: 'circle',
         indicator: data[0]?.slice(1)?.map((item) => {
@@ -58,6 +60,9 @@ export function createEChartsOption(data: any[][], configRoot: any) {
             return {
               value: item.slice(1).map((item) => item.value),
               name: item[0].text,
+              label: when(configRoot.chartOptions.includes("showDataLabel"), {
+                show: true,
+              }),
             };
           }),
         },
@@ -67,4 +72,8 @@ export function createEChartsOption(data: any[][], configRoot: any) {
 
     return echartsOption;
   }
+}
+
+function when(cond: any, value: any) {
+  return cond ? value : undefined;
 }
