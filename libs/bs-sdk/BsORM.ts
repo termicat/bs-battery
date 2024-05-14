@@ -12,17 +12,17 @@ export class BsORM {
   public activeModel: string | undefined;
   public initEmitter = new Emitter();
   constructor(public sdk: BsSdk) {
-    sdk.getTableList().then(async (tables) => {
-      await Promise.all(
-        tables.map(async (table) => {
-          const fields = await sdk.getFieldList(table);
-          this.models.set(table.id, { table, fields: fields });
-        })
-      );
-      const activeTable = await sdk.getActiveTable();
-      this.activeModel = activeTable?.id;
-      this.initEmitter.emitLifeCycle();
-    });
+    // sdk.getTableList().then(async (tables) => {
+    //   await Promise.all(
+    //     tables.map(async (table) => {
+    //       const fields = await sdk.getFieldList(table);
+    //       this.models.set(table.id, { table, fields: fields });
+    //     })
+    //   );
+    //   const activeTable = await sdk.getActiveTable();
+    //   this.activeModel = activeTable?.id;
+    //   this.initEmitter.emitLifeCycle();
+    // });
 
     sdk.emSelectionChange.on(async (event) => {
       this.activeModel = event.data.tableId as string;
