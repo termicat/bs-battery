@@ -12,6 +12,12 @@ export class Emitter<CB extends (...args: any[]) => void> {
   emitSync(...args: ParamsType<CB>) {
     const p: void[] = [];
     this.events.forEach((cb) => {
+      const lastCall = (cb as any).lastCall ?? 0;
+      const interval = (cb as any).interval;
+      if (Date.now() - lastCall < interval) {
+        return;
+      }
+      (cb as any).lastCall = Date.now();
       p.push(cb(...args));
     });
     return p;
@@ -38,7 +44,8 @@ export class Emitter<CB extends (...args: any[]) => void> {
     });
   }
 
-  on(cb: CB) {
+  on(cb: CB, interval = 0) {
+    (cb as any).interval = interval;
     if (this.lastEmitArgs) {
       cb(...this.lastEmitArgs);
     }

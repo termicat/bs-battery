@@ -10,12 +10,15 @@ import {
   type IView,
   type IConfig,
   type IDataCondition,
+  type IData,
 } from "@lark-base-open/js-sdk";
 import { format } from "date-fns";
 import { Emitter } from "./Emitter";
 import { transDisplayRecord } from "./shared";
 
 export type SelectionChangeEmitter = (event: IEventCbCtx<Selection>) => any;
+export type DashDataChangeEmitter = (event: IEventCbCtx<IData>) => any;
+export type DashConfigChangeEmitter = (event: IEventCbCtx<IConfig>) => any;
 export type InitEmitter = (sdk: BsSdk) => any;
 
 export interface BIField {
@@ -43,10 +46,14 @@ export class BsSdk {
   public activeTable: ITable | undefined;
   // public readonly initEmitter = new Emitter<InitEmitter>();
   public readonly emSelectionChange = new Emitter<SelectionChangeEmitter>();
+  public readonly emDashDataChange = new Emitter<DashDataChangeEmitter>();
+  public readonly emDashConfigChange = new Emitter<DashConfigChangeEmitter>();
 
   constructor({
     onSelectionChange = false,
     immediatelySelectionChange = true,
+    onDashDataChange = false,
+    onDashConfigChange = false,
   } = {}) {
     if (onSelectionChange) {
       this.base.onSelectionChange(async (event) => {
@@ -57,6 +64,17 @@ export class BsSdk {
     if (immediatelySelectionChange && onSelectionChange) {
       this.getSelection().then((selection) => {
         this.emSelectionChange.emitSync({ data: selection });
+      });
+    }
+
+    if (onDashDataChange) {
+      this.bitable.dashboard.onDataChange((event) => {
+        this.emDashDataChange.emitLifeCycle(event);
+      });
+    }
+    if (onDashConfigChange) {
+      this.bitable.dashboard.onConfigChange((event) => {
+        this.emDashConfigChange.emitLifeCycle(event);
       });
     }
   }

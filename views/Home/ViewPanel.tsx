@@ -8,15 +8,22 @@ type ViewPanelProps = {};
 export default function ViewPanel(props: ViewPanelProps) {
   const [echartsOption, setEchartsOption] = useState({} as any);
 
+  async function updateEcharts(e?: any) {
+    const config = await bsSdk.getConfig();
+    const data = await bsSdk.getData();
+    console.log("getPreviewData", data, e);
+    setEchartsOption(createEChartsOption(data, config.customConfig));
+    bsSdk.triggerDashRendered();
+  }
+
   useEffect(() => {
-    async function updateEcharts() {
-      const config = await bsSdk.getConfig();
-      const data = await bsSdk.getData();
-      console.log("getPreviewData", data);
-      setEchartsOption(createEChartsOption(data, config.customConfig));
-      bsSdk.triggerDashRendered();
-    }
     updateEcharts();
+    const offs: (() => void)[] = [];
+    offs.push(bsSdk.emDashConfigChange.on(updateEcharts));
+    offs.push(bsSdk.emDashDataChange.on(updateEcharts));
+    return () => {
+      offs.forEach((off) => off());
+    };
   }, []);
 
   return (
