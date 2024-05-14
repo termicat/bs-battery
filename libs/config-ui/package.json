@@ -5,11 +5,6 @@
   "description": "SDK for the BS API",
   "main": "index.ts",
   "module": "index.ts",
-  "exports": {
-    ".": {
-      "import": "./index.ts"
-    }
-  },
   "dependencies": {
     "@bc/config": "workspace:^",
     "@douyinfe/semi-icons": "^2.58.0",
