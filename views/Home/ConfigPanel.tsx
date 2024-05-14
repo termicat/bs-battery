@@ -214,28 +214,55 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   }, [configValue?.root?.mapType]);
 
   useEffect(() => {
-    const fieldId = configValue?.root?.mapOptions?.cate;
-    if (fieldTypeMapRef.current[fieldId] === FieldType.MultiSelect) {
-      const node = getSchemeByPath(scheme, "mapOptions");
+    if (configValue.root.mapType === "fieldCategory") {
+      const fieldId = configValue?.root?.mapOptions?.series;
+      if (fieldTypeMapRef.current[fieldId] === FieldType.MultiSelect) {
+        const node = getSchemeByPath(scheme, "mapOptions");
 
-      node.properties[2] = {
-        type: "checkbox",
-        field: "checkSplit",
-        label: "多项式拆分统计",
-        default: false,
-        portal: "#cate-bottom",
-      };
-      node.properties.length = 3;
+        node.properties[2] = {
+          type: "checkbox",
+          field: "checkSplit",
+          label: "多项式拆分统计",
+          default: false,
+          portal: "#series-bottom",
+        };
+        node.properties.length = 3;
 
-      setScheme({ ...scheme });
-    } else {
-      const node = getSchemeByPath(scheme, "mapOptions");
-      if (node) {
-        node.properties.length = 2;
         setScheme({ ...scheme });
+      } else {
+        const node = getSchemeByPath(scheme, "mapOptions");
+        if (node) {
+          node.properties.length = 2;
+          setScheme({ ...scheme });
+        }
+      }
+    } else {
+      const fieldId = configValue?.root?.mapOptions?.cate;
+      if (fieldTypeMapRef.current[fieldId] === FieldType.MultiSelect) {
+        const node = getSchemeByPath(scheme, "mapOptions");
+
+        node.properties[2] = {
+          type: "checkbox",
+          field: "checkSplit",
+          label: "多项式拆分统计",
+          default: false,
+          portal: "#cate-bottom",
+        };
+        node.properties.length = 3;
+
+        setScheme({ ...scheme });
+      } else {
+        const node = getSchemeByPath(scheme, "mapOptions");
+        if (node) {
+          node.properties.length = 2;
+          setScheme({ ...scheme });
+        }
       }
     }
-  }, [configValue?.root?.mapOptions?.cate]);
+  }, [
+    configValue?.root?.mapOptions?.cate,
+    configValue?.root?.mapOptions?.series,
+  ]);
 
   const getConfig = () => {
     if (configValue.root.mapType === "fieldCategory") {
