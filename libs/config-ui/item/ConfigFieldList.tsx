@@ -72,7 +72,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
   // }, [defaultValue, field, onChange, scopeValue, target]);
 
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "16px" }}>
       <div
         style={{
           fontSize: "14px",

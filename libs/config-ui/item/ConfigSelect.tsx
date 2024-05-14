@@ -54,7 +54,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
   };
 
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "16px" }}>
       <div
         style={{
           fontSize: "14px",
@@ -71,7 +71,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
         <Select
           prefix={<IconHash style={{ color: "#666" }}></IconHash>}
           placeholder="请选择"
-          style={{ width: "100%", marginTop: "5px" }}
+          style={{ width: "100%", marginTop: "8px" }}
           onChange={(v) => {
             onChange(target, field, v);
           }}
@@ -91,7 +91,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
       <If condition={!options?.length}>
         <Select
           placeholder="暂未选项"
-          style={{ width: "100%", marginTop: "5px" }}
+          style={{ width: "100%", marginTop: "8px" }}
         ></Select>
       </If>
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>

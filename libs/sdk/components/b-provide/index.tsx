@@ -41,7 +41,7 @@ export default function BProvide(props: BProvideProps) {
             }}
           >
             <Spin size="large"></Spin>
-            <div style={{ fontSize: "14px", color: "#333", marginTop: "5px" }}>
+            <div style={{ fontSize: "14px", color: "#333", marginTop: "8px" }}>
               {props.loadingText || "loading..."}
             </div>
           </div>

@@ -14,12 +14,12 @@ export default function ConfigString(props: any) {
   } = props;
 
   return (
-    <div style={{ padding: "5px", paddingTop: "10px" }}>
+    <div style={{ padding: "5px", paddingTop: "16px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
       <Select
-        style={{ marginTop: "5px", width: "100%" }}
+        style={{ marginTop: "8px", width: "100%" }}
         defaultValue={defaultValue}
         optionList={options}
         value={value}

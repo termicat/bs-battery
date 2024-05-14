@@ -60,14 +60,14 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
   };
 
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "16px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
 
       <Select
         placeholder="请选择主题色"
-        style={{ width: "100%", marginTop: "5px" }}
+        style={{ width: "100%", marginTop: "8px" }}
         onChange={(v) => {
           onChange(target, field, v);
         }}

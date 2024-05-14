@@ -20,12 +20,12 @@ export default function ConfigString(props: ConfigStringProps) {
   const ref = useRef<any>();
 
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "16px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
       <Input
-        style={{ marginTop: "5px" }}
+        style={{ marginTop: "8px" }}
         ref={ref}
         defaultValue={defaultValue}
         value={value}

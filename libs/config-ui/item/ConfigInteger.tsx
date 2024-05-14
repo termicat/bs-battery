@@ -14,12 +14,12 @@ export default function ConfigInteger(props: any) {
   const ref = useRef<any>();
 
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "16px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
       <InputNumber
-        style={{ marginTop: "5px", width: "100%" }}
+        style={{ marginTop: "8px", width: "100%" }}
         ref={ref}
         defaultValue={defaultValue}
         value={value}

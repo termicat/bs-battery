@@ -26,13 +26,13 @@ export default function ConfigCheckboxes(props: ConfigCheckboxesProps) {
   const ref = useRef<any>();
 
   return (
-    <div style={{ paddingTop: "10px" }}>
+    <div style={{ paddingTop: "16px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
 
       <CheckboxGroup
-        style={{ marginTop: "5px" }}
+        style={{ marginTop: "8px" }}
         options={options}
         direction="horizontal"
         aria-label={tip}
