@@ -30,7 +30,8 @@
     "react-resize-detector": "^9.1.1",
     "reset-css": "^5.0.2",
     "styled-components": "^6.1.11",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "nanoid": "^5.0.7"
   },
   "devDependencies": {
     "@jest/globals": "^29.7.0",
