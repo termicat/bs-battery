@@ -3,7 +3,8 @@ import { ParamsType } from "./typestools";
 export class Emitter<CB extends (...args: any[]) => void> {
   private events = new Set<CB>();
   private lastEmitArgs: ParamsType<CB> | undefined;
-  constructor() {}
+  private timer: any;
+  constructor(private debounce?: number | undefined) {}
 
   size() {
     return this.events.size;
@@ -35,12 +36,18 @@ export class Emitter<CB extends (...args: any[]) => void> {
   }
 
   emit(...args: ParamsType<CB>) {
-    return Promise.resolve().then(() => {
-      try {
-        this.emitSync(...args);
-      } catch (error) {
-        return Promise.reject(error);
+    return new Promise<void>((resolve) => {
+      if (this.timer) {
+        clearTimeout(this.timer);
       }
+      this.timer = setTimeout(() => {
+        try {
+          this.emitSync(...args);
+          resolve();
+        } catch (error) {
+          return Promise.reject(error);
+        }
+      }, this.debounce);
     });
   }
 

@@ -46,8 +46,10 @@ export class BsSdk {
   public activeTable: ITable | undefined;
   // public readonly initEmitter = new Emitter<InitEmitter>();
   public readonly emSelectionChange = new Emitter<SelectionChangeEmitter>();
-  public readonly emDashDataChange = new Emitter<DashDataChangeEmitter>();
-  public readonly emDashConfigChange = new Emitter<DashConfigChangeEmitter>();
+  public readonly emDashDataChange = new Emitter<DashDataChangeEmitter>(1500);
+  public readonly emDashConfigChange = new Emitter<DashConfigChangeEmitter>(
+    1500
+  );
 
   constructor({
     onSelectionChange = false,
@@ -69,12 +71,12 @@ export class BsSdk {
 
     if (onDashDataChange) {
       this.bitable.dashboard.onDataChange((event) => {
-        this.emDashDataChange.emitLifeCycle(event);
+        this.emDashDataChange.emit(event);
       });
     }
     if (onDashConfigChange) {
       this.bitable.dashboard.onConfigChange((event) => {
-        this.emDashConfigChange.emitLifeCycle(event);
+        this.emDashConfigChange.emit(event);
       });
     }
   }
