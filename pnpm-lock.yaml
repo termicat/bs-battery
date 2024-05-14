@@ -59,6 +59,9 @@ importers:
       '@bc/helper':
         specifier: workspace:^
         version: link:../../libs/helper
+      '@bc/i18n':
+        specifier: workspace:^
+        version: link:../../libs/i18n
       '@bc/sdk':
         specifier: workspace:^
         version: link:../../libs/sdk
@@ -199,6 +202,15 @@ importers:
         version: 9.1.1(react-dom@18.3.1)(react@18.3.1)
 
   libs/helper: {}
+
+  libs/i18n:
+    dependencies:
+      i18next:
+        specifier: ^23.11.4
+        version: 23.11.4
+      react-i18next:
+        specifier: ^14.1.1
+        version: 14.1.1(i18next@23.11.4)(react-dom@18.3.1)(react@18.3.1)
 
   libs/sdk:
     dependencies:

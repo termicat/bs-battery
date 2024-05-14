@@ -13,6 +13,7 @@
     "@bc/config-ui": "workspace:^",
     "@bc/echarts": "workspace:^",
     "@bc/helper": "workspace:^",
+    "@bc/i18n": "workspace:^",
     "@bc/sdk": "workspace:^",
     "@douyinfe/semi-foundation": "^2.58.0",
     "@douyinfe/semi-icons": "^2.58.0",
