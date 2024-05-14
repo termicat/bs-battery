@@ -12,6 +12,7 @@ import {
 } from "@/components/config-ui/ConfigRegister";
 import {
   DATA_SOURCE_SORT_TYPE,
+  FieldType,
   GroupMode,
   ORDER,
   SourceType,
@@ -126,7 +127,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       if (configValue?.root?.mapType === "fieldCategory") {
         setSchemeByPath(scheme, "mapOptions.cates", {
           options: {
-            list: fieldsOptions,
+            list: fieldsOptions.filter(
+              (field) => field.type === FieldType.Number
+            ),
           },
         });
         setSchemeByPath(scheme, "mapOptions.series", {
@@ -147,7 +150,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         });
         setSchemeByPath(scheme, "mapOptions.series", {
           options: {
-            list: fieldsOptions,
+            list: fieldsOptions.filter(
+              (item) => item.type === FieldType.Number
+            ),
             itemSelectOptions: [
               {
                 label: "最大值",
@@ -298,9 +303,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             background: "#fff",
           }}
         >
-          <Button style={{ width: 80, marginRight: 10 }} type="tertiary">
+          {/* <Button style={{ width: 80, marginRight: 10 }} type="tertiary">
             取消
-          </Button>
+          </Button> */}
           <Button
             type="primary"
             theme="solid"

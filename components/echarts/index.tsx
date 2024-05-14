@@ -9,7 +9,7 @@ export default withResizeDetector(function ECharts(props: any) {
   const echartsInstance = useRef<echarts.ECharts>();
   useEffect(() => {
     // 接听元素宽度变化
-    console.log("theme", bcDark(option.theme));
+    console.log("theme", bcDark(option.theme), option.theme);
 
     const chart = echarts.init(chartRef.current!, bcDark(option.theme));
     chart.setOption(option);

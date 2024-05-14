@@ -35,6 +35,7 @@ export function createEChartsOption(data: any[][], configRoot: any) {
     return echartsOption;
   } else {
     const echartsOption = {
+      theme: configRoot.selectTheme,
       legend: configRoot.chartOptions.includes("showLegend")
         ? {
             data: data.slice(1).map((item) => item[0].text),

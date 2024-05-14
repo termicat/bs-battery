@@ -3,6 +3,7 @@ export function tranBIData(tables: any[]) {
     return {
       value: table.id,
       label: table.name,
+      type: table.type,
     };
   });
 }
