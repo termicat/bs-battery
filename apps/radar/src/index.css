@@ -486,3 +486,11 @@ body {
   --ccm-chart-I800: #bbc0f6;
   --ccm-chart-I900: #d2d5fd;
 }
+
+.semi-radio-addon-buttonRadio {
+  width: 100%;
+}
+
+.semi-radio-content {
+  width: 100%;
+}

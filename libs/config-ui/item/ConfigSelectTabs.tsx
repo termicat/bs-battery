@@ -1,4 +1,4 @@
-import { Col, Input, Select } from "@douyinfe/semi-ui";
+import { Col, Input, Radio, RadioGroup, Select } from "@douyinfe/semi-ui";
 import { useEffect, useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import ConfigObject from "./ConfigObject";
@@ -7,8 +7,7 @@ import { getDefaultValue, type NodeTypes } from "../ConfigRegister";
 
 export type ConfigSelectTabsOptions = {
   label: string;
-  key: string;
-  value: Scheme["properties"];
+  value: string;
 }[];
 
 export type ConfigSelectTabsProps = ConfigItemProps<
@@ -28,48 +27,38 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
     options,
   } = props;
 
-  const subProperties =
-    options?.find?.((option) => option.key === value?.key)?.value || [];
-
   return (
     <div style={{ paddingTop: "16px" }}>
       <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
         {label}
       </div>
-      <Select
-        value={value?.key || defaultKey}
-        style={{ marginTop: 5, width: "100%" }}
-        optionList={options?.map((option) => ({
-          label: option.label,
-          value: option.key,
-        }))}
-        onChange={(v) => {
-          const subTarget = Object.assign({}, target[field]);
-          subTarget.key = v;
-          const nextProperties =
-            options?.find((option) => option.key === v)?.value || [];
-          subTarget.value = getDefaultValue({
-            type: "object",
-            field: "",
-            properties: nextProperties,
-          });
-          onChange(target, field, subTarget);
+      <RadioGroup
+        onChange={(e) => {
+          target[field] = e.target.value;
+          onChange(target, field, e.target.value);
         }}
-      ></Select>
+        value={value}
+        type="button"
+        style={
+          {
+            display: "flex",
+            justifyContent: "space-around",
+            marginTop: 5,
+            width: "100%",
+            "--semi-color-bg-3": "#1456F01A",
+          } as any
+        }
+      >
+        {options?.map((item) => {
+          return (
+            <Radio value={item.value} key={item.value} style={{ flex: 1 }}>
+              {item.label}
+            </Radio>
+          );
+        })}
+      </RadioGroup>
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
-      </div>
-      <div style={{ marginTop: "0px" }}>
-        <ConfigObject
-          field={""}
-          value={value?.value}
-          target={value?.value}
-          onChange={(subTarget: any, subField: string, subVal: any) => {
-            value.value[subField] = subVal;
-            onChange(target, field, value);
-          }}
-          properties={subProperties}
-        ></ConfigObject>
       </div>
     </div>
   );

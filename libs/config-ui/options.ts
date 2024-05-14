@@ -4,7 +4,8 @@ import { theme } from "@bc/config";
 export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
   const mapOptions = [
     {
-      label: "以字段为类别，以记录聚合为系列",
+      // label: "以字段为类别，以记录聚合为系列",
+      label: "字段",
       key: "fieldCategory",
       value: [
         {
@@ -105,7 +106,8 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
       ],
     },
     {
-      label: "以记录聚合为类别，以字段为系列",
+      // label: "以记录聚合为类别，以字段为系列",
+      label: "聚合记录",
       key: "recordCategory",
       value: [
         {
@@ -247,7 +249,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
       {
         label: "数据映射",
         field: "mapType",
-        type: "select",
+        type: "select-tabs",
         options: mapOptions.map((item) => ({
           label: item.label,
           value: item.key,
