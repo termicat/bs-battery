@@ -30,7 +30,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
   const renderSelectedItem = (p: any) => {
     const colors = options?.find((item) => item.value === p.value)?.label || [];
 
-    return <ThemeColors style={{ height: 15 }} items={colors}></ThemeColors>;
+    return <ThemeColors style={{ height: 16 }} items={colors}></ThemeColors>;
   };
 
   const renderOptionItem = (p: any) => {
@@ -50,7 +50,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
       >
         <ThemeColors
           style={{
-            height: 15,
+            height: 16,
             width: "100%",
           }}
           items={colors}
@@ -98,18 +98,20 @@ const ColorContainer = styled.div`
 `;
 
 const ColorItem = styled.div`
-  height: 100%;
-  width: 30px;
+  height: 16px;
+  width: 16px;
   border: 0;
   margin: 0;
   padding: 0;
+  margin-right: 4px;
+  border-radius: 4px;
 
-  &:first-child {
+  /* &:first-child {
     border-radius: 4px 0 0 4px;
   }
   &:last-child {
     border-radius: 0 4px 4px 0;
-  }
+  } */
 `;
 
 function ThemeColors(props: ThemeColorProps) {
