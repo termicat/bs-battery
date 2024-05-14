@@ -18,7 +18,8 @@ nextjs-portal {
 
 body[theme-mode="dark"] {
   color: var(--semi-color-text-1);
-  background-color: var(--semi-color-bg-1);
+  background: transparent !important;
+  background-image: none !important;
 }
 
 body {
