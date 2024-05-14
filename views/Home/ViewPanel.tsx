@@ -11,7 +11,7 @@ export default function ViewPanel(props: ViewPanelProps) {
   async function updateEcharts(e?: any) {
     const config = await bsSdk.getConfig();
     const data = await bsSdk.getData();
-    console.log("getPreviewData", data, e);
+    console.log("getPreviewData", config, data, e);
     setEchartsOption(createEChartsOption(data, config.customConfig));
     bsSdk.triggerDashRendered();
   }
