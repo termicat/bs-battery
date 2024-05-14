@@ -2,7 +2,7 @@ import { Col, Input, Select } from "@douyinfe/semi-ui";
 import { useEffect, useRef, useState } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import { IconChevronDown } from "@douyinfe/semi-icons";
-import ReactDOM from "react-dom";
+import { mountPortal } from "../utils/mountPortal";
 
 export type ConfigDownSelectOptions = {
   label: string;
@@ -78,11 +78,4 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
       ></Select>
     )
   );
-}
-
-function mountPortal(portal: string | undefined, renderView: React.ReactNode) {
-  if (!portal) return renderView;
-  const target = document.querySelector(portal);
-  if (!target) return renderView;
-  return ReactDOM.createPortal(renderView, target);
 }
