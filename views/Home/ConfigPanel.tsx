@@ -1,6 +1,6 @@
 import { useTranslation } from "next-i18next";
 import ConfigUI from "@/components/config-ui";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Button } from "@douyinfe/semi-ui";
 import type { Scheme } from "@/components/config-ui/types";
 import { tranBIData } from "@/libs/helper/config-ui";
@@ -33,6 +33,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   });
   const [initd, setInitd] = useState(false);
   const [echartsOption, setEchartsOption] = useState({} as any);
+  const fieldTypeMapRef = useRef<{ [key: string]: FieldType }>({});
 
   useEffect(() => {
     async function updatePreview() {
@@ -124,6 +125,11 @@ export default function ConfigPanel(props: ConfigPanelProps) {
 
       const fieldsOptions = tranBIData(fields);
 
+      for (let i = 0; i < fieldsOptions.length; i++) {
+        const field = fieldsOptions[i];
+        fieldTypeMapRef.current[field.value] = field.type;
+      }
+
       if (configValue?.root?.mapType === "fieldCategory") {
         setSchemeByPath(scheme, "mapOptions.cates", {
           options: {
@@ -207,6 +213,30 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     });
   }, [configValue?.root?.mapType]);
 
+  useEffect(() => {
+    const fieldId = configValue?.root?.mapOptions?.cate;
+    if (fieldTypeMapRef.current[fieldId] === FieldType.MultiSelect) {
+      const node = getSchemeByPath(scheme, "mapOptions");
+
+      node.properties[2] = {
+        type: "checkbox",
+        field: "checkSplit",
+        label: "多项式拆分统计",
+        default: false,
+        portal: "#cate-bottom",
+      };
+      node.properties.length = 3;
+
+      setScheme({ ...scheme });
+    } else {
+      const node = getSchemeByPath(scheme, "mapOptions");
+      if (node) {
+        node.properties.length = 2;
+        setScheme({ ...scheme });
+      }
+    }
+  }, [configValue?.root?.mapOptions?.cate]);
+
   const getConfig = () => {
     if (configValue.root.mapType === "fieldCategory") {
       const config: IConfig = {
@@ -220,7 +250,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
                 order: ORDER.ASCENDING,
                 sortType: DATA_SOURCE_SORT_TYPE.VIEW,
               },
-              mode: GroupMode.ENUMERATED,
+              mode: configValue.root.mapOptions.checkSplit
+                ? GroupMode.ENUMERATED
+                : GroupMode.INTEGRATED,
             },
           ],
           series: configValue.root.mapOptions.cates.map((cate: any) => {
@@ -245,7 +277,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
                 order: ORDER.ASCENDING,
                 sortType: DATA_SOURCE_SORT_TYPE.VIEW,
               },
-              mode: GroupMode.ENUMERATED,
+              mode: configValue.root.mapOptions.checkSplit
+                ? GroupMode.ENUMERATED
+                : GroupMode.INTEGRATED,
             },
           ],
           series: configValue.root.mapOptions.series.map((series: any) => {

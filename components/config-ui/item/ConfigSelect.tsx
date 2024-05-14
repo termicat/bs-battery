@@ -97,6 +97,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
       <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
         {tip}
       </div>
+      <div id={field + "-bottom"}></div>
     </div>
   );
 }

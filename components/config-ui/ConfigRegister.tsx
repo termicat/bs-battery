@@ -23,6 +23,8 @@ import ConfigSelectField, {
 import type { Node, Scheme } from "./types";
 import type { ConfigDownSelectOptions } from "./item/ConfigDownSelect";
 import ConfigDownSelect from "./item/ConfigDownSelect";
+import type { ConfigCheckboxOptions } from "./item/ConfigCheckbox";
+import ConfigCheckbox from "./item/ConfigCheckbox";
 
 function reg<F>(fn: F) {
   return fn;
@@ -38,6 +40,7 @@ export const ConfigRegister = {
   "field-list": reg((p: ConfigFieldListOptions) => ConfigFieldList),
   select: reg((p: ConfigSelectOptions) => ConfigSelectField),
   "down-select": reg((p: ConfigDownSelectOptions) => ConfigDownSelect),
+  checkbox: reg((p: ConfigCheckboxOptions) => ConfigCheckbox),
 };
 
 export function getConfigRegister(type: NodeTypes): any {
