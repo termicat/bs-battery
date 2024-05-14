@@ -3,7 +3,6 @@ import {
   bitable,
   Selection,
   ITable,
-  IField,
   IGetRecordsParams,
   IRecord,
   IFieldMeta,
@@ -12,7 +11,6 @@ import {
   type IDataCondition,
   type IData,
 } from "@lark-base-open/js-sdk";
-import { format } from "date-fns";
 import { Emitter } from "./Emitter";
 
 export type SelectionChangeEmitter = (event: IEventCbCtx<Selection>) => any;
