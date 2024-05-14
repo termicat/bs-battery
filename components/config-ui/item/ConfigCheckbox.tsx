@@ -28,7 +28,7 @@ export default function ConfigCheckbox(props: ConfigCheckboxProps) {
     portal,
     <div style={{ marginTop: 5 }}>
       <Checkbox
-        value={value}
+        checked={value}
         onChange={(e) => {
           target[field] = e.target.checked;
           onChange(target, field, e.target.checked);

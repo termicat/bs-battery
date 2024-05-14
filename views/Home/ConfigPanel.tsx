@@ -38,6 +38,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   useEffect(() => {
     async function updatePreview() {
       const config = getConfig();
+      if (!config) {
+        return;
+      }
       const data = await bsSdk.getPreviewData(config.dataConditions as any);
       console.log("getPreviewData", data);
       setEchartsOption(createEChartsOption(data, config.customConfig));
@@ -265,6 +268,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   ]);
 
   const getConfig = () => {
+    if (!configValue.root.dataRange) {
+      return;
+    }
     if (configValue.root.mapType === "fieldCategory") {
       const config: IConfig = {
         dataConditions: {
@@ -292,7 +298,11 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         customConfig: configValue.root,
       };
       return config;
-    } else {
+    } else if (configValue.root.mapType === "recordCategory") {
+      if (!configValue.root.mapOptions.series) {
+        console.error("series is empty");
+        return;
+      }
       const config: IConfig = {
         dataConditions: {
           tableId: configValue.root.tableId,
@@ -373,6 +383,10 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             style={{ width: 80 }}
             onClick={() => {
               const config = getConfig();
+              if (!config) {
+                console.error("config is empty");
+                return;
+              }
               bsSdk.saveConfig(config).then((res) => {
                 console.log("setConfig", res);
               });
