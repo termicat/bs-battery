@@ -1,0 +1,22 @@
+{
+  "hello": "hello",
+  "shared": "share",
+  "shared-tip-qr": "Scan the QR code with your mobile phone and the data will be updated simultaneously.",
+  "shared-tip-link": "Copy the link below and share it with others, and the data will be updated simultaneously.",
+  "wellcome": "Welcome to the Multidimensional Data Desk",
+  "loading": "Data desk is loading...",
+  "edit": "edit",
+  "gene-h5-link": "Generate H5 link",
+  "gene-h5-qr": "Generate QR code",
+  "v": "Version",
+  "submit": "submitting...",
+  "submit-btn": "submit",
+  "submit-err": "Submission failed, please check the configuration",
+  "err-readonly": "Wrong parameters or invalid link",
+  "help": "help",
+  "update-tip": "Update time",
+  "link-tip": "Chart link",
+  "copy-link": "copy Link",
+  "feedback": "Feedback",
+  "develop": "Contact the developer"
+}
