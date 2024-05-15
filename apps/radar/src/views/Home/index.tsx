@@ -26,7 +26,7 @@ export default function App() {
   useEffect(() => {
     async function switchLang() {
       const lang = await bsSdk.getLang();
-      i18n.changeLanguage(lang.includes("zh") ? "zh" : "en");
+      i18n.changeLanguage(lang.includes("zh") ? "zh" : lang);
     }
 
     switchLang();

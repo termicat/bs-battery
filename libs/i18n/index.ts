@@ -1,14 +1,18 @@
 import i18n from "i18next";
 import { initReactI18next } from "react-i18next";
 import zh from "./locales/zh/common.json";
+import ja from "./locales/ja/common.json";
 
 const opt = {
   resources: {
-    // en: {
-    //   translation: {},
-    // },
+    en: {
+      translation: {},
+    },
     zh: {
       translation: zh,
+    },
+    ja: {
+      translation: ja,
     },
     // 添加更多语言...
   },
