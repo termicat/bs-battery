@@ -14,6 +14,7 @@ import { useTranslation } from "react-i18next";
 import ConfigDownSelect from "./ConfigDownSelect";
 import { If } from "../utils/If";
 import Label from "@douyinfe/semi-ui/lib/es/form/label";
+import Icon from "../Icon";
 
 export type ConfigFieldListOptions = {
   list?: {
@@ -47,7 +48,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
   const itemSelectOptions = options?.itemSelectOptions || [];
 
   const optionsMap = list.reduce((acc, cur) => {
-    acc[cur.value] = cur.label;
+    acc[cur.value] = cur;
     return acc;
   }, {} as any);
 
@@ -115,11 +116,12 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
         {scopeValue?.map(({ value, select }: any) => (
           <div key={value}>
             <FieldItem>
-              <IconHash
-                style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
+              <Icon
+                src={optionsMap[value].icon}
+                style={{ fontSize: 12, marginRight: 5 }}
               />
               <span style={{ flex: 1, color: "rgba(var(--semi-grey-8), 1)" }}>
-                {optionsMap[value]}
+                {optionsMap[value].label}
               </span>
               <If condition={itemSelectOptions.length}>
                 <span
@@ -348,7 +350,8 @@ function SearchList(props: SearchListProps) {
             props?.onClickItem?.(option.value, option);
           }}
         >
-          <IconHash
+          <Icon
+            src={option.icon}
             style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
           />
           <span style={{ flex: 1, color: "rgba(var(--semi-grey-8), 1)" }}>
