@@ -5,6 +5,8 @@ import styled from "styled-components";
 import { IconHash } from "@douyinfe/semi-icons";
 import { If } from "../utils/If";
 import Icon from "../Icon";
+import { Form } from "@douyinfe/semi-ui";
+const { Label } = Form;
 
 export type ConfigSelectOptions = {
   label: string;
@@ -78,7 +80,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
           alignItems: "center",
         }}
       >
-        <div style={{ flex: 1 }}>{label}</div>
+        <Label style={{ flex: 1 }}>{label}</Label>
         <div id={`${field}-right`}></div>
       </div>
       <If condition={options?.length}>
