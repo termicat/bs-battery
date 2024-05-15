@@ -44,7 +44,7 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
             justifyContent: "space-around",
             marginTop: 5,
             width: "100%",
-            "--semi-color-bg-3": "rgba(var(--semi-light-blue-0), 1)",
+            "--semi-color-bg-3": "rgba(var(--semi-blue-0), 1)",
           } as any
         }
       >
