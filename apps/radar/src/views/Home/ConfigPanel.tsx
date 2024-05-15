@@ -353,7 +353,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         flexDirection: "row",
         height: "100vh",
         overflow: "hidden",
-        borderTop: "1px solid #eee",
+        borderTop: "1px solid rgba(var(--semi-grey-1), 1)",
         // marginTop: 50,
       }}
     >
@@ -365,7 +365,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           width: "30%",
           padding: "0 20px",
           overflow: "scroll",
-          borderLeft: "1px solid #eee",
+          borderLeft: "1px solid rgba(var(--semi-grey-1), 1)",
         }}
       >
         <ConfigUI
@@ -386,6 +386,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             right: 20,
             display: "flex",
             background: "#fff",
+            borderRadius: 4,
           }}
         >
           {/* <Button style={{ width: 80, marginRight: 10 }} type="tertiary">
