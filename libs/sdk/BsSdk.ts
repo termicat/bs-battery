@@ -46,10 +46,8 @@ export class BsSdk {
   // public readonly initEmitter = new Emitter<InitEmitter>();
   public readonly emSelectionChange = new Emitter<SelectionChangeEmitter>();
   public readonly emThemeChange = new Emitter<ThememChangeEmitter>();
-  public readonly emDashDataChange = new Emitter<DashDataChangeEmitter>(1500);
-  public readonly emDashConfigChange = new Emitter<DashConfigChangeEmitter>(
-    1500
-  );
+  public readonly emDashDataChange = new Emitter<DashDataChangeEmitter>();
+  public readonly emDashConfigChange = new Emitter<DashConfigChangeEmitter>();
 
   constructor({
     onSelectionChange = false,
