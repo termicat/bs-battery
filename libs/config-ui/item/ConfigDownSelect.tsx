@@ -25,6 +25,7 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
     target,
     options,
     portal,
+    style = {},
   } = props;
   const ref = useRef<any>();
   const [visible, setVisible] = useState(0);
@@ -54,6 +55,7 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
             overflow: "hidden",
             display: "flex",
             alignItems: "center",
+            ...style,
           }}
         >
           {value.map((item: { label: any }) => item.label).join(" , ")}

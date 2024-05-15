@@ -4,6 +4,7 @@ import { ConfigItemProps } from "../ConfigItemProps";
 import ConfigObject from "./ConfigObject";
 import type { Node, Scheme } from "../types";
 import { getDefaultValue, type NodeTypes } from "../ConfigRegister";
+import Label from "@douyinfe/semi-ui/lib/es/form/label";
 
 export type ConfigSelectTabsOptions = {
   label: string;
@@ -29,9 +30,7 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
 
   return (
     <div style={{ paddingTop: "16px" }}>
-      <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
-        {label}
-      </div>
+      <Label>{label}</Label>
       <RadioGroup
         onChange={(e) => {
           target[field] = e.target.value;
@@ -45,7 +44,7 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
             justifyContent: "space-around",
             marginTop: 5,
             width: "100%",
-            "--semi-color-bg-3": "#1456F01A",
+            "--semi-color-bg-3": "rgba(var(--semi-light-blue-0), 1)",
           } as any
         }
       >
@@ -57,9 +56,6 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
           );
         })}
       </RadioGroup>
-      <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
-        {tip}
-      </div>
     </div>
   );
 }

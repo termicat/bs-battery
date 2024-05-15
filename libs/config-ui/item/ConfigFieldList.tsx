@@ -13,6 +13,7 @@ import Text from "@douyinfe/semi-ui/lib/es/typography/text";
 import { useTranslation } from "react-i18next";
 import ConfigDownSelect from "./ConfigDownSelect";
 import { If } from "../utils/If";
+import Label from "@douyinfe/semi-ui/lib/es/form/label";
 
 export type ConfigFieldListOptions = {
   list?: {
@@ -75,21 +76,23 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
     <div style={{ paddingTop: "16px" }}>
       <div
         style={{
-          fontSize: "14px",
-          fontWeight: "bold",
-          color: "#333",
           display: "flex",
           alignItems: "center",
         }}
       >
-        <div style={{ flex: 1 }}>{label}</div>
-        <div>
+        <Label style={{ flex: 1 }}>{label}</Label>
+        <div
+          style={{
+            fontSize: "12px",
+          }}
+        >
           <If condition={innerItemSelect}>
             <ConfigDownSelect
               field={""}
               value={innerItemSelect}
               target={undefined}
               options={itemSelectOptions}
+              style={{ padding: 0, margin: 0 }}
               onChange={function (_2: any, _3: string, val: any): void {
                 setInnerItemSelect(val);
 
@@ -108,16 +111,20 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
           </If>
         </div>
       </div>
-      <div style={{ marginTop: 15 }}>
+      <div style={{ marginTop: 13 }}>
         {scopeValue?.map(({ value, select }: any) => (
           <div key={value}>
             <FieldItem>
               <IconHash
                 style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
               />
-              <span style={{ flex: 1 }}>{optionsMap[value]}</span>
+              <span style={{ flex: 1, color: "rgba(var(--semi-grey-8), 1)" }}>
+                {optionsMap[value]}
+              </span>
               <If condition={itemSelectOptions.length}>
-                <span style={{ fontSize: 14, color: "#8F959E" }}>
+                <span
+                  style={{ fontSize: 14, color: "rgba(var(--semi-grey-7), 1)" }}
+                >
                   <Select
                     value={select}
                     onChange={(v2) => {
@@ -207,7 +214,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                   style={{
                     fontSize: 12,
                     transform: "rotate(90deg)",
-                    color: "#646A73",
+                    color: "rgba(var(--semi-grey-5), 1)",
                     marginLeft: 5,
                   }}
                 />
@@ -287,9 +294,6 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
           ></SearchList>
         )}
       </div>
-      <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
-        {tip}
-      </div>
     </div>
   );
 }
@@ -347,7 +351,9 @@ function SearchList(props: SearchListProps) {
           <IconHash
             style={{ fontSize: 12, color: "#646A73", marginRight: 5 }}
           />
-          <span style={{ flex: 1 }}>{option.label}</span>
+          <span style={{ flex: 1, color: "rgba(var(--semi-grey-8), 1)" }}>
+            {option.label}
+          </span>
         </FieldItem>
       ))}
     </Card>
@@ -358,7 +364,7 @@ const FieldItem = styled.div`
   /* margin-top: 10px; */
   font-size: 14px;
   height: 32px;
-  color: #1f2329;
+  color: rgba(var(--semi-grey-8), 1);
   display: flex;
   align-items: center;
   border: 1px solid #e1e3e6;
@@ -370,11 +376,11 @@ const FieldItem = styled.div`
 const MenuItem = styled.div`
   padding: 8px 16px;
   font-size: 14px;
-  color: #1f2329;
+  color: rgba(var(--semi-grey-8), 1);
   display: flex;
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: #f4f5f7;
+    background-color: rgba(var(--semi-grey-1), 1);
   }
 `;

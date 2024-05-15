@@ -10,12 +10,14 @@ import {
   type IConfig,
   type IDataCondition,
   type IData,
+  type ThemeModeCtx,
 } from "@lark-base-open/js-sdk";
 import { Emitter } from "./Emitter";
 
 export type SelectionChangeEmitter = (event: IEventCbCtx<Selection>) => any;
 export type DashDataChangeEmitter = (event: IEventCbCtx<IData>) => any;
 export type DashConfigChangeEmitter = (event: IEventCbCtx<IConfig>) => any;
+export type ThememChangeEmitter = (event: IEventCbCtx<ThemeModeCtx>) => any;
 export type InitEmitter = (sdk: BsSdk) => any;
 
 export interface BIField {
@@ -43,6 +45,7 @@ export class BsSdk {
   public activeTable: ITable | undefined;
   // public readonly initEmitter = new Emitter<InitEmitter>();
   public readonly emSelectionChange = new Emitter<SelectionChangeEmitter>();
+  public readonly emThemeChange = new Emitter<ThememChangeEmitter>();
   public readonly emDashDataChange = new Emitter<DashDataChangeEmitter>(1500);
   public readonly emDashConfigChange = new Emitter<DashConfigChangeEmitter>(
     1500
@@ -53,6 +56,7 @@ export class BsSdk {
     immediatelySelectionChange = true,
     onDashDataChange = false,
     onDashConfigChange = false,
+    onThemeChange = false,
   } = {}) {
     if (onSelectionChange) {
       this.base.onSelectionChange(async (event) => {
@@ -76,6 +80,18 @@ export class BsSdk {
         this.emDashConfigChange.emit(event);
       });
     }
+    if (onThemeChange) {
+      this.bitable.bridge.onThemeChange((event) => {
+        this.emThemeChange.emit(event);
+      });
+      this.bitable.bridge.getTheme().then((theme) => {
+        this.emThemeChange.emitLifeCycle({ data: { theme } });
+      });
+    }
+  }
+
+  getTheme() {
+    return this.bitable.bridge.getTheme();
   }
 
   getLang() {

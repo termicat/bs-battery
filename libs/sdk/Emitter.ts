@@ -36,6 +36,7 @@ export class Emitter<CB extends (...args: any[]) => void> {
   }
 
   emit(...args: ParamsType<CB>) {
+    this.lastEmitArgs = undefined;
     return new Promise<void>((resolve) => {
       if (this.timer) {
         clearTimeout(this.timer);

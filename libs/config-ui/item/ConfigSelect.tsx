@@ -6,6 +6,7 @@ import { IconHash } from "@douyinfe/semi-icons";
 import { If } from "../utils/If";
 import Icon from "../Icon";
 import { Form } from "@douyinfe/semi-ui";
+import { useTranslation } from "react-i18next";
 const { Label } = Form;
 
 export type ConfigSelectOptions = {
@@ -17,6 +18,7 @@ export type ConfigSelectOptions = {
 export type ConfigSelectProps = ConfigItemProps<"select", ConfigSelectOptions>;
 
 export default function ConfigSelect(props: ConfigSelectProps) {
+  const [t] = useTranslation();
   const {
     field,
     label,
@@ -52,19 +54,16 @@ export default function ConfigSelect(props: ConfigSelectProps) {
           width: "97%",
           padding: "3px 8px",
           margin: "2px 5px",
-          background: p.selected ? "#f1f1fc" : "",
+          background: p.selected ? "rgba(var(--semi-blue-0), 1)" : "",
           borderRadius: "4px",
         }}
         onClick={p.onClick}
       >
         {/* <IconHash style={{ color: "#666", marginRight: 8 }}></IconHash> */}
         <If condition={optionsIcons[p.value]}>
-          <Icon
-            src={optionsIcons[p.value]}
-            style={{ color: "#666", marginRight: 8 }}
-          ></Icon>
+          <Icon src={optionsIcons[p.value]} style={{ marginRight: 8 }}></Icon>
         </If>
-        <div>{p.label}</div>
+        <div style={{ color: "var(--semi-color-text-1)" }}>{p.label}</div>
       </SelectItem>
     );
   };
@@ -75,7 +74,6 @@ export default function ConfigSelect(props: ConfigSelectProps) {
         style={{
           fontSize: "14px",
           fontWeight: "bold",
-          color: "#333",
           display: "flex",
           alignItems: "center",
         }}
@@ -89,7 +87,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
             optionsIcons[value] ? (
               <Icon
                 src={optionsIcons[value]}
-                style={{ color: "#666", marginLeft: 12, marginRight: 6 }}
+                style={{ marginLeft: 12, marginRight: 6 }}
               ></Icon>
             ) : (
               <div style={{ marginRight: 12 }}></div>
@@ -115,13 +113,10 @@ export default function ConfigSelect(props: ConfigSelectProps) {
       </If>
       <If condition={!options?.length}>
         <Select
-          placeholder="暂未选项"
+          placeholder={t("Empty Options")}
           style={{ width: "100%", marginTop: "8px" }}
         ></Select>
       </If>
-      <div style={{ fontSize: "12px", marginTop: "2px", color: "#666" }}>
-        {tip}
-      </div>
       <div id={field + "-bottom"}></div>
     </div>
   );

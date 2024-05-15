@@ -2,6 +2,7 @@ import { Col, Input, Select } from "@douyinfe/semi-ui";
 import { useRef, type Key } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import styled from "styled-components";
+import Label from "@douyinfe/semi-ui/lib/es/form/label";
 
 export type ConfigSelectThemeOptions = {
   label: string[];
@@ -43,7 +44,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
           width: "97%",
           padding: "3px 8px",
           margin: "2px 5px",
-          background: p.selected ? "#f1f1fc" : "",
+          background: p.selected ? "rgba(var(--semi-blue-0), 1)" : "",
           borderRadius: "4px",
         }}
         onClick={p.onClick}
@@ -61,9 +62,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
 
   return (
     <div style={{ paddingTop: "16px" }}>
-      <div style={{ fontSize: "14px", fontWeight: "bold", color: "#333" }}>
-        {label}
-      </div>
+      <Label>{label}</Label>
 
       <Select
         placeholder="请选择主题色"

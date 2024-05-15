@@ -11,7 +11,9 @@ export default withResizeDetector(function ECharts(props: any) {
     // 接听元素宽度变化
     console.log("theme", bcDark(option.theme), option.theme);
 
-    const chart = echarts.init(chartRef.current!, bcDark(option.theme));
+    const isDark = document.body.getAttribute("theme-mode") === "dark";
+
+    const chart = echarts.init(chartRef.current!, isDark ? "dark" : "light");
     chart.setOption(option);
     if (props.refInstance) props.refInstance.current = chart;
     echartsInstance.current = chart;
