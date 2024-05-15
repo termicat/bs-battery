@@ -353,7 +353,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         flexDirection: "row",
         height: "100vh",
         overflow: "hidden",
-        borderTop: "1px solid rgba(var(--semi-grey-1), 1)",
+        borderTop: "var(--split-line-size) solid var(--split-line-color)",
         // marginTop: 50,
       }}
     >
@@ -365,7 +365,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           width: "30%",
           padding: "0 20px",
           overflow: "scroll",
-          borderLeft: "1px solid rgba(var(--semi-grey-1), 1)",
+          borderLeft: "var(--split-line-size) solid var(--split-line-color)",
         }}
       >
         <ConfigUI
