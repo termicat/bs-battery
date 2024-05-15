@@ -21,6 +21,7 @@ import ECharts from "@bc/echarts/index";
 import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
+import type { BIField } from "@bc/sdk/BsSdk";
 
 export type ConfigPanelProps = {};
 
@@ -33,7 +34,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   });
   const [initd, setInitd] = useState(false);
   const [echartsOption, setEchartsOption] = useState({} as any);
-  const fieldTypeMapRef = useRef<{ [key: string]: FieldType }>({});
+  const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
 
   useEffect(() => {
     async function updatePreview() {
@@ -127,12 +128,12 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       );
       console.log("getFieldList", fields);
 
-      const fieldsOptions = tranBIData(fields);
-
-      for (let i = 0; i < fieldsOptions.length; i++) {
-        const field = fieldsOptions[i];
-        fieldTypeMapRef.current[field.value] = field.type;
+      for (let i = 0; i < fields.length; i++) {
+        const field = fields[i];
+        fieldTypeMapRef.current[field.id] = field;
       }
+
+      const fieldsOptions = tranBIData(fields);
 
       if (configValue?.root?.mapType === "fieldCategory") {
         setSchemeByPath(scheme, "mapOptions.cates", {
@@ -218,9 +219,14 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   }, [configValue?.root?.mapType]);
 
   useEffect(() => {
+    const muliType = [FieldType.MultiSelect];
     if (configValue.root.mapType === "fieldCategory") {
       const fieldId = configValue?.root?.mapOptions?.series;
-      if (fieldTypeMapRef.current[fieldId] === FieldType.MultiSelect) {
+      const fieldMeta = fieldTypeMapRef.current[fieldId] as any;
+      if (
+        muliType.includes(fieldMeta?.type) ||
+        fieldMeta?.raw?.property?.multiple
+      ) {
         const node = getSchemeByPath(scheme, "mapOptions");
 
         node.properties[2] = {
@@ -242,7 +248,12 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       }
     } else {
       const fieldId = configValue?.root?.mapOptions?.cate;
-      if (fieldTypeMapRef.current[fieldId] === FieldType.MultiSelect) {
+      const fieldMeta = fieldTypeMapRef.current[fieldId] as any;
+
+      if (
+        muliType.includes(fieldMeta?.type) ||
+        fieldMeta?.raw?.property?.multiple
+      ) {
         const node = getSchemeByPath(scheme, "mapOptions");
 
         node.properties[2] = {
