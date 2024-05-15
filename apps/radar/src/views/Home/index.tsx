@@ -1,29 +1,9 @@
-import { useTranslation } from "next-i18next";
-import { BsSdk } from "@/libs/bs-sdk/BsSdk";
-import { useRouter } from "next/router";
-import ConfigUI from "@/components/config-ui";
-import { useEffect, useState } from "react";
-import { Button } from "@douyinfe/semi-ui";
-import type { Scheme } from "@/components/config-ui/types";
-import { tranBIData } from "@/libs/helper/config-ui";
-import { createScheme } from "@/components/config-ui/options";
-import {
-  getDefaultValue,
-  getSchemeByPath,
-  setSchemeByPath,
-} from "@/components/config-ui/ConfigRegister";
-import {
-  DATA_SOURCE_SORT_TYPE,
-  DashboardState,
-  GroupMode,
-  ORDER,
-  SourceType,
-  type IConfig,
-} from "@lark-base-open/js-sdk";
-import ECharts from "@/components/echarts";
+import { DashboardState } from "@lark-base-open/js-sdk";
 import { bsSdk } from "./factory";
 import ViewPanel from "./ViewPanel";
 import ConfigPanel from "./ConfigPanel";
+import { useEffect } from "react";
+import i18n from "@bc/i18n";
 
 const mql = window.matchMedia("(prefers-color-scheme: dark)");
 
@@ -43,6 +23,14 @@ function matchMode(e: any) {
 mql.addEventListener("change", matchMode);
 
 export default function App() {
+  useEffect(() => {
+    async function switchLang() {
+      const lang = await bsSdk.getLang();
+      i18n.changeLanguage(lang.includes("zh") ? "zh" : "en");
+    }
+
+    switchLang();
+  });
   switch (bsSdk.getDashState()) {
     case DashboardState.View:
       return ViewPanel({});

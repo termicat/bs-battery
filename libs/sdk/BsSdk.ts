@@ -78,6 +78,10 @@ export class BsSdk {
     }
   }
 
+  getLang() {
+    return this.bitable.bridge.getLanguage();
+  }
+
   saveConfig(config: IConfig) {
     return this.bitable.dashboard.saveConfig(config);
   }

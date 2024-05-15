@@ -264,7 +264,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
               }
             }}
           >
-            添加字段
+            {t("Append")}
           </Text>
         </Tooltip>
 
@@ -300,6 +300,7 @@ type SearchListProps = {
   onClose?: () => void;
 };
 function SearchList(props: SearchListProps) {
+  const [t] = useTranslation();
   const list = props?.list;
   const [searchInput, setSearchInput] = useState("");
 
@@ -323,7 +324,7 @@ function SearchList(props: SearchListProps) {
           showClear={false}
           borderless
           style={{ borderWidth: 0 }}
-          placeholder={"搜索字段"}
+          placeholder={t("Search")}
           autoFocus
           onChange={(e) => {
             setSearchInput(e);

@@ -20,10 +20,12 @@ import {
 import ECharts from "@bc/echarts/index";
 import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import { bsSdk } from "./factory";
+import { useTranslation } from "react-i18next";
 
 export type ConfigPanelProps = {};
 
 export default function ConfigPanel(props: ConfigPanelProps) {
+  const [t] = useTranslation();
   const [configValue, setConfigValue] = useState({ root: {} as any });
   const [scheme, setScheme] = useState<Scheme>({
     type: "object",
@@ -162,19 +164,19 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             ),
             itemSelectOptions: [
               {
-                label: "最大值",
+                label: t("Max"),
                 value: "MAX",
               },
               {
-                label: "最小值",
+                label: t("Min"),
                 value: "MIN",
               },
               {
-                label: "求和",
+                label: t("Sum"),
                 value: "SUM",
               },
               {
-                label: "平均值",
+                label: t("Average"),
                 value: "AVERAGE",
               },
             ],
@@ -223,7 +225,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         node.properties[2] = {
           type: "checkbox",
           field: "checkSplit",
-          label: "多项式拆分统计",
+          label: t("Polynomial Split Statistics"),
           default: false,
           portal: "#series-bottom",
         };
@@ -245,7 +247,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         node.properties[2] = {
           type: "checkbox",
           field: "checkSplit",
-          label: "多项式拆分统计",
+          label: t("Polynomial Split Statistics"),
           default: false,
           portal: "#cate-bottom",
         };
@@ -390,7 +392,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
               });
             }}
           >
-            确定
+            {t("Ok")}
           </Button>
         </div>
       </div>

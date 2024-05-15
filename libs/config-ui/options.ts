@@ -1,15 +1,17 @@
+import i18n from "../i18n";
 import type { Node, Scheme } from "./types";
 import { theme } from "@bc/config";
 
 export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
+  const t = i18n.t.bind(i18n);
   const mapOptions = [
     {
       // label: "以字段为类别，以记录聚合为系列",
-      label: "字段",
+      label: t("Field"),
       key: "fieldCategory",
       value: [
         {
-          label: "类别",
+          label: t("Cate"),
           field: "cates",
           type: "field-list",
           options: {
@@ -50,7 +52,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           ],
         },
         {
-          label: "系列",
+          label: t("Series"),
           field: "series",
           type: "select",
           options: [],
@@ -80,24 +82,24 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
         },
         {
           portal: "#series-right",
-          label: "计算方式",
+          label: t("Calculation"),
           field: "calc",
           type: "down-select",
           options: [
             {
-              label: "最大值",
+              label: t("Max"),
               value: "MAX",
             },
             {
-              label: "最小值",
+              label: t("Min"),
               value: "MIN",
             },
             {
-              label: "求和",
+              label: t("Sum"),
               value: "SUM",
             },
             {
-              label: "平均值",
+              label: t("Average"),
               value: "AVERAGE",
             },
           ],
@@ -107,11 +109,11 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
     },
     {
       // label: "以记录聚合为类别，以字段为系列",
-      label: "聚合记录",
+      label: t("Aggregate Records"),
       key: "recordCategory",
       value: [
         {
-          label: "类别",
+          label: t("Cate"),
           field: "cate",
           type: "select",
           // default: "field2",
@@ -139,7 +141,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           // ],
         },
         {
-          label: "系列",
+          label: t("Series"),
           field: "series",
           type: "field-list",
           // options: {
@@ -205,37 +207,37 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
     properties: [
       {
         field: "tableId",
-        label: "数据源",
+        label: t("Table"),
         type: "select",
         options: [],
         // tip: "这是一个标题",
       },
       {
         field: "dataRange",
-        label: "数据范围",
+        label: t("View"),
         type: "select",
         options: [],
         // tip: "这是一个标题",
       },
       {
         field: "selectTheme",
-        label: "主题色",
+        label: t("Theme"),
         type: "select-theme",
         default: "p1",
         // tip: "这是一个标题",
         options: theme.light,
       },
       {
-        label: "图表选项",
+        label: t("Charts Options"),
         field: "chartOptions",
         type: "checkboxes",
         options: [
           {
-            label: "图例",
+            label: t("Legend"),
             value: "showLegend",
           },
           {
-            label: "数据标签",
+            label: t("Label"),
             value: "showDataLabel",
           },
         ],
@@ -247,7 +249,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
         type: "line",
       },
       {
-        label: "数据映射",
+        label: t("Data Map"),
         field: "mapType",
         type: "select-tabs",
         options: mapOptions.map((item) => ({
