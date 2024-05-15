@@ -59,8 +59,9 @@ export default function Demo() {
           {JSON.stringify(value, null, 2)}
         </pre>
       </div>
-      <div style={{ height: 180, width: 400, marginTop: 60 }}>
+      <div style={{ height: 180, marginTop: 60, width: "30%" }}>
         <BatteryChart
+          totalLength={100}
           list={[
             {
               label: "Green",
@@ -74,7 +75,7 @@ export default function Demo() {
             },
             {
               label: "Yellow",
-              value: 50,
+              value: 10,
               color: "yellow",
             },
           ]}

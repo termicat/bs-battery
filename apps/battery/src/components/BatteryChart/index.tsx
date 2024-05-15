@@ -1,4 +1,5 @@
 import { Popover, Tooltip } from "@douyinfe/semi-ui";
+import Title from "@douyinfe/semi-ui/lib/es/typography/title";
 import styled from "styled-components";
 
 export type BatteryChartProps = {
@@ -7,70 +8,125 @@ export type BatteryChartProps = {
     value: number;
     color: string;
   }[];
+
+  totalLength?: number;
 };
 
 export default function BatteryChart(props: BatteryChartProps) {
-  const sum = props.list.reduce((acc, cur) => acc + cur.value, 0);
+  const totalLength =
+    props.totalLength ?? props.list.reduce((acc, cur) => acc + cur.value, 0);
   const percent = props.list.map((item) => {
-    return (item.value / sum) * 100;
+    return (item.value / totalLength) * 100;
   });
   return (
     <div
       style={{
         display: "flex",
-        flexDirection: "row",
+        flexDirection: "column",
         justifyContent: "center",
         alignItems: "center",
         width: "100%",
         height: "100%",
       }}
     >
-      <BatWrapper>
-        <div
+      <div
+        style={{
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+        }}
+      >
+        <BatWrapper>
+          <div
+            style={{
+              display: "flex",
+              width: "100%",
+              height: "100%",
+              borderRadius: 5,
+              overflow: "hidden",
+            }}
+          >
+            {percent.map((item, index) => {
+              return (
+                <Tooltip
+                  showArrow
+                  content={
+                    <article>
+                      {props.list[index].label}
+                      &nbsp;
+                      {item.toFixed(1)}%
+                    </article>
+                  }
+                  position="top"
+                  key={index}
+                >
+                  <BatItem
+                    style={{
+                      width: `${item}%`,
+                      background: props.list[index].color,
+                    }}
+                  ></BatItem>
+                </Tooltip>
+              );
+            })}
+          </div>
+        </BatWrapper>
+        <BatCozy></BatCozy>
+        <Title
           style={{
-            display: "flex",
-            width: "100%",
-            height: "100%",
-            borderRadius: 5,
-            overflow: "hidden",
+            marginLeft: "2%",
+            whiteSpace: "nowrap",
+            fontSize: "1.7vw",
           }}
         >
-          {percent.map((item, index) => {
+          {props.list[0].label}{" "}
+          {percent[0] > 0 ? `${percent[0].toFixed(1)}%` : "N/A"}
+        </Title>
+      </div>
+      <div>
+        <div style={{ display: "flex", marginTop: "0.8vw" }}>
+          {props.list.map((item, index) => {
             return (
-              <Tooltip
-                showArrow
-                content={
-                  <article>
-                    {props.list[index].label}
-                    &nbsp;
-                    {item.toFixed(1)}%
-                  </article>
-                }
-                position="top"
+              <div
                 key={index}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  marginLeft: "10%",
+                }}
               >
-                <BatItem
+                <div
                   style={{
-                    width: `${item}%`,
-                    background: props.list[index].color,
+                    width: "1vw",
+                    height: "1vw",
+                    borderRadius: "50%",
+                    background: item.color,
                   }}
-                ></BatItem>
-              </Tooltip>
+                ></div>
+                <Title
+                  heading={6}
+                  style={{ marginLeft: "0.5vw", fontSize: "1vw" }}
+                >
+                  {item.label}
+                </Title>
+              </div>
             );
           })}
         </div>
-      </BatWrapper>
-      <BatCozy></BatCozy>
+      </div>
     </div>
   );
 }
 
 const BatCozy = styled.div`
-  width: 20px;
-  height: 40px;
+  width: 1vw;
+  height: 20%;
   background: #eee;
-  border-bottom-right-radius: 5px;
-  border-top-right-radius: 5px;
+  border-bottom-right-radius: 20%;
+  border-top-right-radius: 20%;
 `;
 
 const BatWrapper = styled.div`
@@ -78,8 +134,8 @@ const BatWrapper = styled.div`
   width: 100%;
   height: 100%;
   background: #eee;
-  border-radius: 10px;
-  padding: 10px;
+  border-radius: 5%;
+  padding: 2%;
 `;
 
 const BatItem = styled.div`
