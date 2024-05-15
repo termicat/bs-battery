@@ -20,7 +20,7 @@ export default withResizeDetector(function ECharts(props: any) {
     return () => {
       chart.dispose();
     };
-  }, [option, props.refInstance]);
+  }, [option, props.refInstance, props.themeMode]);
 
   useEffect(() => {
     if (echartsInstance.current) {

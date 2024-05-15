@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { bsSdk } from "./factory";
 import { createEChartsOption } from "@bc/helper/createEChartsOption";
 
-type ViewPanelProps = {};
+type ViewPanelProps = { themeMode?: any };
 
 export default function ViewPanel(props: ViewPanelProps) {
   const [echartsOption, setEchartsOption] = useState({} as any);
@@ -28,7 +28,7 @@ export default function ViewPanel(props: ViewPanelProps) {
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <ECharts option={echartsOption}></ECharts>
+      <ECharts option={echartsOption} themeMode={props.themeMode}></ECharts>
     </div>
   );
 }

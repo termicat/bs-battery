@@ -2,7 +2,7 @@ import { DashboardState, ThemeModeType } from "@lark-base-open/js-sdk";
 import { bsSdk } from "./factory";
 import ViewPanel from "./ViewPanel";
 import ConfigPanel from "./ConfigPanel";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import i18n from "@bc/i18n";
 
 const mql = window.matchMedia("(prefers-color-scheme: dark)");
@@ -25,6 +25,7 @@ function matchMode(e: any) {
 mql.addEventListener("change", matchMode);
 
 export default function App() {
+  const [themeMode, setThemeMode] = useState<ThemeModeType>();
   useEffect(() => {
     async function switchLang() {
       const lang = await bsSdk.getLang();
@@ -37,6 +38,7 @@ export default function App() {
       const theme = event.data.theme;
       const body = document.body;
       console.log("emThemeChange", theme);
+      setThemeMode(theme);
 
       if (theme === ThemeModeType.DARK) {
         body.setAttribute("theme-mode", "dark");
@@ -47,7 +49,7 @@ export default function App() {
   }, []);
   switch (bsSdk.getDashState()) {
     case DashboardState.View:
-      return ViewPanel({});
+      return ViewPanel({ themeMode: themeMode });
     case DashboardState.FullScreen:
       document.body.setAttribute("theme-mode", "dark");
 
