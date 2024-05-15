@@ -161,8 +161,10 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         });
         setSchemeByPath(scheme, "mapOptions.series", {
           options: {
-            list: fieldsOptions.filter(
-              (item) => item.type === FieldType.Number
+            list: fieldsOptions.filter((item) =>
+              [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
+                item.type
+              )
             ),
             itemSelectOptions: [
               {
