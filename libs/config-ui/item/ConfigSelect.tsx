@@ -3,12 +3,13 @@ import { useEffect, useRef } from "react";
 import { ConfigItemProps } from "../ConfigItemProps";
 import styled from "styled-components";
 import { IconHash } from "@douyinfe/semi-icons";
-import ConfigObject from "./ConfigObject";
 import { If } from "../utils/If";
+import Icon from "../Icon";
 
 export type ConfigSelectOptions = {
   label: string;
   value: string;
+  icon?: string;
 }[];
 
 export type ConfigSelectProps = ConfigItemProps<"select", ConfigSelectOptions>;
@@ -27,6 +28,11 @@ export default function ConfigSelect(props: ConfigSelectProps) {
 
   // console.log("ConfigSelect", field, value, target);
 
+  const optionsIcons = options.reduce((acc: any, cur: any) => {
+    acc[cur.value] = cur.icon;
+    return acc;
+  }, {});
+
   const renderSelectedItem = (p: any) => {
     return (
       <div>
@@ -36,6 +42,8 @@ export default function ConfigSelect(props: ConfigSelectProps) {
   };
 
   const renderOptionItem = (p: any) => {
+    // console.log("renderOptionItem", p);
+
     return (
       <SelectItem
         style={{
@@ -47,7 +55,13 @@ export default function ConfigSelect(props: ConfigSelectProps) {
         }}
         onClick={p.onClick}
       >
-        <IconHash style={{ color: "#666", marginRight: 8 }}></IconHash>
+        {/* <IconHash style={{ color: "#666", marginRight: 8 }}></IconHash> */}
+        <If condition={optionsIcons[p.value]}>
+          <Icon
+            src={optionsIcons[p.value]}
+            style={{ color: "#666", marginRight: 8 }}
+          ></Icon>
+        </If>
         <div>{p.label}</div>
       </SelectItem>
     );
@@ -69,7 +83,16 @@ export default function ConfigSelect(props: ConfigSelectProps) {
       </div>
       <If condition={options?.length}>
         <Select
-          prefix={<IconHash style={{ color: "#666" }}></IconHash>}
+          prefix={
+            optionsIcons[value] ? (
+              <Icon
+                src={optionsIcons[value]}
+                style={{ color: "#666", marginLeft: 12, marginRight: 6 }}
+              ></Icon>
+            ) : (
+              <div style={{ marginRight: 12 }}></div>
+            )
+          }
           placeholder="请选择"
           style={{ width: "100%", marginTop: "8px" }}
           onChange={(v) => {

@@ -94,6 +94,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
               type: SourceType.VIEW,
             }),
             label: view.label,
+            icon: view.icon,
           };
         });
         const defaultView = options[0].value;

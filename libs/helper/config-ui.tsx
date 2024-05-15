@@ -4,6 +4,7 @@ export function tranBIData(tables: any[]) {
       value: table.id,
       label: table.name,
       type: table.type,
+      icon: table.type ? `icons/fts/${table.type}.svg` : "icons/table.svg",
     };
   });
 }
