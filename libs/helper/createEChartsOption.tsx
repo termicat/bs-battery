@@ -1,6 +1,13 @@
+import { theme } from "../config";
+
 export function createEChartsOption(data: any[][], configRoot: any) {
+  const colors = theme.light.find(
+    (item) => item.value === configRoot.selectTheme
+  )?.label;
+  // const isDark = document.body.getAttribute("theme-mode") === "dark";
   const common = {
     theme: configRoot.selectTheme,
+    color: colors,
     tooltip: {
       // trigger: "item",
       // formatter: function (p: any) {
@@ -11,6 +18,24 @@ export function createEChartsOption(data: any[][], configRoot: any) {
       //   ${p.name}: ${p.value[p.dataIndex]}
       // <div>`;
       // },
+    },
+    backgroundColor: {
+      // 透明
+      type: "linear",
+      x: 0,
+      y: 0,
+      x2: 0,
+      y2: 1,
+      colorStops: [
+        {
+          offset: 0,
+          color: "rgba(0,0,0,0)", // 0% 处的颜色
+        },
+        {
+          offset: 1,
+          color: "rgba(0,0,0,0)", // 100% 处的颜色
+        },
+      ],
     },
   };
   const seriesCommon = {

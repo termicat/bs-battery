@@ -19,7 +19,7 @@ export default function ViewPanel(props: ViewPanelProps) {
   useEffect(() => {
     updateEcharts();
     const offs: (() => void)[] = [];
-    offs.push(bsSdk.emDashConfigChange.on(updateEcharts));
+    // offs.push(bsSdk.emDashConfigChange.on(updateEcharts));
     offs.push(bsSdk.emDashDataChange.on(updateEcharts));
     return () => {
       offs.forEach((off) => off());
