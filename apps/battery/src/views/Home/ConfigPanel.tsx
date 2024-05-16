@@ -23,6 +23,7 @@ import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
 import BatteryChart from "../../components/BatteryChart";
 import { createScheme } from "../../options";
+import { theme } from "@bc/config";
 
 export type ConfigPanelProps = {};
 
@@ -30,39 +31,58 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   const [t] = useTranslation();
   const [configValue, setConfigValue] = useState({ root: {} as any });
   const [scheme, setScheme] = useState<Scheme>({
+    field: "root",
     type: "object",
-    field: "",
   });
   const [initd, setInitd] = useState(false);
-  const [echartsOption, setEchartsOption] = useState({} as any);
+  const [chartsOption, setChartsOption] = useState([] as any);
   const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
 
-  // useEffect(() => {
-  //   async function updatePreview() {
-  //     const config = getConfig();
-  //     if (!config) {
-  //       return;
-  //     }
-  //     const data = await bsSdk.getPreviewData(config.dataConditions as any);
-  //     console.log("getPreviewData", data);
-  //     setEchartsOption(createEChartsOption(data, config.customConfig));
-  //     bsSdk.triggerDashRendered();
-  //   }
-  //   updatePreview();
-  // }, [configValue]);
+  useEffect(() => {
+    async function updatePreview() {
+      const config = getConfig();
+      if (!config) {
+        console.error("config is empty, skip updatePreview");
+        return;
+      }
+      const data = await bsSdk.getPreviewData(config.dataConditions as any);
+      console.log("getPreviewData", data);
+      const selectTheme = configValue.root.selectTheme;
+      const themeOption = theme.light.find(
+        (item) => item.value === selectTheme
+      );
+      const chartOption = data.slice(1).map((item, index) => {
+        return {
+          label: item[0].text,
+          value: item[1].value,
+          color: themeOption?.label[index],
+        };
+      });
+      const primaryKeyIndex = chartOption.findIndex((item) => {
+        return item.label === configValue.root.primaryKey;
+      });
+      if (primaryKeyIndex !== -1) {
+        const primaryKey = chartOption.splice(primaryKeyIndex, 1)[0];
+        chartOption.unshift(primaryKey);
+      }
+      setChartsOption(chartOption);
+      bsSdk.triggerDashRendered();
+    }
+    updatePreview();
+  }, [configValue]);
 
-  // useEffect(() => {
-  //   async function initConfigValue() {
-  //     const config = await bsSdk.getConfig();
-  //     console.log("getConfig", config);
-  //     const customConfig = config.customConfig;
-  //     setConfigValue({ root: customConfig });
-  //   }
-  //   if (initd) {
-  //     console.log("configValue", configValue);
-  //     initConfigValue();
-  //   }
-  // }, [initd]);
+  useEffect(() => {
+    async function initConfigValue() {
+      const config = await bsSdk.getConfig();
+      console.log("getConfig", JSON.stringify(config));
+      const customConfig = config.customConfig;
+      setConfigValue({ root: customConfig });
+    }
+    if (initd) {
+      console.log("configValue", configValue);
+      initConfigValue();
+    }
+  }, [initd]);
 
   useEffect(() => {
     async function init() {
@@ -76,7 +96,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       });
       const defaultConfigValue = getDefaultValue(newScheme);
       setConfigValue({ root: defaultConfigValue });
-      console.log("defaultConfigValue", defaultConfigValue);
+      // console.log("defaultConfigValue", defaultConfigValue);
 
       setScheme(newScheme);
     }
@@ -112,7 +132,10 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         });
 
         setConfigValue({
-          root: { ...configValue.root, dataRange: defaultView },
+          root: {
+            ...configValue.root,
+            dataRange: defaultView,
+          },
         });
         setScheme({ ...scheme });
       }
@@ -124,6 +147,14 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     async function updateGroupBy() {
       const { tableId, dataRange } = configValue.root;
       if (tableId && dataRange) {
+        console.log(
+          "updateGroupBy",
+          "tableId",
+          tableId,
+          "dataRange",
+          dataRange
+        );
+
         const dataRangeObj = JSON.parse(dataRange);
         const fields = await bsSdk.getFiledListByViewId(
           tableId,
@@ -198,7 +229,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           default: defaultValue,
         });
         setConfigValue({
-          root: { ...configValue.root, primaryKey: defaultValue },
+          root: { primaryKey: defaultValue, ...configValue.root },
         });
         setScheme({ ...scheme });
       }
@@ -213,12 +244,15 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         return;
       }
       const field = fieldTypeMapRef.current[groupBy];
+      if (!field) {
+        return;
+      }
       if ([FieldType.MultiSelect, FieldType.User].includes(field.type)) {
         setSchemeByPath(scheme, "checkSplit", {
           hide: false,
         });
         setConfigValue({
-          root: { ...configValue.root, checkSplit: false },
+          root: { checkSplit: false, ...configValue.root },
         });
         setScheme({ ...scheme });
       } else {
@@ -226,7 +260,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           hide: true,
         });
         setConfigValue({
-          root: { ...configValue.root, checkSplit: false },
+          root: { checkSplit: false, ...configValue.root },
         });
         setScheme({ ...scheme });
       }
@@ -261,34 +295,36 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     if (!configValue.root.dataRange || !configValue.root.primaryKey) {
       return;
     }
-    if (configValue.root.mapType === "fieldCategory") {
-      const config: IConfig = {
-        dataConditions: {
-          tableId: configValue.root.tableId,
-          dataRange: JSON.parse(configValue.root.dataRange),
-          groups: [
-            {
-              fieldId: configValue.root.groupBy,
-              sort: {
-                order: configValue.root.orderBy,
-                sortType: configValue.root.orderType,
-              },
-              mode: configValue.root.checkSplit
-                ? GroupMode.ENUMERATED
-                : GroupMode.INTEGRATED,
+    const config: IConfig = {
+      dataConditions: {
+        tableId: configValue.root.tableId,
+        dataRange: JSON.parse(configValue.root.dataRange),
+        groups: [
+          {
+            fieldId: configValue.root.groupBy,
+            sort: {
+              order: configValue.root.orderBy,
+              sortType: configValue.root.orderType,
             },
-          ],
-          series: configValue.root.mapOptions.cates.map((cate: any) => {
-            return {
-              fieldId: cate.value,
-              rollup: configValue.root.mapOptions.calc,
-            };
-          }),
-        } as any,
-        customConfig: configValue.root,
-      };
-      return config;
-    }
+            mode: configValue.root.checkSplit
+              ? GroupMode.ENUMERATED
+              : GroupMode.INTEGRATED,
+          },
+        ],
+        series:
+          configValue.root.valueBy === "fieldValue" &&
+          configValue.root.fieldValueBy
+            ? [
+                {
+                  fieldId: configValue.root.fieldValueBy,
+                  rollup: configValue.root.calcType,
+                },
+              ]
+            : undefined,
+      } as any,
+      customConfig: configValue.root,
+    };
+    return config;
   };
 
   return (
@@ -304,7 +340,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     >
       <div
         style={{
-          flex: 1,
+          width: "70%",
           padding: 20,
           display: "flex",
           alignItems: "center",
@@ -313,23 +349,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       >
         <BatteryChart
           style={{ width: "80%", height: "20vw" }}
-          list={[
-            {
-              label: "Green",
-              value: 20,
-              color: "green",
-            },
-            {
-              label: "Red",
-              value: 30,
-              color: "red",
-            },
-            {
-              label: "Blue",
-              value: 50,
-              color: "blue",
-            },
-          ]}
+          list={chartsOption}
         ></BatteryChart>
       </div>
       <div

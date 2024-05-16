@@ -14,6 +14,7 @@ export type BatteryChartProps = {
 };
 
 export default function BatteryChart(props: BatteryChartProps) {
+  if (props.list.length === 0) return null;
   const totalLength =
     props.totalLength ?? props.list.reduce((acc, cur) => acc + cur.value, 0);
   const percent = props.list.map((item) => {
@@ -90,8 +91,16 @@ export default function BatteryChart(props: BatteryChartProps) {
           {percent[0] > 0 ? `${percent[0].toFixed(1)}%` : "N/A"}
         </Title>
       </div>
-      <div style={{width: '100%'}}>
-        <div style={{ display: "flex", marginTop: "1vmax", width: '100%', justifyContent: 'center' }}>
+      <div style={{ width: "100%" }}>
+        <div
+          style={{
+            display: "flex",
+            marginTop: "1vmax",
+            width: "100%",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
           {props.list.map((item, index) => {
             return (
               <div
@@ -100,18 +109,26 @@ export default function BatteryChart(props: BatteryChartProps) {
                   display: "flex",
                   alignItems: "center",
                   marginLeft: "10%",
+                  marginTop: "1vmax",
                 }}
               >
                 <div
                   style={{
                     flexShrink: 0,
-                    width: "2.5vmax",
-                    height: "2.5vmax",
+                    width: "2vmax",
+                    height: "2vmax",
                     borderRadius: "50%",
-                    background: item.color,
+                    background: item.color || "#eee",
                   }}
                 ></div>
-                <Title heading={6} style={{ fontSize: "2.5vmax", marginLeft: '10%' }}>
+                <Title
+                  heading={6}
+                  style={{
+                    fontSize: "1.5vmax",
+                    marginLeft: "10%",
+                    whiteSpace: "nowrap",
+                  }}
+                >
                   {item.label}
                 </Title>
               </div>

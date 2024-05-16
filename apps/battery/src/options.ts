@@ -123,27 +123,27 @@ export const createScheme = () => {
         default: "",
       },
       {
-        label: "计算方式",
+        label: t("Calculation"),
         field: "calcType",
         type: "down-select",
         portal: "#fieldValueBy-right",
-        default: "SUM",
+        default: "MAX",
         options: [
           {
-            label: "总和",
-            value: "SUM",
-          },
-          {
-            label: "平均值",
-            value: "AVERAGE",
-          },
-          {
-            label: "最大值",
+            label: t("Max"),
             value: "MAX",
           },
           {
-            label: "最小值",
+            label: t("Min"),
             value: "MIN",
+          },
+          {
+            label: t("Sum"),
+            value: "SUM",
+          },
+          {
+            label: t("Average"),
+            value: "AVERAGE",
           },
         ],
         hide: true,
