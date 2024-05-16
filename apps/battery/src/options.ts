@@ -151,3 +151,31 @@ export const createScheme = () => {
     ],
   } as Scheme;
 };
+
+export function createChartOption(data: any, configValueRoot: any) {
+  const selectTheme = configValueRoot.selectTheme;
+  const themeOption = theme.light.find((item) => item.value === selectTheme);
+  const chartOption = data.slice(1).map(
+    (
+      item: {
+        text: any;
+        value: any;
+      }[],
+      index: any
+    ) => {
+      return {
+        label: item[0].text,
+        value: item[1].value,
+        color: themeOption?.label[index],
+      };
+    }
+  );
+  const primaryKeyIndex = chartOption.findIndex((item: { label: any }) => {
+    return item.label === configValueRoot.primaryKey;
+  });
+  if (primaryKeyIndex !== -1) {
+    const primaryKey = chartOption.splice(primaryKeyIndex, 1)[0];
+    chartOption.unshift(primaryKey);
+  }
+  return chartOption;
+}

@@ -22,7 +22,7 @@ import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
 import BatteryChart from "../../components/BatteryChart";
-import { createScheme } from "../../options";
+import { createChartOption, createScheme } from "../../options";
 import { theme } from "@bc/config";
 
 export type ConfigPanelProps = {};
@@ -47,24 +47,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       }
       const data = await bsSdk.getPreviewData(config.dataConditions as any);
       console.log("getPreviewData", data);
-      const selectTheme = configValue.root.selectTheme;
-      const themeOption = theme.light.find(
-        (item) => item.value === selectTheme
-      );
-      const chartOption = data.slice(1).map((item, index) => {
-        return {
-          label: item[0].text,
-          value: item[1].value,
-          color: themeOption?.label[index],
-        };
-      });
-      const primaryKeyIndex = chartOption.findIndex((item) => {
-        return item.label === configValue.root.primaryKey;
-      });
-      if (primaryKeyIndex !== -1) {
-        const primaryKey = chartOption.splice(primaryKeyIndex, 1)[0];
-        chartOption.unshift(primaryKey);
-      }
+      const chartOption = createChartOption(data, configValue.root);
       setChartsOption(chartOption);
       bsSdk.triggerDashRendered();
     }
