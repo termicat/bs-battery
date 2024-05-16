@@ -348,7 +348,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     >
       <div
         style={{
-          width: "70%",
+          flex: 1,
           padding: 20,
           display: "flex",
           alignItems: "center",
@@ -362,7 +362,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       </div>
       <div
         style={{
-          width: "30%",
+          width: "340px",
           padding: "0 20px",
           overflow: "scroll",
           borderLeft: "var(--split-line-size) solid var(--split-line-color)",
@@ -377,15 +377,18 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             setConfigValue(newTarget);
           }}
         ></ConfigUI>
-        <div style={{ height: 200 }}></div>
+        <div style={{ height: 300 }}></div>
         <div
           style={{
             position: "fixed",
-            bottom: 20,
-            right: 20,
+            bottom: 0,
+            right: 0,
             display: "flex",
+            justifyContent: "end",
             background: "#fff",
             borderRadius: 4,
+            width: 340,
+            padding: "10px 20px",
           }}
         >
           {/* <Button
@@ -434,7 +437,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           <Button
             type="primary"
             theme="solid"
-            style={{ width: 80 }}
+            style={{ width: 80, marginBottom: 10 }}
             onClick={() => {
               const config = getConfig();
               if (!config) {
