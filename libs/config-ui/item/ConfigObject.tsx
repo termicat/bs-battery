@@ -42,11 +42,9 @@ export default function ConfigObject(props: ConfigObjectProps) {
             key={field + "." + item.field}
             target={value}
             onChange={(subTarget: any, subField: string, subVal: any) => {
-              if (!subTarget) {
-                subTarget = {};
-              }
-              subTarget[subField] = subVal;
-              onChange(target, field, subTarget);
+              const newSubTarget = Object.assign({}, subTarget);
+              newSubTarget[subField] = subVal;
+              onChange(target, field, newSubTarget);
             }}
           ></Component>
         );

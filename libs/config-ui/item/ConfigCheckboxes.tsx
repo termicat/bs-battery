@@ -44,7 +44,6 @@ export default function ConfigCheckboxes(props: ConfigCheckboxesProps) {
         aria-label={tip}
         value={value}
         onChange={(v) => {
-          target[field] = v;
           onChange(target, field, v);
         }}
       />

@@ -93,7 +93,10 @@ export function setSchemeByPath(
     );
     if (!currentNode) {
       console.error(`未找到路径: ${path}`);
-      break;
+      return {
+        scheme,
+        current: currentNode,
+      };
     }
     current = currentNode;
   }

@@ -17,15 +17,18 @@ import {
   SourceType,
   type IConfig,
 } from "@lark-base-open/js-sdk";
-import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
 import BatteryChart from "../../components/BatteryChart";
 import { createChartOption, createScheme } from "../../options";
 import { theme } from "@bc/config";
+import { useDebounce } from "@bc/sdk/useDebounce";
 
 export type ConfigPanelProps = {};
+
+let timer: NodeJS.Timeout;
+let timer2: NodeJS.Timeout;
 
 export default function ConfigPanel(props: ConfigPanelProps) {
   const [t] = useTranslation();
@@ -39,38 +42,41 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
 
   useEffect(() => {
-    async function updatePreview() {
-      const config = getConfig();
-      if (!config) {
-        console.error("config is empty, skip updatePreview");
-        return;
-      }
-      const data = await bsSdk.getPreviewData(config.dataConditions as any);
-      console.log("getPreviewData", data);
-      const chartOption = createChartOption(data, configValue.root);
-      setChartsOption(chartOption);
-      bsSdk.triggerDashRendered();
+    function updatePreview() {
+      timer && clearTimeout(timer);
+      timer = setTimeout(async () => {
+        const config = getConfig();
+        if (!config) {
+          console.error("config is empty, skip updatePreview");
+          return;
+        }
+        const data = await bsSdk.getPreviewData(config.dataConditions as any);
+        console.log("getPreviewData", data);
+        const chartOption = createChartOption(data, configValue.root);
+        setChartsOption(chartOption);
+        bsSdk.triggerDashRendered();
+      }, 300);
     }
     updatePreview();
   }, [configValue]);
 
   useEffect(() => {
     async function initConfigValue() {
-      const config = await bsSdk.getConfig();
-      console.log("getConfig", JSON.stringify(config));
-      const customConfig = config.customConfig;
-      setConfigValue({ root: customConfig });
+      if (timer2) clearTimeout(timer2);
+      timer2 = setTimeout(async () => {
+        const config = await bsSdk.getConfig();
+        console.log("initConfigValue", JSON.stringify(config));
+        const customConfig = config.customConfig;
+        setConfigValue({ root: customConfig });
+      }, 500);
     }
-    if (initd) {
-      console.log("configValue", configValue);
-      initConfigValue();
-    }
-  }, [initd]);
+    initConfigValue();
+  }, []);
 
   useEffect(() => {
     async function init() {
       const tables = await bsSdk.getTableList();
-      console.log("getTableList", tables);
+      console.log("init", tables);
       const o1 = tranBIData(tables);
       const newScheme = createScheme();
       setSchemeByPath(newScheme, "tableId", {
@@ -91,7 +97,6 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       const { tableId } = configValue.root;
       if (tableId) {
         const table = tableId;
-        console.log("tableId", table);
 
         const views = await bsSdk.getViewList(table);
 
@@ -107,6 +112,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           };
         });
         const defaultView = options[0].value;
+
+        console.log("updateViews", options, defaultView);
 
         // console.log("getViewList", views);
         setSchemeByPath(scheme, "dataRange", {
@@ -163,21 +170,23 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           default: fieldValueByOptions[0]?.value,
         });
 
-        setConfigValue({
+        setConfigValue((configValue) => ({
           root: {
             ...configValue.root,
             groupBy: defaultField,
             fieldValueBy: fieldValueByOptions[0]?.value,
           },
-        });
+        }));
         setScheme({ ...scheme });
       }
     }
     updateGroupBy();
   }, [configValue?.root?.dataRange]);
 
-  useEffect(() => {
+  useDebounce(() => {
     async function updatePrimaryKey() {
+      console.log("updatePrimaryKey", configValue.root.groupBy);
+
       const { tableId, dataRange } = configValue.root;
       if (tableId && dataRange) {
         const dataRangeObj = JSON.parse(dataRange);
@@ -211,8 +220,17 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           options,
           default: defaultValue,
         });
-        setConfigValue({
-          root: { primaryKey: defaultValue, ...configValue.root },
+        setConfigValue((configValue) => {
+          console.log("configValue", configValue.root.primaryKey, options);
+
+          if (
+            options.some((item) => item.value === configValue.root.primaryKey)
+          ) {
+            return configValue;
+          }
+          return {
+            root: { ...configValue.root, primaryKey: defaultValue },
+          };
         });
         setScheme({ ...scheme });
       }
@@ -222,6 +240,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
 
   useEffect(() => {
     function updateCheckSplitScheme() {
+      console.log("updateCheckSplitScheme", configValue.root.groupBy);
+
       const { groupBy } = configValue.root;
       if (!groupBy) {
         return;
@@ -234,17 +254,17 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         setSchemeByPath(scheme, "checkSplit", {
           hide: false,
         });
-        setConfigValue({
-          root: { checkSplit: false, ...configValue.root },
-        });
+        setConfigValue((configValue) => ({
+          root: { ...configValue.root, checkSplit: false },
+        }));
         setScheme({ ...scheme });
       } else {
         setSchemeByPath(scheme, "checkSplit", {
           hide: true,
         });
-        setConfigValue({
-          root: { checkSplit: false, ...configValue.root },
-        });
+        setConfigValue((configValue) => ({
+          root: { ...configValue.root, checkSplit: false },
+        }));
         setScheme({ ...scheme });
       }
     }
@@ -253,6 +273,10 @@ export default function ConfigPanel(props: ConfigPanelProps) {
 
   useEffect(() => {
     function updateShowFieldValueBy() {
+      console.log("updateShowFieldValueBy", configValue.root.valueBy, scheme);
+      if (!configValue.root.tableId) {
+        return;
+      }
       if (configValue.root?.valueBy === "fieldValue") {
         setSchemeByPath(scheme, "fieldValueBy", {
           hide: false,
@@ -270,6 +294,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         });
         setScheme({ ...scheme });
       }
+      // setInitd(true);
     }
     updateShowFieldValueBy();
   }, [configValue.root?.valueBy]);
@@ -348,9 +373,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           value={configValue}
           onChange={(target, field, value) => {
             console.log("Root onChange", target, field, value);
-
-            target[field] = value;
-            setConfigValue({ ...target });
+            const newTarget = Object.assign({}, target, { [field]: value });
+            setConfigValue(newTarget);
           }}
         ></ConfigUI>
         <div style={{ height: 200 }}></div>
@@ -364,8 +388,48 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             borderRadius: 4,
           }}
         >
-          {/* <Button style={{ width: 80, marginRight: 10 }} type="tertiary">
-            取消
+          {/* <Button
+            style={{ width: 80, marginRight: 10 }}
+            type="tertiary"
+            onClick={() => {
+              console.log("reset", JSON.stringify(scheme));
+              console.log("reset", JSON.stringify(configValue));
+              // setInitd(true);
+              // setConfigValue({
+              //   root: {
+              //     primaryKey: "已经完成",
+              //     tableId: "tblAg7vCE6tMkLYV",
+              //     dataRange:
+              //       '{"viewId":"vewOCQ5nH7","viewName":"表格","type":"VIEW"}',
+              //     selectTheme: "p2",
+              //     groupBy: "fldSYwcgIs",
+              //     checkSplit: false,
+              //     orderBy: "GROUP",
+              //     orderType: 1,
+              //     valueBy: "recordCount",
+              //     fieldValueBy: "fldU0ufIrj",
+              //     calcType: "MAX",
+              //   },
+              // });
+              setConfigValue({
+                root: {
+                  tableId: "tblAg7vCE6tMkLYV",
+                  dataRange:
+                    '{"viewId":"vewOCQ5nH7","viewName":"表格","type":"VIEW"}',
+                  selectTheme: "p2",
+                  groupBy: "fldSYwcgIs",
+                  checkSplit: false,
+                  orderBy: "GROUP",
+                  orderType: 1,
+                  primaryKey: "已经完成",
+                  valueBy: "recordCount",
+                  fieldValueBy: "fldU0ufIrj",
+                  calcType: "MAX",
+                },
+              });
+            }}
+          >
+            更新
           </Button> */}
           <Button
             type="primary"

@@ -13,22 +13,22 @@ type ConfigUIProps<Value extends Record<string, unknown>> = {
 export default function ConfigUI<Value extends Record<string, unknown>>(
   props: ConfigUIProps<Value>
 ) {
-  useEffect(() => {
-    const defaultValue = getDefaultValue(props.scheme);
-    const newValue: any = props.value[props.scheme.field]
-      ? {
-          [props.scheme.field]: props.value[props.scheme.field],
-        }
-      : {
-          [props.scheme.field]: {},
-        };
-    const mergeValue = deepmerge(defaultValue, newValue[props.scheme.field], {
-      arrayMerge: (dest, source) => source,
-    });
-    newValue[props.scheme.field] = mergeValue;
-    console.log("ConfigUI onChange", defaultValue, mergeValue);
-    props.onChange?.(props.value, props.scheme.field, mergeValue);
-  }, [props.scheme]);
+  // useEffect(() => {
+  //   const defaultValue = getDefaultValue(props.scheme);
+  //   const newValue: any = props.value[props.scheme.field]
+  //     ? {
+  //         [props.scheme.field]: props.value[props.scheme.field],
+  //       }
+  //     : {
+  //         [props.scheme.field]: {},
+  //       };
+  //   const mergeValue = deepmerge(defaultValue, newValue[props.scheme.field], {
+  //     arrayMerge: (dest, source) => source,
+  //   });
+  //   newValue[props.scheme.field] = mergeValue;
+  //   console.log("ConfigUI onChange", defaultValue, mergeValue);
+  //   props.onChange?.(props.value, props.scheme.field, mergeValue);
+  // }, [props.scheme]);
   return (
     <ConfigObject
       label={props.scheme.label}
@@ -38,7 +38,8 @@ export default function ConfigUI<Value extends Record<string, unknown>>(
       options={props.scheme.options}
       target={props.value}
       onChange={(target: any, field: string, val: any) => {
-        props.onChange?.(target, field, val);
+        const newVal = Object.assign({}, val);
+        props.onChange?.(target, field, newVal);
       }}
     ></ConfigObject>
   );

@@ -33,7 +33,6 @@ export default function ConfigSelectTabs(props: ConfigSelectTabsProps) {
       <Label>{label}</Label>
       <RadioGroup
         onChange={(e) => {
-          target[field] = e.target.value;
           onChange(target, field, e.target.value);
         }}
         value={value}

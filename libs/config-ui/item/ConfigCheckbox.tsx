@@ -34,7 +34,6 @@ export default function ConfigCheckbox(props: ConfigCheckboxProps) {
         <Checkbox
           checked={value}
           onChange={(e) => {
-            target[field] = e.target.checked;
             onChange(target, field, e.target.checked);
           }}
           aria-label={label}
