@@ -26,6 +26,7 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
     options,
     portal,
     style = {},
+    hide,
   } = props;
   const ref = useRef<any>();
   const [visible, setVisible] = useState(0);
@@ -65,7 +66,7 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
     );
   };
 
-  return !visible ? (
+  return !visible || hide ? (
     <></>
   ) : (
     mountPortal(

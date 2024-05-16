@@ -28,6 +28,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
     onChange,
     target,
     options = [],
+    hide,
   } = props;
 
   // console.log("ConfigSelect", field, value, target);
@@ -40,7 +41,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
   const renderSelectedItem = (p: any) => {
     return (
       <div>
-        <div>{p.label === p.value ? "" : p.label}</div>
+        <div>{p.label === p.value ? p.label : p.label}</div>
       </div>
     );
   };
@@ -68,7 +69,9 @@ export default function ConfigSelect(props: ConfigSelectProps) {
     );
   };
 
-  return (
+  return hide ? (
+    <></>
+  ) : (
     <div style={{ paddingTop: "16px" }}>
       <div
         style={{

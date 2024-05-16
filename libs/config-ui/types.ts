@@ -6,6 +6,7 @@ export type Node<T extends NodeTypes> = {
   label?: string;
   tip?: string;
   default?: any;
+  hide?: boolean;
   options?: NodeOptions<T>;
   style?: React.CSSProperties;
   // slots?: Record<string, any>;

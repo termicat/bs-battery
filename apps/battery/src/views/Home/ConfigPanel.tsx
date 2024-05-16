@@ -3,7 +3,6 @@ import { ConfigUI } from "@bc/config-ui";
 import { Button } from "@douyinfe/semi-ui";
 import type { Scheme } from "@bc/config-ui";
 import { tranBIData } from "@bc/helper/config-ui";
-import { createScheme } from "@bc/config-ui";
 import {
   getDefaultValue,
   getSchemeByPath,
@@ -14,6 +13,7 @@ import {
   FieldType,
   GroupMode,
   ORDER,
+  Rollup,
   SourceType,
   type IConfig,
 } from "@lark-base-open/js-sdk";
@@ -22,6 +22,7 @@ import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
 import BatteryChart from "../../components/BatteryChart";
+import { createScheme } from "../../options";
 
 export type ConfigPanelProps = {};
 
@@ -36,43 +37,47 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   const [echartsOption, setEchartsOption] = useState({} as any);
   const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
 
-  useEffect(() => {
-    async function updatePreview() {
-      const config = getConfig();
-      if (!config) {
-        return;
-      }
-      const data = await bsSdk.getPreviewData(config.dataConditions as any);
-      console.log("getPreviewData", data);
-      setEchartsOption(createEChartsOption(data, config.customConfig));
-      bsSdk.triggerDashRendered();
-    }
-    updatePreview();
-  }, [configValue]);
+  // useEffect(() => {
+  //   async function updatePreview() {
+  //     const config = getConfig();
+  //     if (!config) {
+  //       return;
+  //     }
+  //     const data = await bsSdk.getPreviewData(config.dataConditions as any);
+  //     console.log("getPreviewData", data);
+  //     setEchartsOption(createEChartsOption(data, config.customConfig));
+  //     bsSdk.triggerDashRendered();
+  //   }
+  //   updatePreview();
+  // }, [configValue]);
 
-  useEffect(() => {
-    async function initConfigValue() {
-      const config = await bsSdk.getConfig();
-      console.log("getConfig", config);
-      const customConfig = config.customConfig;
-      setConfigValue({ root: customConfig });
-    }
-    if (initd) {
-      console.log("configValue", configValue);
-      initConfigValue();
-    }
-  }, [initd]);
+  // useEffect(() => {
+  //   async function initConfigValue() {
+  //     const config = await bsSdk.getConfig();
+  //     console.log("getConfig", config);
+  //     const customConfig = config.customConfig;
+  //     setConfigValue({ root: customConfig });
+  //   }
+  //   if (initd) {
+  //     console.log("configValue", configValue);
+  //     initConfigValue();
+  //   }
+  // }, [initd]);
 
   useEffect(() => {
     async function init() {
       const tables = await bsSdk.getTableList();
       console.log("getTableList", tables);
       const o1 = tranBIData(tables);
-      const newScheme = createScheme("fieldCategory");
+      const newScheme = createScheme();
       setSchemeByPath(newScheme, "tableId", {
         default: o1[0].value,
         options: o1,
       });
+      const defaultConfigValue = getDefaultValue(newScheme);
+      setConfigValue({ root: defaultConfigValue });
+      console.log("defaultConfigValue", defaultConfigValue);
+
       setScheme(newScheme);
     }
     init();
@@ -116,173 +121,144 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   }, [configValue?.root?.tableId]);
 
   useEffect(() => {
-    async function updateFields() {
-      console.log("updateFields", configValue.root.dataRange);
-      if (!configValue.root.dataRange) {
+    async function updateGroupBy() {
+      const { tableId, dataRange } = configValue.root;
+      if (tableId && dataRange) {
+        const dataRangeObj = JSON.parse(dataRange);
+        const fields = await bsSdk.getFiledListByViewId(
+          tableId,
+          dataRangeObj.viewId
+        );
+        const options = tranBIData(fields).map((field) => {
+          fieldTypeMapRef.current[field.value] = field.raw;
+          return field;
+        });
+        const defaultField = options[0].value;
+        setSchemeByPath(scheme, "groupBy", {
+          options,
+          default: defaultField,
+        });
+
+        const fieldValueByOptions = options.filter((item) =>
+          [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
+            item.type
+          )
+        );
+        setSchemeByPath(scheme, "fieldValueBy", {
+          options: fieldValueByOptions,
+          default: fieldValueByOptions[0]?.value,
+        });
+
+        setConfigValue({
+          root: {
+            ...configValue.root,
+            groupBy: defaultField,
+            fieldValueBy: fieldValueByOptions[0]?.value,
+          },
+        });
+        setScheme({ ...scheme });
+      }
+    }
+    updateGroupBy();
+  }, [configValue?.root?.dataRange]);
+
+  useEffect(() => {
+    async function updatePrimaryKey() {
+      const { tableId, dataRange } = configValue.root;
+      if (tableId && dataRange) {
+        const dataRangeObj = JSON.parse(dataRange);
+        const data = await bsSdk.getPreviewData({
+          tableId,
+          dataRange: dataRangeObj,
+          groups: [
+            {
+              fieldId: configValue.root.groupBy,
+              sort: {
+                order: ORDER.ASCENDING,
+                sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+              },
+              mode: GroupMode.ENUMERATED,
+            },
+          ],
+        });
+        console.log("data:", data);
+
+        const options = data
+          .slice(1)
+          .map((field) => {
+            return {
+              value: field[0].text,
+              label: field[0].text,
+            };
+          })
+          .filter((item) => item.label);
+        const defaultValue = options?.[0]?.value;
+        setSchemeByPath(scheme, "primaryKey", {
+          options,
+          default: defaultValue,
+        });
+        setConfigValue({
+          root: { ...configValue.root, primaryKey: defaultValue },
+        });
+        setScheme({ ...scheme });
+      }
+    }
+    updatePrimaryKey();
+  }, [configValue?.root?.groupBy]);
+
+  useEffect(() => {
+    function updateCheckSplitScheme() {
+      const { groupBy } = configValue.root;
+      if (!groupBy) {
         return;
       }
-      const dataRange = JSON.parse(configValue.root.dataRange);
-      const fields = await bsSdk.getFiledListByViewId(
-        configValue.root.tableId,
-        dataRange.viewId
-      );
-      console.log("getFieldList", fields);
-
-      for (let i = 0; i < fields.length; i++) {
-        const field = fields[i];
-        fieldTypeMapRef.current[field.id] = field;
-      }
-
-      const fieldsOptions = tranBIData(fields);
-
-      if (configValue?.root?.mapType === "fieldCategory") {
-        setSchemeByPath(scheme, "mapOptions.cates", {
-          options: {
-            list: fieldsOptions.filter(
-              (field) => field.type === FieldType.Number
-            ),
-          },
+      const field = fieldTypeMapRef.current[groupBy];
+      if ([FieldType.MultiSelect, FieldType.User].includes(field.type)) {
+        setSchemeByPath(scheme, "checkSplit", {
+          hide: false,
         });
-        setSchemeByPath(scheme, "mapOptions.series", {
-          options: fieldsOptions,
-          default: fieldsOptions[0].value,
-        });
-        const mapOptions = getSchemeByPath(scheme, "mapOptions");
         setConfigValue({
-          root: {
-            ...configValue.root,
-            mapOptions: getDefaultValue(mapOptions),
-          },
+          root: { ...configValue.root, checkSplit: false },
         });
-      } else {
-        setSchemeByPath(scheme, "mapOptions.cate", {
-          options: fieldsOptions,
-          default: fieldsOptions[0].value,
-        });
-        setSchemeByPath(scheme, "mapOptions.series", {
-          options: {
-            list: fieldsOptions.filter((item) =>
-              [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
-                item.type
-              )
-            ),
-            itemSelectOptions: [
-              {
-                label: t("Max"),
-                value: "MAX",
-              },
-              {
-                label: t("Min"),
-                value: "MIN",
-              },
-              {
-                label: t("Sum"),
-                value: "SUM",
-              },
-              {
-                label: t("Average"),
-                value: "AVERAGE",
-              },
-            ],
-          },
-          default: [],
-        });
-        const mapOptions = getSchemeByPath(scheme, "mapOptions");
-        setConfigValue({
-          root: {
-            ...configValue.root,
-            mapOptions: getDefaultValue(mapOptions),
-          },
-        });
-      }
-
-      setScheme({ ...scheme });
-      setInitd(true);
-    }
-    updateFields();
-  }, [configValue?.root?.dataRange, configValue?.root?.mapType]);
-
-  useEffect(() => {
-    setScheme((oldScheme) => {
-      const newScheme = oldScheme;
-      const mapOptions = getSchemeByPath(
-        createScheme(configValue.root.mapType),
-        "mapOptions"
-      );
-      setConfigValue({
-        root: {
-          ...configValue.root,
-          mapOptions: getDefaultValue(mapOptions),
-        },
-      });
-      setSchemeByPath(newScheme, "mapOptions", mapOptions);
-      return newScheme;
-    });
-  }, [configValue?.root?.mapType]);
-
-  useEffect(() => {
-    const muliType = [FieldType.MultiSelect];
-    if (configValue.root.mapType === "fieldCategory") {
-      const fieldId = configValue?.root?.mapOptions?.series;
-      const fieldMeta = fieldTypeMapRef.current[fieldId] as any;
-      if (
-        muliType.includes(fieldMeta?.type) ||
-        fieldMeta?.raw?.property?.multiple
-      ) {
-        const node = getSchemeByPath(scheme, "mapOptions");
-
-        node.properties[2] = {
-          type: "checkbox",
-          field: "checkSplit",
-          label: t("Polynomial Split Statistics"),
-          default: false,
-          portal: "#series-bottom",
-        };
-        node.properties.length = 3;
-
         setScheme({ ...scheme });
       } else {
-        const node = getSchemeByPath(scheme, "mapOptions");
-        if (node) {
-          node.properties.length = 2;
-          setScheme({ ...scheme });
-        }
-      }
-    } else {
-      const fieldId = configValue?.root?.mapOptions?.cate;
-      const fieldMeta = fieldTypeMapRef.current[fieldId] as any;
-
-      if (
-        muliType.includes(fieldMeta?.type) ||
-        fieldMeta?.raw?.property?.multiple
-      ) {
-        const node = getSchemeByPath(scheme, "mapOptions");
-
-        node.properties[2] = {
-          type: "checkbox",
-          field: "checkSplit",
-          label: t("Polynomial Split Statistics"),
-          default: false,
-          portal: "#cate-bottom",
-        };
-        node.properties.length = 3;
-
+        setSchemeByPath(scheme, "checkSplit", {
+          hide: true,
+        });
+        setConfigValue({
+          root: { ...configValue.root, checkSplit: false },
+        });
         setScheme({ ...scheme });
-      } else {
-        const node = getSchemeByPath(scheme, "mapOptions");
-        if (node) {
-          node.properties.length = 2;
-          setScheme({ ...scheme });
-        }
       }
     }
-  }, [
-    configValue?.root?.mapOptions?.cate,
-    configValue?.root?.mapOptions?.series,
-  ]);
+    updateCheckSplitScheme();
+  }, [configValue?.root?.groupBy]);
+
+  useEffect(() => {
+    function updateShowFieldValueBy() {
+      if (configValue.root?.valueBy === "fieldValue") {
+        setSchemeByPath(scheme, "fieldValueBy", {
+          hide: false,
+        });
+        setSchemeByPath(scheme, "calcType", {
+          hide: false,
+        });
+        setScheme({ ...scheme });
+      } else {
+        setSchemeByPath(scheme, "fieldValueBy", {
+          hide: true,
+        });
+        setSchemeByPath(scheme, "calcType", {
+          hide: true,
+        });
+        setScheme({ ...scheme });
+      }
+    }
+    updateShowFieldValueBy();
+  }, [configValue.root?.valueBy]);
 
   const getConfig = () => {
-    if (!configValue.root.dataRange) {
+    if (!configValue.root.dataRange || !configValue.root.primaryKey) {
       return;
     }
     if (configValue.root.mapType === "fieldCategory") {
@@ -292,12 +268,12 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           dataRange: JSON.parse(configValue.root.dataRange),
           groups: [
             {
-              fieldId: configValue.root.mapOptions.series,
+              fieldId: configValue.root.groupBy,
               sort: {
-                order: ORDER.ASCENDING,
-                sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+                order: configValue.root.orderBy,
+                sortType: configValue.root.orderType,
               },
-              mode: configValue.root.mapOptions.checkSplit
+              mode: configValue.root.checkSplit
                 ? GroupMode.ENUMERATED
                 : GroupMode.INTEGRATED,
             },
@@ -306,37 +282,6 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             return {
               fieldId: cate.value,
               rollup: configValue.root.mapOptions.calc,
-            };
-          }),
-        } as any,
-        customConfig: configValue.root,
-      };
-      return config;
-    } else if (configValue.root.mapType === "recordCategory") {
-      if (!configValue.root.mapOptions.series) {
-        console.error("series is empty");
-        return;
-      }
-      const config: IConfig = {
-        dataConditions: {
-          tableId: configValue.root.tableId,
-          dataRange: JSON.parse(configValue.root.dataRange),
-          groups: [
-            {
-              fieldId: configValue.root.mapOptions.cate,
-              sort: {
-                order: ORDER.ASCENDING,
-                sortType: DATA_SOURCE_SORT_TYPE.VIEW,
-              },
-              mode: configValue.root.mapOptions.checkSplit
-                ? GroupMode.ENUMERATED
-                : GroupMode.INTEGRATED,
-            },
-          ],
-          series: configValue.root.mapOptions.series.map((series: any) => {
-            return {
-              fieldId: series.value,
-              rollup: series.select,
             };
           }),
         } as any,

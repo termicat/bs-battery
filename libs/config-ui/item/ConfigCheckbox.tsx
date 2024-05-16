@@ -21,23 +21,28 @@ export default function ConfigCheckbox(props: ConfigCheckboxProps) {
     target,
     options,
     portal,
+    hide,
   } = props;
   const ref = useRef<any>();
 
-  return mountPortal(
-    portal,
-    <div style={{ marginTop: 5 }}>
-      <Checkbox
-        checked={value}
-        onChange={(e) => {
-          target[field] = e.target.checked;
-          onChange(target, field, e.target.checked);
-        }}
-        aria-label={label}
-        style={{ fontSize: "12px", color: "#333" }}
-      >
-        {label}
-      </Checkbox>
-    </div>
+  return hide ? (
+    <></>
+  ) : (
+    mountPortal(
+      portal,
+      <div style={{ marginTop: 5 }}>
+        <Checkbox
+          checked={value}
+          onChange={(e) => {
+            target[field] = e.target.checked;
+            onChange(target, field, e.target.checked);
+          }}
+          aria-label={label}
+          style={{ fontSize: "12px", color: "#333" }}
+        >
+          {label}
+        </Checkbox>
+      </div>
+    )
   );
 }
