@@ -10,6 +10,7 @@ export type BatteryChartProps = {
   }[];
 
   totalLength?: number;
+  style?: React.CSSProperties;
 };
 
 export default function BatteryChart(props: BatteryChartProps) {
@@ -20,14 +21,17 @@ export default function BatteryChart(props: BatteryChartProps) {
   });
   return (
     <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        justifyContent: "center",
-        alignItems: "center",
-        width: "100%",
-        height: "100%",
-      }}
+      style={Object.assign(
+        {
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          width: "100%",
+          height: "100%",
+        },
+        props?.style as any
+      )}
     >
       <div
         style={{
@@ -45,7 +49,7 @@ export default function BatteryChart(props: BatteryChartProps) {
               display: "flex",
               width: "100%",
               height: "100%",
-              borderRadius: 5,
+              borderRadius: "1vmin",
               overflow: "hidden",
             }}
           >
@@ -79,15 +83,15 @@ export default function BatteryChart(props: BatteryChartProps) {
           style={{
             marginLeft: "2%",
             whiteSpace: "nowrap",
-            fontSize: "1.7vw",
+            fontSize: "4vmax",
           }}
         >
           {props.list[0].label}{" "}
           {percent[0] > 0 ? `${percent[0].toFixed(1)}%` : "N/A"}
         </Title>
       </div>
-      <div>
-        <div style={{ display: "flex", marginTop: "0.8vw" }}>
+      <div style={{width: '100%'}}>
+        <div style={{ display: "flex", marginTop: "1vmax", width: '100%', justifyContent: 'center' }}>
           {props.list.map((item, index) => {
             return (
               <div
@@ -100,16 +104,14 @@ export default function BatteryChart(props: BatteryChartProps) {
               >
                 <div
                   style={{
-                    width: "1vw",
-                    height: "1vw",
+                    flexShrink: 0,
+                    width: "2.5vmax",
+                    height: "2.5vmax",
                     borderRadius: "50%",
                     background: item.color,
                   }}
                 ></div>
-                <Title
-                  heading={6}
-                  style={{ marginLeft: "0.5vw", fontSize: "1vw" }}
-                >
+                <Title heading={6} style={{ fontSize: "2.5vmax", marginLeft: '10%' }}>
                   {item.label}
                 </Title>
               </div>
@@ -125,8 +127,8 @@ const BatCozy = styled.div`
   width: 1vw;
   height: 20%;
   background: #eee;
-  border-bottom-right-radius: 20%;
-  border-top-right-radius: 20%;
+  border-bottom-right-radius: 1vmin;
+  border-top-right-radius: 1vmin;
 `;
 
 const BatWrapper = styled.div`
@@ -134,7 +136,7 @@ const BatWrapper = styled.div`
   width: 100%;
   height: 100%;
   background: #eee;
-  border-radius: 5%;
+  border-radius: 1vmax;
   padding: 2%;
 `;
 

@@ -17,11 +17,11 @@ import {
   SourceType,
   type IConfig,
 } from "@lark-base-open/js-sdk";
-import ECharts from "@bc/echarts/index";
 import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
+import BatteryChart from "../../components/BatteryChart";
 
 export type ConfigPanelProps = {};
 
@@ -357,8 +357,35 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         // marginTop: 50,
       }}
     >
-      <div style={{ flex: 1, padding: 20 }}>
-        <ECharts option={echartsOption}></ECharts>
+      <div
+        style={{
+          flex: 1,
+          padding: 20,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <BatteryChart
+          style={{ width: "80%", height: "20vw" }}
+          list={[
+            {
+              label: "Green",
+              value: 20,
+              color: "green",
+            },
+            {
+              label: "Red",
+              value: 30,
+              color: "red",
+            },
+            {
+              label: "Blue",
+              value: 50,
+              color: "blue",
+            },
+          ]}
+        ></BatteryChart>
       </div>
       <div
         style={{

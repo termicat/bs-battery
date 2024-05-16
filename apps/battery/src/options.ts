@@ -29,7 +29,12 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
         type: "select-theme",
         default: "p1",
         // tip: "这是一个标题",
-        options: theme.light,
+        options: theme.light.map((item: any) => {
+          return {
+            label: item.label.slice(0, 3),
+            value: item.value,
+          };
+        }),
       },
       {
         type: "line",

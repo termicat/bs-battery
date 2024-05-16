@@ -3,7 +3,7 @@ import Demo from "./views/Demo";
 import Home from "./views/Home";
 
 function App() {
-  return <Demo></Demo>;
+  return <Home></Home>;
 }
 
 export default App;
