@@ -319,8 +319,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           {
             fieldId: configValue.root.groupBy,
             sort: {
-              order: configValue.root.orderBy,
-              sortType: configValue.root.orderType,
+              order: ORDER.ASCENDING,
+              sortType: DATA_SOURCE_SORT_TYPE.VIEW,
             },
             mode: configValue.root.checkSplit
               ? GroupMode.ENUMERATED

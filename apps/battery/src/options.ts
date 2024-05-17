@@ -56,7 +56,7 @@ export const createScheme = () => {
       },
       {
         label: t("Order By"),
-        field: "orderBy",
+        field: "orderType",
         type: "select-tabs",
         options: [
           {
@@ -76,7 +76,7 @@ export const createScheme = () => {
       },
       {
         label: t("Order Type"),
-        field: "orderType",
+        field: "orderBy",
         type: "select-tabs",
         options: [
           {
@@ -170,15 +170,15 @@ export function createChartOption(data: any, configValueRoot: any) {
       };
     }
   );
-  if (configValueRoot.orderBy === DATA_SOURCE_SORT_TYPE.VALUE) {
+  if (configValueRoot.orderType === DATA_SOURCE_SORT_TYPE.VALUE) {
     chartOption.sort((a: { value: any }, b: { value: any }) => {
-      return configValueRoot.orderType === ORDER.ASCENDING
+      return configValueRoot.orderBy === ORDER.ASCENDING
         ? a.value - b.value
         : b.value - a.value;
     });
-  } else if (configValueRoot.orderBy === DATA_SOURCE_SORT_TYPE.GROUP) {
+  } else if (configValueRoot.orderType === DATA_SOURCE_SORT_TYPE.GROUP) {
     chartOption.sort((a: { label: any }, b: { label: any }) => {
-      return configValueRoot.orderType === ORDER.ASCENDING
+      return configValueRoot.orderBy === ORDER.ASCENDING
         ? a.label.localeCompare(b.label)
         : b.label.localeCompare(a.label);
     });
