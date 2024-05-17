@@ -325,7 +325,11 @@ importers:
         specifier: ^9.1.1
         version: 9.1.1(react-dom@18.3.1)(react@18.3.1)
 
-  libs/helper: {}
+  libs/helper:
+    dependencies:
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
 
   libs/i18n:
     dependencies:

@@ -23,7 +23,7 @@ import type { BIField } from "@bc/sdk/BsSdk";
 import BatteryChart from "../../components/BatteryChart";
 import { createChartOption, createScheme } from "../../options";
 import { theme } from "@bc/config";
-import { useDebounceEffect } from "@bc/sdk/useDebounce";
+import { useDebounceEffect } from "@bc/helper/useDebounce";
 
 export type ConfigPanelProps = {};
 

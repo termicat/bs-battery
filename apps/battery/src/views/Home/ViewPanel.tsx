@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import { bsSdk } from "./factory";
-import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import BatteryChart from "../../components/BatteryChart";
 import { createChartOption } from "../../options";
-import { useDebounceCallback } from "@bc/sdk/useDebounce";
+import { useDebounceCallback } from "@bc/helper/useDebounce";
 
 type ViewPanelProps = { themeMode?: any };
 
