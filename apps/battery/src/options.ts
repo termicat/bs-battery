@@ -170,6 +170,20 @@ export function createChartOption(data: any, configValueRoot: any) {
       };
     }
   );
+  if (configValueRoot.orderBy === DATA_SOURCE_SORT_TYPE.VALUE) {
+    chartOption.sort((a: { value: any }, b: { value: any }) => {
+      return configValueRoot.orderType === ORDER.ASCENDING
+        ? a.value - b.value
+        : b.value - a.value;
+    });
+  } else if (configValueRoot.orderBy === DATA_SOURCE_SORT_TYPE.GROUP) {
+    chartOption.sort((a: { label: any }, b: { label: any }) => {
+      return configValueRoot.orderType === ORDER.ASCENDING
+        ? a.label.localeCompare(b.label)
+        : b.label.localeCompare(a.label);
+    });
+  }
+
   const primaryKeyIndex = chartOption.findIndex((item: { label: any }) => {
     return item.label === configValueRoot.primaryKey;
   });
