@@ -23,7 +23,7 @@ import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
-import { useDebounce } from "@bc/sdk/useDebounce";
+import { useDebounceEffect } from "@bc/sdk/useDebounce";
 
 export type ConfigPanelProps = {};
 
@@ -38,7 +38,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   const [echartsOption, setEchartsOption] = useState({} as any);
   const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
 
-  useDebounce(() => {
+  useDebounceEffect(() => {
     async function updatePreview() {
       console.log("updatePreview", configValue.root);
       const config = getConfig();

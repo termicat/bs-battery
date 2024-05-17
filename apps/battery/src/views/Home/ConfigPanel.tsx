@@ -23,7 +23,7 @@ import type { BIField } from "@bc/sdk/BsSdk";
 import BatteryChart from "../../components/BatteryChart";
 import { createChartOption, createScheme } from "../../options";
 import { theme } from "@bc/config";
-import { useDebounce } from "@bc/sdk/useDebounce";
+import { useDebounceEffect } from "@bc/sdk/useDebounce";
 
 export type ConfigPanelProps = {};
 
@@ -189,7 +189,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     updateGroupBy();
   }, [configValue?.root?.dataRange]);
 
-  useDebounce(() => {
+  useDebounceEffect(() => {
     async function updatePrimaryKey() {
       console.log("updatePrimaryKey", configValue.root.groupBy);
 

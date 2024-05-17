@@ -3,19 +3,23 @@ import { bsSdk } from "./factory";
 import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import BatteryChart from "../../components/BatteryChart";
 import { createChartOption } from "../../options";
+import { useDebounceCallback } from "@bc/sdk/useDebounce";
 
 type ViewPanelProps = { themeMode?: any };
 
 export default function ViewPanel(props: ViewPanelProps) {
   const [echartsOption, setEchartsOption] = useState([] as any);
 
-  async function updateEcharts(e?: any) {
+  const updateEcharts = useDebounceCallback(async function updateEcharts(
+    e?: any
+  ) {
     const config = await bsSdk.getConfig();
     const data = await bsSdk.getData();
     console.log("getPreviewData", config, data, e);
     setEchartsOption(createChartOption(data, config.customConfig));
     bsSdk.triggerDashRendered();
-  }
+  },
+  100);
 
   useEffect(() => {
     updateEcharts();
