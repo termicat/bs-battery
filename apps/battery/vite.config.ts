@@ -5,6 +5,13 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig({
   preview: {
     port: 3000,
+    proxy: {
+      "/battery": {
+        target: "http://localhost:3000",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/battery/, ""),
+      },
+    },
   },
   plugins: [react()],
 });
