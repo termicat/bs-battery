@@ -23,7 +23,7 @@ import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
-import { useDebounceEffect } from "@bc/sdk/useDebounce";
+import { useDebounceEffect } from "@bc/helper/useDebounce";
 
 export type ConfigPanelProps = {};
 
