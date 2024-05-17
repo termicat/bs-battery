@@ -119,7 +119,7 @@ export default function BatteryChart(props: BatteryChartProps) {
                     height: "2vmax",
                     borderRadius: "50%",
                     background:
-                      item.color || "var(--semi-color-tertiary-light-default)",
+                      item.color || "var(--semi-color-tertiary-light-hover)",
                   }}
                 ></div>
                 <Title
@@ -144,7 +144,7 @@ export default function BatteryChart(props: BatteryChartProps) {
 const BatCozy = styled.div`
   width: 1vw;
   height: 20%;
-  background: var(--semi-color-tertiary-light-default);
+  background: var(--semi-color-tertiary-light-hover);
   border-bottom-right-radius: 1vmin;
   border-top-right-radius: 1vmin;
 `;
@@ -153,7 +153,7 @@ const BatWrapper = styled.div`
   display: flex;
   width: 100%;
   height: 100%;
-  background: var(--semi-color-tertiary-light-default);
+  background: var(--semi-color-tertiary-light-hover);
   border-radius: 1vmax;
   padding: 2%;
 `;
