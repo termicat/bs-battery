@@ -361,6 +361,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          overflow: "hidden",
         }}
       >
         <BatteryChart
