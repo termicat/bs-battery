@@ -2,7 +2,9 @@
   "name": "Nextjs Template",
   "version": "0.1.0",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "build:me": "pnpm run --filter \"apps-*\" build:me"
+  },
   "dependencies": {},
   "devDependencies": {
     "@jest/globals": "^29.7.0",
