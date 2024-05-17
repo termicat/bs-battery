@@ -6,15 +6,11 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   --split-line-color: #1f232931;
   --split-line-size: 0.5px;
+  --feishu-color-bg: #fff;
 }
 
 * {
   box-sizing: border-box;
-}
-
-/* hide error overlay, https://github.com/vercel/next.js/discussions/13387#discussioncomment-5694715 */
-nextjs-portal {
-  display: none;
 }
 
 body[theme-mode="dark"] {
@@ -22,6 +18,7 @@ body[theme-mode="dark"] {
   background: transparent !important;
   background-image: none !important;
   --split-line-color: #CFCFCF31;
+  --feishu-color-bg: #2a2a2a;
 }
 
 .semi-radio-addon-buttonRadio {
