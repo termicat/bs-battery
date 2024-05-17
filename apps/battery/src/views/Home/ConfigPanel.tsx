@@ -53,8 +53,10 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         const data = await bsSdk.getPreviewData(config.dataConditions as any);
         console.log(
           "getPreviewData",
-          JSON.stringify(config.dataConditions),
-          data
+          JSON.stringify({
+            dataConditions: config.dataConditions,
+            data,
+          })
         );
         const chartOption = createChartOption(data, configValue.root);
         setChartsOption(chartOption);
