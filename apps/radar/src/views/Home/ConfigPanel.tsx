@@ -388,7 +388,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             justifyContent: "end",
             background: "#fff",
             borderRadius: 4,
-            width: 340,
+            width: 339,
             padding: "10px 20px",
           }}
         >

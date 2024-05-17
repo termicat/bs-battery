@@ -51,7 +51,11 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           return;
         }
         const data = await bsSdk.getPreviewData(config.dataConditions as any);
-        console.log("getPreviewData", data);
+        console.log(
+          "getPreviewData",
+          JSON.stringify(config.dataConditions),
+          data
+        );
         const chartOption = createChartOption(data, configValue.root);
         setChartsOption(chartOption);
         bsSdk.triggerDashRendered();
@@ -387,7 +391,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             justifyContent: "end",
             background: "#fff",
             borderRadius: 4,
-            width: 340,
+            width: 339,
             padding: "10px 20px",
           }}
         >
