@@ -91,6 +91,8 @@ export function createEChartsOption(data: any[][], configRoot: any) {
               name: item.text,
               label: when(configRoot.chartOptions.includes("showDataLabel"), {
                 show: true,
+                textBorderWidth: 0,
+                textBorderColor: "rgba(0,0,0,0)",
               }),
             };
           }),
@@ -137,6 +139,8 @@ export function createEChartsOption(data: any[][], configRoot: any) {
               name: item[0].text,
               label: when(configRoot.chartOptions.includes("showDataLabel"), {
                 show: true,
+                textBorderWidth: 0,
+                textBorderColor: "rgba(0,0,0,0)",
               }),
             };
           }),
