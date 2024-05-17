@@ -165,7 +165,7 @@ export function createChartOption(data: any, configValueRoot: any) {
     ) => {
       return {
         label: item[0].text,
-        value: item[1].value,
+        value: item[1]?.value,
         color: themeOption?.label[index],
       };
     }

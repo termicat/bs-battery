@@ -156,6 +156,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           tableId,
           dataRangeObj.viewId
         );
+        console.log("getFiledListByViewId", fields);
+
         const options = tranBIData(fields).map((field) => {
           fieldTypeMapRef.current[field.value] = field.raw;
           return field;
@@ -334,7 +336,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
                   rollup: configValue.root.calcType,
                 },
               ]
-            : undefined,
+            : "COUNTA",
       } as any,
       customConfig: configValue.root,
     };
