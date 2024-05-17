@@ -386,7 +386,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             right: 0,
             display: "flex",
             justifyContent: "end",
-            background: "#fff",
+            background: "var(--semi-color-bg-0)",
             borderRadius: 4,
             width: 339,
             padding: "10px 20px",

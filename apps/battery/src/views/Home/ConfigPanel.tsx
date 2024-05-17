@@ -391,55 +391,12 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             right: 0,
             display: "flex",
             justifyContent: "end",
-            background: "#fff",
+            background: "var(--semi-color-bg-0)",
             borderRadius: 4,
             width: 339,
             padding: "10px 20px",
           }}
         >
-          {/* <Button
-            style={{ width: 80, marginRight: 10 }}
-            type="tertiary"
-            onClick={() => {
-              console.log("reset", JSON.stringify(scheme));
-              console.log("reset", JSON.stringify(configValue));
-              // setInitd(true);
-              // setConfigValue({
-              //   root: {
-              //     primaryKey: "已经完成",
-              //     tableId: "tblAg7vCE6tMkLYV",
-              //     dataRange:
-              //       '{"viewId":"vewOCQ5nH7","viewName":"表格","type":"VIEW"}',
-              //     selectTheme: "p2",
-              //     groupBy: "fldSYwcgIs",
-              //     checkSplit: false,
-              //     orderBy: "GROUP",
-              //     orderType: 1,
-              //     valueBy: "recordCount",
-              //     fieldValueBy: "fldU0ufIrj",
-              //     calcType: "MAX",
-              //   },
-              // });
-              setConfigValue({
-                root: {
-                  tableId: "tblAg7vCE6tMkLYV",
-                  dataRange:
-                    '{"viewId":"vewOCQ5nH7","viewName":"表格","type":"VIEW"}',
-                  selectTheme: "p2",
-                  groupBy: "fldSYwcgIs",
-                  checkSplit: false,
-                  orderBy: "GROUP",
-                  orderType: 1,
-                  primaryKey: "已经完成",
-                  valueBy: "recordCount",
-                  fieldValueBy: "fldU0ufIrj",
-                  calcType: "MAX",
-                },
-              });
-            }}
-          >
-            更新
-          </Button> */}
           <Button
             type="primary"
             theme="solid"
