@@ -14,6 +14,7 @@ import {
   FieldType,
   GroupMode,
   ORDER,
+  Rollup,
   SourceType,
   type IConfig,
 } from "@lark-base-open/js-sdk";
@@ -22,6 +23,7 @@ import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
+import { useDebounce } from "@bc/sdk/useDebounce";
 
 export type ConfigPanelProps = {};
 
@@ -36,19 +38,22 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   const [echartsOption, setEchartsOption] = useState({} as any);
   const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
 
-  useEffect(() => {
+  useDebounce(() => {
     async function updatePreview() {
+      console.log("updatePreview", configValue.root);
       const config = getConfig();
       if (!config) {
+        console.error("config is empty, skip updatePreview");
         return;
       }
+      console.log("getConfig", config);
       const data = await bsSdk.getPreviewData(config.dataConditions as any);
       console.log("getPreviewData", data);
       setEchartsOption(createEChartsOption(data, config.customConfig));
       bsSdk.triggerDashRendered();
     }
     updatePreview();
-  }, [configValue]);
+  }, [configValue.root]);
 
   useEffect(() => {
     async function initConfigValue() {
@@ -66,7 +71,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   useEffect(() => {
     async function init() {
       const tables = await bsSdk.getTableList();
-      console.log("getTableList", tables);
+      console.log("init", tables);
       const o1 = tranBIData(tables);
       const newScheme = createScheme("fieldCategory");
       setSchemeByPath(newScheme, "tableId", {
@@ -74,16 +79,20 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         options: o1,
       });
       setScheme(newScheme);
+      setConfigValue({
+        root: getDefaultValue(newScheme),
+      });
     }
     init();
   }, []);
 
   useEffect(() => {
     async function updateViews() {
+      console.log("updateViews", configValue.root.tableId);
+
       const { tableId } = configValue.root;
       if (tableId) {
         const table = tableId;
-        console.log("tableId", table);
 
         const views = await bsSdk.getViewList(table);
 
@@ -106,9 +115,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           default: defaultView,
         });
 
-        setConfigValue({
+        setConfigValue((configValue) => ({
           root: { ...configValue.root, dataRange: defaultView },
-        });
+        }));
         setScheme({ ...scheme });
       }
     }
@@ -136,36 +145,47 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       const fieldsOptions = tranBIData(fields);
 
       if (configValue?.root?.mapType === "fieldCategory") {
+        const list = fieldsOptions.filter((item) =>
+          [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
+            item.type
+          )
+        );
         setSchemeByPath(scheme, "mapOptions.cates", {
           options: {
-            list: fieldsOptions.filter(
-              (field) => field.type === FieldType.Number
-            ),
+            list,
           },
+          default: list.map((item) => {
+            return {
+              value: item.value,
+            };
+          }),
         });
         setSchemeByPath(scheme, "mapOptions.series", {
           options: fieldsOptions,
           default: fieldsOptions[0].value,
         });
         const mapOptions = getSchemeByPath(scheme, "mapOptions");
-        setConfigValue({
+        const defaultMapOptions = getDefaultValue(mapOptions);
+        console.log("defaultMapOptions", defaultMapOptions);
+        setConfigValue((configValue) => ({
           root: {
             ...configValue.root,
-            mapOptions: getDefaultValue(mapOptions),
+            mapOptions: defaultMapOptions,
           },
-        });
+        }));
       } else {
+        const list = fieldsOptions.filter((item) =>
+          [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
+            item.type
+          )
+        );
         setSchemeByPath(scheme, "mapOptions.cate", {
           options: fieldsOptions,
           default: fieldsOptions[0].value,
         });
         setSchemeByPath(scheme, "mapOptions.series", {
           options: {
-            list: fieldsOptions.filter((item) =>
-              [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
-                item.type
-              )
-            ),
+            list,
             itemSelectOptions: [
               {
                 label: t("Max"),
@@ -185,15 +205,22 @@ export default function ConfigPanel(props: ConfigPanelProps) {
               },
             ],
           },
-          default: [],
+          default: list.map((item) => {
+            return {
+              value: item.value,
+              select: "MAX",
+            };
+          }),
         });
         const mapOptions = getSchemeByPath(scheme, "mapOptions");
-        setConfigValue({
+        const defaultMapOptions = getDefaultValue(mapOptions);
+        console.log("defaultMapOptions", defaultMapOptions);
+        setConfigValue((configValue) => ({
           root: {
             ...configValue.root,
-            mapOptions: getDefaultValue(mapOptions),
+            mapOptions: defaultMapOptions,
           },
-        });
+        }));
       }
 
       setScheme({ ...scheme });
@@ -209,12 +236,12 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         createScheme(configValue.root.mapType),
         "mapOptions"
       );
-      setConfigValue({
+      setConfigValue((configValue) => ({
         root: {
           ...configValue.root,
           mapOptions: getDefaultValue(mapOptions),
         },
-      });
+      }));
       setSchemeByPath(newScheme, "mapOptions", mapOptions);
       return newScheme;
     });
@@ -229,22 +256,16 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         muliType.includes(fieldMeta?.type) ||
         fieldMeta?.raw?.property?.multiple
       ) {
-        const node = getSchemeByPath(scheme, "mapOptions");
-
-        node.properties[2] = {
-          type: "checkbox",
-          field: "checkSplit",
-          label: t("Polynomial Split Statistics"),
-          default: false,
-          portal: "#series-bottom",
-        };
-        node.properties.length = 3;
-
+        setSchemeByPath(scheme, "mapOptions.checkSplit", {
+          hide: false,
+        });
         setScheme({ ...scheme });
       } else {
         const node = getSchemeByPath(scheme, "mapOptions");
         if (node) {
-          node.properties.length = 2;
+          setSchemeByPath(scheme, "mapOptions.checkSplit", {
+            hide: true,
+          });
           setScheme({ ...scheme });
         }
       }
@@ -256,22 +277,17 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         muliType.includes(fieldMeta?.type) ||
         fieldMeta?.raw?.property?.multiple
       ) {
-        const node = getSchemeByPath(scheme, "mapOptions");
-
-        node.properties[2] = {
-          type: "checkbox",
-          field: "checkSplit",
-          label: t("Polynomial Split Statistics"),
-          default: false,
-          portal: "#cate-bottom",
-        };
-        node.properties.length = 3;
+        setSchemeByPath(scheme, "mapOptions.checkSplit", {
+          hide: false,
+        });
 
         setScheme({ ...scheme });
       } else {
         const node = getSchemeByPath(scheme, "mapOptions");
         if (node) {
-          node.properties.length = 2;
+          setSchemeByPath(scheme, "mapOptions.checkSplit", {
+            hide: true,
+          });
           setScheme({ ...scheme });
         }
       }
@@ -283,6 +299,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
 
   const getConfig = () => {
     if (!configValue.root.dataRange) {
+      console.error("dataRange is empty");
       return;
     }
     if (configValue.root.mapType === "fieldCategory") {
@@ -305,7 +322,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           series: configValue.root.mapOptions.cates.map((cate: any) => {
             return {
               fieldId: cate.value,
-              rollup: configValue.root.mapOptions.calc,
+              rollup: configValue.root.mapOptions.calc || Rollup.MAX,
             };
           }),
         } as any,
@@ -373,9 +390,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           value={configValue}
           onChange={(target, field, value) => {
             console.log("Root onChange", target, field, value);
-
-            target[field] = value;
-            setConfigValue({ ...target });
+            const newTarget = Object.assign({}, target, { [field]: value });
+            setConfigValue(newTarget);
           }}
         ></ConfigUI>
         <div style={{ height: 300 }}></div>

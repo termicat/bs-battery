@@ -165,6 +165,9 @@ importers:
 
   apps/radar:
     dependencies:
+      '@bc/config':
+        specifier: workspace:^
+        version: link:../../libs/config
       '@bc/config-ui':
         specifier: workspace:^
         version: link:../../libs/config-ui

@@ -1,5 +1,5 @@
 import { ConfigUI } from "./index";
-import { createScheme } from "./options";
+import { createScheme } from "../../apps/radar/src/options";
 import { useEffect, useState } from "react";
 
 const defaultScheme = createScheme("fieldCategory");

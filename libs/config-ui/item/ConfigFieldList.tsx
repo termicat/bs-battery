@@ -116,12 +116,14 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
         {scopeValue?.map(({ value, select }: any) => (
           <div key={value}>
             <FieldItem>
-              <Icon
-                src={optionsMap[value].icon}
-                style={{ fontSize: 12, marginRight: 5 }}
-              />
+              <If condition={optionsMap[value]?.icon}>
+                <Icon
+                  src={optionsMap[value]?.icon}
+                  style={{ fontSize: 12, marginRight: 5 }}
+                />
+              </If>
               <span style={{ flex: 1, color: "rgba(var(--semi-grey-8), 1)" }}>
-                {optionsMap[value].label}
+                {optionsMap[value]?.label}
               </span>
               <If condition={itemSelectOptions.length}>
                 <span

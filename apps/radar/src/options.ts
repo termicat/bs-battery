@@ -1,5 +1,5 @@
-import i18n from "../i18n";
-import type { Node, Scheme } from "./types";
+import i18n from "@bc/i18n";
+import type { Node, Scheme } from "@bc/config-ui/types";
 import { theme } from "@bc/config";
 
 export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
@@ -105,6 +105,14 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           ],
           default: "MAX",
         },
+        {
+          portal: "#series-bottom",
+          type: "checkbox",
+          field: "checkSplit",
+          label: t("Polynomial Split Statistics"),
+          default: false,
+          hide: true,
+        },
       ],
     },
     {
@@ -144,6 +152,7 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           label: t("Series"),
           field: "series",
           type: "field-list",
+          default: [],
           // options: {
           //   list: [
           //     {
@@ -197,6 +206,13 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
           //     select: "max",
           //   },
           // ],
+        },
+        {
+          type: "checkbox",
+          field: "checkSplit",
+          label: t("Polynomial Split Statistics"),
+          default: false,
+          portal: "#cate-bottom",
         },
       ],
     },
@@ -267,35 +283,4 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
       },
     ],
   } as Scheme;
-};
-
-export const example = {
-  tableId: "table1",
-  dataRange: "view1",
-  selectTheme: "p1",
-  chartOptions: ["showLegend"],
-  dataOptions: {
-    // key: "recordCategory",
-    // value: {
-    //   cates: [
-    //     {
-    //       value: "field1",
-    //       select: "max",
-    //     },
-    //   ],
-    //   cate: "field1",
-    //   calc: "max",
-    //   // series: "field1",
-    // },
-    key: "recordCategory",
-    value: {
-      cate: "field2",
-      series: [
-        {
-          value: "field1",
-          select: "max",
-        },
-      ],
-    },
-  },
 };
