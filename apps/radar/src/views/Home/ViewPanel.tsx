@@ -5,15 +5,23 @@ import { createEChartsOption } from "@bc/helper/createEChartsOption";
 
 type ViewPanelProps = { themeMode?: any };
 
+let timer: any = null;
+
 export default function ViewPanel(props: ViewPanelProps) {
   const [echartsOption, setEchartsOption] = useState({} as any);
 
-  async function updateEcharts(e?: any) {
-    const config = await bsSdk.getConfig();
-    const data = await bsSdk.getData();
-    console.log("getPreviewData", config, data, e);
-    setEchartsOption(createEChartsOption(data, config.customConfig));
-    bsSdk.triggerDashRendered();
+  function updateEcharts(e?: any) {
+    if (timer) {
+      clearTimeout(timer);
+    }
+    timer = setTimeout(async () => {
+      timer = null;
+      const config = await bsSdk.getConfig();
+      const data = await bsSdk.getData();
+      console.log("getPreviewData", config, data, e);
+      setEchartsOption(createEChartsOption(data, config.customConfig));
+      bsSdk.triggerDashRendered();
+    }, 100);
   }
 
   useEffect(() => {
