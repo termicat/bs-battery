@@ -13,5 +13,12 @@
 <body>
   <div id="root"></div>
 </body>
+<script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+<script>
+  console.log('window.location.search', window.location.search);
+  if (window.location.search?.includes('debug')) {
+    var vConsole = new window.VConsole();
+  }
+</script>
 
 </html>

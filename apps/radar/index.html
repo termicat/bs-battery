@@ -14,8 +14,10 @@
 </body>
 <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
 <script>
-  // VConsole 默认会挂载到 `window.VConsole` 上
-  var vConsole = new window.VConsole();
+  console.log('window.location.search', window.location.search);
+  if (window.location.search?.includes('debug')) {
+    var vConsole = new window.VConsole();
+  }
 </script>
 
 </html>
