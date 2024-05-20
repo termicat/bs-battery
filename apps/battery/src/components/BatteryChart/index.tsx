@@ -21,7 +21,7 @@ export default function BatteryChart(props: BatteryChartProps) {
     return (item.value / totalLength) * 100;
   });
   return (
-    <div
+    <ChartWrap
       style={Object.assign(
         {
           display: "flex",
@@ -40,20 +40,12 @@ export default function BatteryChart(props: BatteryChartProps) {
           flexDirection: "row",
           justifyContent: "center",
           alignItems: "center",
-          width: "100%",
+          width: "70%",
           height: "100%",
         }}
       >
         <BatWrapper>
-          <div
-            style={{
-              display: "flex",
-              width: "100%",
-              height: "100%",
-              borderRadius: "1vmin",
-              overflow: "hidden",
-            }}
-          >
+          <BatItemWrap>
             {percent.map((item, index) => {
               return (
                 <Tooltip
@@ -77,28 +69,23 @@ export default function BatteryChart(props: BatteryChartProps) {
                 </Tooltip>
               );
             })}
-          </div>
+          </BatItemWrap>
         </BatWrapper>
         <BatCozy></BatCozy>
-        <Title
-          style={{
-            marginLeft: "2%",
-            whiteSpace: "nowrap",
-            fontSize: "4vmax",
-          }}
-        >
+        <CozyTitle className="auto-hide">
           {props.list[0].label}{" "}
           {percent[0] > 0 ? `${percent[0].toFixed(1)}%` : "N/A"}
-        </Title>
+        </CozyTitle>
       </div>
-      <div style={{ width: "100%" }}>
+      <div className="auto-hide" style={{ width: "100%" }}>
         <div
           style={{
             display: "flex",
-            marginTop: "1vmax",
+            marginTop: "3%",
             width: "100%",
             justifyContent: "center",
             flexWrap: "wrap",
+            maxHeight: "30%",
           }}
         >
           {props.list.map((item, index) => {
@@ -108,15 +95,15 @@ export default function BatteryChart(props: BatteryChartProps) {
                 style={{
                   display: "flex",
                   alignItems: "center",
-                  marginLeft: "10%",
-                  marginTop: "1vmax",
+                  marginLeft: "30px",
+                  marginTop: "10px",
                 }}
               >
                 <div
                   style={{
                     flexShrink: 0,
-                    width: "2vmax",
-                    height: "2vmax",
+                    width: "12px",
+                    height: "12px",
                     borderRadius: "50%",
                     background:
                       item.color || "var(--semi-color-tertiary-light-hover)",
@@ -125,8 +112,8 @@ export default function BatteryChart(props: BatteryChartProps) {
                 <Title
                   heading={6}
                   style={{
-                    fontSize: "1.5vmax",
-                    marginLeft: "10%",
+                    fontSize: "12px",
+                    marginLeft: "10px",
                     whiteSpace: "nowrap",
                   }}
                 >
@@ -137,13 +124,31 @@ export default function BatteryChart(props: BatteryChartProps) {
           })}
         </div>
       </div>
-    </div>
+    </ChartWrap>
   );
 }
 
+const ChartWrap = styled.div`
+  @media (max-width: 352px) {
+    .auto-hide {
+      display: none;
+    }
+  }
+`;
+
+const CozyTitle = styled.div`
+  color: var(--semi-color-text-0);
+  margin-left: 2%;
+  white-space: break-spaces;
+  font-size: 16px;
+  max-width: 35%;
+  min-width: 20%;
+  font-weight: bold;
+`;
+
 const BatCozy = styled.div`
-  width: 1vw;
-  height: 20%;
+  width: 2vmax;
+  padding-top: 10%;
   background: var(--semi-color-tertiary-light-hover);
   border-bottom-right-radius: 1vmin;
   border-top-right-radius: 1vmin;
@@ -152,10 +157,23 @@ const BatCozy = styled.div`
 const BatWrapper = styled.div`
   display: flex;
   width: 100%;
-  height: 100%;
+  /* height: 100%; */
+  padding-top: 30%;
   background: var(--semi-color-tertiary-light-hover);
-  border-radius: 1vmax;
-  padding: 2%;
+  position: relative;
+  border-radius: 1.5vmax;
+  overflow: hidden;
+  border: 1vmax solid var(--semi-color-tertiary-light-hover);
+`;
+
+const BatItemWrap = styled.div`
+  display: flex;
+  width: 100%;
+  height: 100%;
+  border-radius: 1vmin;
+  overflow: hidden;
+  position: absolute;
+  top: 0;
 `;
 
 const BatItem = styled.div`
