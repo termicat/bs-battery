@@ -166,7 +166,7 @@ export function createChartOption(data: any, configValueRoot: any) {
       return {
         label: item[0].text,
         value: item[1]?.value,
-        color: themeOption?.label[index],
+        color: themeOption?.label[index % themeOption?.label.length],
       };
     }
   );

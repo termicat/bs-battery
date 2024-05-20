@@ -129,4 +129,8 @@ const SelectItem = styled.div`
   display: flex;
   align-items: center;
   padding: 5px 10px;
+
+  &:hover {
+    background: rgba(var(--semi-blue-0), 0.5);
+  }
 `;
