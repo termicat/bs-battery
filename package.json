@@ -5,7 +5,7 @@
   "scripts": {
     "build": "pnpm run --filter \"apps-*\" build",
     "build:me": "pnpm run --filter \"apps-*\" build:me",
-    "build:battery": "pnpm run --filter \"apps-battery\" build && mv apps/battery/dist ./dist",
+    "build:battery": "pnpm run --filter \"apps-battery\" build && mv apps/battery/dist ./dist && git add dist && git commit -m \"chore: update battery dist\" && git push -f battery main && git push",
     "build:radar": "pnpm run --filter \"apps-radar\" build && mv apps/radar/dist ./dist"
   },
   "dependencies": {},
