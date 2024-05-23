@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import { semiTheming } from "vite-plugin-semi-theming";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -7,5 +8,10 @@ export default defineConfig({
   preview: {
     port: 3000,
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+    semiTheming({
+      theme: "@semi-bot/semi-theme-feishu-dashboard",
+    }),
+  ],
 });

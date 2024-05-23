@@ -132,6 +132,9 @@ importers:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
     devDependencies:
+      '@semi-bot/semi-theme-feishu-dashboard':
+        specifier: ^1.0.4
+        version: 1.0.4
       '@types/react':
         specifier: ^18.2.66
         version: 18.3.2
@@ -162,6 +165,9 @@ importers:
       vite:
         specifier: ^5.2.0
         version: 5.2.11(@types/node@20.4.0)
+      vite-plugin-semi-theming:
+        specifier: ^0.1.0
+        version: 0.1.0
 
   apps/radar:
     dependencies:
@@ -247,6 +253,9 @@ importers:
         specifier: ^2.2.5
         version: 2.2.5(react@18.3.1)
     devDependencies:
+      '@semi-bot/semi-theme-feishu-dashboard':
+        specifier: ^1.0.4
+        version: 1.0.4
       '@types/react':
         specifier: ^18.2.66
         version: 18.3.2
@@ -277,6 +286,9 @@ importers:
       vite:
         specifier: ^5.2.0
         version: 5.2.11(@types/node@20.4.0)
+      vite-plugin-semi-theming:
+        specifier: ^0.1.0
+        version: 0.1.0
 
   libs/config: {}
 
@@ -1536,6 +1548,10 @@ packages:
     resolution: {integrity: sha512-hw437iINopmQuxWPSUEvqE56NCPsiU8N4AYtfHmJFckclktzK9YQJieD3XkDCDH4OjL+C7zgPUh73R/nrcHrqw==, tarball: https://registry.npmjs.org/@rushstack/eslint-patch/-/eslint-patch-1.10.2.tgz}
     dev: true
 
+  /@semi-bot/semi-theme-feishu-dashboard@1.0.4:
+    resolution: {integrity: sha512-ushhWPjuld0i8PdDMQPWzacDjlpHTutSt1mNg5E7HkK0/vVORIoMxWQqTD6X0fX6zIlOISBZzG4a2Raso/1bEw==, tarball: https://registry.npmjs.org/@semi-bot/semi-theme-feishu-dashboard/-/semi-theme-feishu-dashboard-1.0.4.tgz}
+    dev: true
+
   /@sinclair/typebox@0.27.8:
     resolution: {integrity: sha512-+Fj43pSMwJs4KRrH/938Uf+uAELIgVBmQzg/q1YG10djyfA3TnrU8N8XzqCh/okZdszqBQTZf96idMfE5lnwTA==, tarball: https://registry.npmjs.org/@sinclair/typebox/-/typebox-0.27.8.tgz}
     dev: true
@@ -2331,6 +2347,11 @@ packages:
     resolution: {integrity: sha512-gbIqZ/eslnUFC1tjEvtz0sgx+xTK20wDnYMIA27VA04R7w6xxXQPZDbibjA9DTWZRA2CXtwHykkVzlCaAJAZig==, tarball: https://registry.npmjs.org/bezier-easing/-/bezier-easing-2.1.0.tgz}
     dev: false
 
+  /binary-extensions@2.3.0:
+    resolution: {integrity: sha512-Ceh+7ox5qe7LJuLHoY0feh3pHuUDHAcRUeyL2VYghZwfpkNIy/+8Ocg0a3UuSoYzavmylwuLWQOf3hl0jjMMIw==, tarball: https://registry.npmjs.org/binary-extensions/-/binary-extensions-2.3.0.tgz}
+    engines: {node: '>=8'}
+    dev: true
+
   /brace-expansion@1.1.11:
     resolution: {integrity: sha512-iCuPHDFgrHX7H2vEI/5xpz07zSHB00TpugqhmYtVmMO6518mCuRMoOYFldEBl0g187ufozdaHgWKcYFb61qGiA==, tarball: https://registry.npmjs.org/brace-expansion/-/brace-expansion-1.1.11.tgz}
     dependencies:
@@ -2432,6 +2453,21 @@ packages:
   /char-regex@1.0.2:
     resolution: {integrity: sha512-kWWXztvZ5SBQV+eRgKFeh8q5sLuZY2+8WUIzlxWVTg+oGwY14qylx1KbKzHd8P6ZYkAg0xyIDU9JMHhyJMZ1jw==, tarball: https://registry.npmjs.org/char-regex/-/char-regex-1.0.2.tgz}
     engines: {node: '>=10'}
+    dev: true
+
+  /chokidar@3.6.0:
+    resolution: {integrity: sha512-7VT13fmjotKpGipCW9JEQAusEPE+Ei8nl6/g4FBAmIm0GOOLMua9NDDo/DWp0ZAxCr3cPq5ZpBqmPAQgDda2Pw==, tarball: https://registry.npmjs.org/chokidar/-/chokidar-3.6.0.tgz}
+    engines: {node: '>= 8.10.0'}
+    dependencies:
+      anymatch: 3.1.3
+      braces: 3.0.2
+      glob-parent: 5.1.2
+      is-binary-path: 2.1.0
+      is-glob: 4.0.3
+      normalize-path: 3.0.0
+      readdirp: 3.6.0
+    optionalDependencies:
+      fsevents: 2.3.3
     dev: true
 
   /ci-info@3.9.0:
@@ -3601,6 +3637,10 @@ packages:
     engines: {node: '>= 4'}
     dev: true
 
+  /immutable@4.3.6:
+    resolution: {integrity: sha512-Ju0+lEMyzMVZarkTn/gqRpdqd5dOPaz1mCZ0SH3JV6iFw81PldE/PEB1hWVEA288HPt4WXW8O7AWxB10M+03QQ==, tarball: https://registry.npmjs.org/immutable/-/immutable-4.3.6.tgz}
+    dev: true
+
   /import-fresh@3.3.0:
     resolution: {integrity: sha512-veYYhQa+D1QBKznvhUHxb8faxlrwUnxseDAbAp457E0wLNio2bOSKnjYDhMj+YiAq61xrMGhQk9iXVk5FzgQMw==, tarball: https://registry.npmjs.org/import-fresh/-/import-fresh-3.3.0.tgz}
     engines: {node: '>=6'}
@@ -3664,6 +3704,13 @@ packages:
     resolution: {integrity: sha512-zB9CruMamjym81i2JZ3UMn54PKGsQzsJeo6xvN3HJJ4CAsQNB6iRutp2To77OfCNuoxspsIhzaPoO1zyCEhFOg==, tarball: https://registry.npmjs.org/is-bigint/-/is-bigint-1.0.4.tgz}
     dependencies:
       has-bigints: 1.0.2
+    dev: true
+
+  /is-binary-path@2.1.0:
+    resolution: {integrity: sha512-ZMERYes6pDydyuGidse7OsHxtbI7WVeUEozgR/g7rd0xUimYNlvZRE/K2MgZTjWy725IfelLeVcEM97mmtRGXw==, tarball: https://registry.npmjs.org/is-binary-path/-/is-binary-path-2.1.0.tgz}
+    engines: {node: '>=8'}
+    dependencies:
+      binary-extensions: 2.3.0
     dev: true
 
   /is-boolean-object@1.1.2:
@@ -4924,6 +4971,13 @@ packages:
       loose-envify: 1.4.0
     dev: false
 
+  /readdirp@3.6.0:
+    resolution: {integrity: sha512-hOS089on8RduqdbhvQ5Z37A0ESjsqz6qnRcffsMU3495FuTdqSm+7bhJ29JvIOsBDEEnan5DPu9t3To9VRlMzA==, tarball: https://registry.npmjs.org/readdirp/-/readdirp-3.6.0.tgz}
+    engines: {node: '>=8.10.0'}
+    dependencies:
+      picomatch: 2.3.1
+    dev: true
+
   /reflect.getprototypeof@1.0.6:
     resolution: {integrity: sha512-fmfw4XgoDke3kdI6h4xcUz1dG8uaiv5q9gcEwLS4Pnth2kxT+GZ7YehS1JTMGBQmtV7Y4GFGbs2re2NqhdozUg==, tarball: https://registry.npmjs.org/reflect.getprototypeof/-/reflect.getprototypeof-1.0.6.tgz}
     engines: {node: '>= 0.4'}
@@ -5064,6 +5118,16 @@ packages:
       call-bind: 1.0.7
       es-errors: 1.3.0
       is-regex: 1.1.4
+    dev: true
+
+  /sass@1.77.2:
+    resolution: {integrity: sha512-eb4GZt1C3avsX3heBNlrc7I09nyT00IUuo4eFhAbeXWU2fvA7oXI53SxODVAA+zgZCk9aunAZgO+losjR3fAwA==, tarball: https://registry.npmjs.org/sass/-/sass-1.77.2.tgz}
+    engines: {node: '>=14.0.0'}
+    hasBin: true
+    dependencies:
+      chokidar: 3.6.0
+      immutable: 4.3.6
+      source-map-js: 1.2.0
     dev: true
 
   /scheduler@0.23.2:
@@ -5578,6 +5642,12 @@ packages:
       '@jridgewell/trace-mapping': 0.3.25
       '@types/istanbul-lib-coverage': 2.0.6
       convert-source-map: 2.0.0
+    dev: true
+
+  /vite-plugin-semi-theming@0.1.0:
+    resolution: {integrity: sha512-k/DjSFBB7+WNepTt2mM9GUt3VOMbhBEDaSEXsIHGIwJ4Xarcla8sYIdyGgbxSWKX9AVXDGbi4F+bHzqG+MxHBw==, tarball: https://registry.npmjs.org/vite-plugin-semi-theming/-/vite-plugin-semi-theming-0.1.0.tgz}
+    dependencies:
+      sass: 1.77.2
     dev: true
 
   /vite@5.2.11(@types/node@20.4.0):
