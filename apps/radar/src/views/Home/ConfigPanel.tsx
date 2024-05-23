@@ -1,28 +1,19 @@
-import { useEffect, useRef, useState } from "react";
-import { ConfigUI } from "@bc/config-ui";
+import { useState } from "react";
+import { ConfigUI, getPullScheme } from "@bc/config-ui";
 import { Button } from "@douyinfe/semi-ui";
 import type { Scheme } from "@bc/config-ui";
-import { tranBIData } from "@bc/helper/config-ui";
-import { createScheme } from "@bc/config-ui";
-import {
-  getDefaultValue,
-  getSchemeByPath,
-  setSchemeByPath,
-} from "@bc/config-ui";
+import { getDefaultValue } from "@bc/config-ui";
 import {
   DATA_SOURCE_SORT_TYPE,
-  FieldType,
   GroupMode,
   ORDER,
   Rollup,
-  SourceType,
   type IConfig,
 } from "@lark-base-open/js-sdk";
 import ECharts from "@bc/echarts/index";
 import { createEChartsOption } from "@bc/helper/createEChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
-import type { BIField } from "@bc/sdk/BsSdk";
 import { useDebounceEffect } from "@bc/helper/useDebounce";
 
 export type ConfigPanelProps = {};
@@ -34,330 +25,111 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     type: "object",
     field: "",
   });
-  const [initd, setInitd] = useState(false);
   const [echartsOption, setEchartsOption] = useState({} as any);
-  const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
+
+  async function updatePreview(configValue: any) {
+    console.log("updatePreview", configValue.root);
+    const config = getConfig(configValue);
+    if (!config) {
+      console.error("config is empty, skip updatePreview");
+      return;
+    }
+    console.log("getConfig", config);
+    const data = await bsSdk.getPreviewData(config.dataConditions as any);
+    console.log("getPreviewData", data);
+    setEchartsOption(createEChartsOption(data, config.customConfig));
+    bsSdk.triggerDashRendered();
+  }
+  async function updateScheme(configValue: any, lastConfigValue?: any) {
+    console.log("updateScheme before", configValue);
+
+    const scheme = await getPullScheme(configValue.root, lastConfigValue?.root);
+    const configRoot = getDefaultValue(scheme as any);
+    console.log("updateScheme after", scheme, configRoot);
+
+    setScheme(scheme as any);
+    let scopeConfigValue = configValue;
+    if (lastConfigValue) {
+      scopeConfigValue = { root: configRoot };
+    } else {
+      scopeConfigValue = { root: configValue.root };
+    }
+    setConfigValue(scopeConfigValue);
+    updatePreview(scopeConfigValue);
+  }
 
   useDebounceEffect(() => {
-    async function updatePreview() {
-      console.log("updatePreview", configValue.root);
-      const config = getConfig();
-      if (!config) {
-        console.error("config is empty, skip updatePreview");
-        return;
-      }
-      console.log("getConfig", config);
-      const data = await bsSdk.getPreviewData(config.dataConditions as any);
-      console.log("getPreviewData", data);
-      setEchartsOption(createEChartsOption(data, config.customConfig));
-      bsSdk.triggerDashRendered();
-    }
-    updatePreview();
-  }, [configValue.root]);
-
-  useEffect(() => {
-    async function initConfigValue() {
-      const config = await bsSdk.getConfig();
-      console.log("getConfig", config);
-      const customConfig = config.customConfig;
-      setConfigValue({ root: customConfig });
-    }
-    if (initd) {
-      console.log("configValue", configValue);
-      initConfigValue();
-    }
-  }, [initd]);
-
-  useEffect(() => {
-    async function init() {
-      const tables = await bsSdk.getTableList();
-      console.log("init", tables);
-      const o1 = tranBIData(tables);
-      const newScheme = createScheme("fieldCategory");
-      setSchemeByPath(newScheme, "tableId", {
-        default: o1[0].value,
-        options: o1,
-      });
-      setScheme(newScheme);
-      setConfigValue({
-        root: getDefaultValue(newScheme),
-      });
-    }
-    init();
+    bsSdk.getConfig().then((config) => {
+      updateScheme(
+        {
+          root: config.customConfig,
+        },
+        undefined
+      );
+    });
   }, []);
 
-  useEffect(() => {
-    async function updateViews() {
-      console.log("updateViews", configValue.root.tableId);
-
-      const { tableId } = configValue.root;
-      if (tableId) {
-        const table = tableId;
-
-        const views = await bsSdk.getViewList(table);
-
-        const options = tranBIData(views).map((view) => {
-          return {
-            value: JSON.stringify({
-              viewId: view.value,
-              viewName: view.label,
-              type: SourceType.VIEW,
-            }),
-            label: view.label,
-            icon: view.icon,
-          };
-        });
-        const defaultView = options[0].value;
-
-        // console.log("getViewList", views);
-        setSchemeByPath(scheme, "dataRange", {
-          options,
-          default: defaultView,
-        });
-
-        setConfigValue((configValue) => ({
-          root: { ...configValue.root, dataRange: defaultView },
-        }));
-        setScheme({ ...scheme });
-      }
-    }
-    updateViews();
-  }, [configValue?.root?.tableId]);
-
-  useEffect(() => {
-    async function updateFields() {
-      console.log("updateFields", configValue.root.dataRange);
-      if (!configValue.root.dataRange) {
-        return;
-      }
-      const dataRange = JSON.parse(configValue.root.dataRange);
-      const fields = await bsSdk.getFiledListByViewId(
-        configValue.root.tableId,
-        dataRange.viewId
-      );
-      console.log("getFieldList", fields);
-
-      for (let i = 0; i < fields.length; i++) {
-        const field = fields[i];
-        fieldTypeMapRef.current[field.id] = field;
-      }
-
-      const fieldsOptions = tranBIData(fields);
-
-      if (configValue?.root?.mapType === "fieldCategory") {
-        const list = fieldsOptions.filter((item) =>
-          [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
-            item.type
-          )
-        );
-        setSchemeByPath(scheme, "mapOptions.cates", {
-          options: {
-            list,
-          },
-          default: list.map((item) => {
-            return {
-              value: item.value,
-            };
-          }),
-        });
-        setSchemeByPath(scheme, "mapOptions.series", {
-          options: fieldsOptions,
-          default: fieldsOptions[0].value,
-        });
-        const mapOptions = getSchemeByPath(scheme, "mapOptions");
-        const defaultMapOptions = getDefaultValue(mapOptions);
-        console.log("defaultMapOptions", defaultMapOptions);
-        setConfigValue((configValue) => ({
-          root: {
-            ...configValue.root,
-            mapOptions: defaultMapOptions,
-          },
-        }));
-      } else {
-        const list = fieldsOptions.filter((item) =>
-          [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
-            item.type
-          )
-        );
-        setSchemeByPath(scheme, "mapOptions.cate", {
-          options: fieldsOptions,
-          default: fieldsOptions[0].value,
-        });
-        setSchemeByPath(scheme, "mapOptions.series", {
-          options: {
-            list,
-            itemSelectOptions: [
-              {
-                label: t("Max"),
-                value: "MAX",
-              },
-              {
-                label: t("Min"),
-                value: "MIN",
-              },
-              {
-                label: t("Sum"),
-                value: "SUM",
-              },
-              {
-                label: t("Average"),
-                value: "AVERAGE",
-              },
-            ],
-          },
-          default: list.map((item) => {
-            return {
-              value: item.value,
-              select: "MAX",
-            };
-          }),
-        });
-        const mapOptions = getSchemeByPath(scheme, "mapOptions");
-        const defaultMapOptions = getDefaultValue(mapOptions);
-        console.log("defaultMapOptions", defaultMapOptions);
-        setConfigValue((configValue) => ({
-          root: {
-            ...configValue.root,
-            mapOptions: defaultMapOptions,
-          },
-        }));
-      }
-
-      setScheme({ ...scheme });
-      setInitd(true);
-    }
-    updateFields();
-  }, [configValue?.root?.dataRange, configValue?.root?.mapType]);
-
-  useEffect(() => {
-    setScheme((oldScheme) => {
-      const newScheme = oldScheme;
-      const mapOptions = getSchemeByPath(
-        createScheme(configValue.root.mapType),
-        "mapOptions"
-      );
-      setConfigValue((configValue) => ({
-        root: {
-          ...configValue.root,
-          mapOptions: getDefaultValue(mapOptions),
-        },
-      }));
-      setSchemeByPath(newScheme, "mapOptions", mapOptions);
-      return newScheme;
-    });
-  }, [configValue?.root?.mapType]);
-
-  useEffect(() => {
-    const muliType = [FieldType.MultiSelect];
-    if (configValue.root.mapType === "fieldCategory") {
-      const fieldId = configValue?.root?.mapOptions?.series;
-      const fieldMeta = fieldTypeMapRef.current[fieldId] as any;
-      if (
-        muliType.includes(fieldMeta?.type) ||
-        fieldMeta?.raw?.property?.multiple
-      ) {
-        setSchemeByPath(scheme, "mapOptions.checkSplit", {
-          hide: false,
-        });
-        setScheme({ ...scheme });
-      } else {
-        const node = getSchemeByPath(scheme, "mapOptions");
-        if (node) {
-          setSchemeByPath(scheme, "mapOptions.checkSplit", {
-            hide: true,
-          });
-          setScheme({ ...scheme });
-        }
-      }
-    } else {
-      const fieldId = configValue?.root?.mapOptions?.cate;
-      const fieldMeta = fieldTypeMapRef.current[fieldId] as any;
-
-      if (
-        muliType.includes(fieldMeta?.type) ||
-        fieldMeta?.raw?.property?.multiple
-      ) {
-        setSchemeByPath(scheme, "mapOptions.checkSplit", {
-          hide: false,
-        });
-
-        setScheme({ ...scheme });
-      } else {
-        const node = getSchemeByPath(scheme, "mapOptions");
-        if (node) {
-          setSchemeByPath(scheme, "mapOptions.checkSplit", {
-            hide: true,
-          });
-          setScheme({ ...scheme });
-        }
-      }
-    }
-  }, [
-    configValue?.root?.mapOptions?.cate,
-    configValue?.root?.mapOptions?.series,
-  ]);
-
-  const getConfig = () => {
-    if (!configValue.root.dataRange) {
+  const getConfig = (scopeConfigValue = configValue) => {
+    if (!scopeConfigValue.root.dataRange) {
       console.error("dataRange is empty");
       return;
     }
-    if (configValue.root.mapType === "fieldCategory") {
+    if (scopeConfigValue.root.mapType === "fieldCategory") {
       const config: IConfig = {
         dataConditions: {
-          tableId: configValue.root.tableId,
-          dataRange: JSON.parse(configValue.root.dataRange),
+          tableId: scopeConfigValue.root.tableId,
+          dataRange: JSON.parse(scopeConfigValue.root.dataRange),
           groups: [
             {
-              fieldId: configValue.root.mapOptions.series,
+              fieldId: scopeConfigValue.root.mapOptions.series,
               sort: {
                 order: ORDER.ASCENDING,
                 sortType: DATA_SOURCE_SORT_TYPE.VIEW,
               },
-              mode: configValue.root.mapOptions.checkSplit
+              mode: scopeConfigValue.root.mapOptions.checkSplit
                 ? GroupMode.ENUMERATED
                 : GroupMode.INTEGRATED,
             },
           ],
-          series: configValue.root.mapOptions.cates.map((cate: any) => {
+          series: scopeConfigValue.root.mapOptions.cates.map((cate: any) => {
             return {
               fieldId: cate.value,
-              rollup: configValue.root.mapOptions.calc || Rollup.MAX,
+              rollup: scopeConfigValue.root.mapOptions.calc || Rollup.MAX,
             };
           }),
         } as any,
-        customConfig: configValue.root,
+        customConfig: scopeConfigValue.root,
       };
       return config;
-    } else if (configValue.root.mapType === "recordCategory") {
-      if (!configValue.root.mapOptions.series) {
+    } else if (scopeConfigValue.root.mapType === "recordCategory") {
+      if (!scopeConfigValue.root.mapOptions.series) {
         console.error("series is empty");
         return;
       }
       const config: IConfig = {
         dataConditions: {
-          tableId: configValue.root.tableId,
-          dataRange: JSON.parse(configValue.root.dataRange),
+          tableId: scopeConfigValue.root.tableId,
+          dataRange: JSON.parse(scopeConfigValue.root.dataRange),
           groups: [
             {
-              fieldId: configValue.root.mapOptions.cate,
+              fieldId: scopeConfigValue.root.mapOptions.cate,
               sort: {
                 order: ORDER.ASCENDING,
                 sortType: DATA_SOURCE_SORT_TYPE.VIEW,
               },
-              mode: configValue.root.mapOptions.checkSplit
+              mode: scopeConfigValue.root.mapOptions.checkSplit
                 ? GroupMode.ENUMERATED
                 : GroupMode.INTEGRATED,
             },
           ],
-          series: configValue.root.mapOptions.series.map((series: any) => {
+          series: scopeConfigValue.root.mapOptions.series.map((series: any) => {
             return {
               fieldId: series.value,
               rollup: series.select,
             };
           }),
         } as any,
-        customConfig: configValue.root,
+        customConfig: scopeConfigValue.root,
       };
       return config;
     }
@@ -391,7 +163,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           onChange={(target, field, value) => {
             console.log("Root onChange", target, field, value);
             const newTarget = Object.assign({}, target, { [field]: value });
-            setConfigValue(newTarget);
+            updateScheme(newTarget, target);
+            // setConfigValue(newTarget);
           }}
         ></ConfigUI>
         <div style={{ height: 300 }}></div>
