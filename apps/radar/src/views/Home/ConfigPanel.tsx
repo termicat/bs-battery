@@ -173,7 +173,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             // setConfigValue(newTarget);
           }}
         ></ConfigUI>
-        <div style={{ height: 300 }}></div>
+        <div style={{ height: 100 }}></div>
         <div
           style={{
             position: "fixed",

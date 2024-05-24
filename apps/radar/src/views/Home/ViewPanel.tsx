@@ -15,12 +15,12 @@ export default function ViewPanel(props: ViewPanelProps) {
     console.log("getPreviewData", config, data, e);
     setEchartsOption(createEChartsOption(data, config.customConfig));
     bsSdk.triggerDashRendered();
-  }, 100);
+  }, 300);
 
   useEffect(() => {
     updateEcharts();
     const offs: (() => void)[] = [];
-    offs.push(bsSdk.emDashConfigChange.on(updateEcharts));
+    // offs.push(bsSdk.emDashConfigChange.on(updateEcharts));
     offs.push(bsSdk.emDashDataChange.on(updateEcharts));
     return () => {
       offs.forEach((off) => off());

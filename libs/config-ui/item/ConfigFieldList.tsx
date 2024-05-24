@@ -180,6 +180,16 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                       {t("Remove Field")}
                     </MenuItem>
                     <MenuItem
+                      style={{
+                        color:
+                          scopeValue.length === 1
+                            ? "rgba(var(--semi-grey-2), 1)"
+                            : "",
+                        background:
+                          scopeValue.length === 1
+                            ? "rgba(var(--semi-white), 1)"
+                            : "",
+                      }}
                       onClick={() => {
                         const index = scopeValue
                           .map((item: any) => item.value)
@@ -196,6 +206,16 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
                       {t("Up Field")}
                     </MenuItem>
                     <MenuItem
+                      style={{
+                        color:
+                          scopeValue.length === 1
+                            ? "rgba(var(--semi-grey-2), 1)"
+                            : "",
+                        background:
+                          scopeValue.length === 1
+                            ? "rgba(var(--semi-white), 1)"
+                            : "",
+                      }}
                       onClick={() => {
                         const index = scopeValue
                           .map((item: any) => item.value)
@@ -376,6 +396,10 @@ const FieldItem = styled.div`
   border-radius: 5px;
   padding: 0 10px;
   margin-top: 8px;
+
+  &:hover {
+    background: rgba(var(--semi-blue-0), 0.5);
+  }
 `;
 
 const MenuItem = styled.div`
@@ -386,6 +410,6 @@ const MenuItem = styled.div`
   align-items: center;
   cursor: pointer;
   &:hover {
-    background-color: rgba(var(--semi-grey-1), 1);
+    background: rgba(var(--semi-blue-0), 0.5);
   }
 `;

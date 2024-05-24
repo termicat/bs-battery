@@ -45,6 +45,8 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
           paddingLeft: 8,
           marginRight: -8,
           borderRadius: 3,
+          fontWeight: "normal",
+          fontSize: 13,
         }}
       >
         <div
