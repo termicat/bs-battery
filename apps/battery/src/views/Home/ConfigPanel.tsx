@@ -24,6 +24,7 @@ import BatteryChart from "../../components/BatteryChart";
 import { createChartOption, createScheme } from "../../options";
 import { theme } from "@bc/config";
 import { useDebounceEffect } from "@bc/helper/useDebounce";
+import { typeofNumber } from "@bc/sdk/fieldTools";
 
 export type ConfigPanelProps = {};
 
@@ -169,9 +170,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         });
 
         const fieldValueByOptions = options.filter((item) =>
-          [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
-            item.type
-          )
+          typeofNumber(item.type)
         );
         setSchemeByPath(scheme, "fieldValueBy", {
           options: fieldValueByOptions,

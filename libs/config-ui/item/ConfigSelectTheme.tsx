@@ -39,13 +39,9 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
 
     const colors = options?.find((item) => item.value === p.value)?.label || [];
     return (
-      <div
+      <ThemeWrap
         style={{
-          width: "97%",
-          padding: "3px 8px",
-          margin: "2px 5px",
           background: p.selected ? "rgba(var(--semi-blue-0), 1)" : "",
-          borderRadius: "4px",
         }}
         onClick={p.onClick}
       >
@@ -56,7 +52,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
           }}
           items={colors}
         ></ThemeColors>
-      </div>
+      </ThemeWrap>
     );
   };
 
@@ -89,6 +85,16 @@ type ThemeColorProps = {
   items: string[];
   style: React.CSSProperties;
 };
+
+const ThemeWrap = styled.div`
+  width: 97%;
+  padding: 3px 8px;
+  margin: 2px 5px;
+  border-radius: 4px;
+  &:hover {
+    background: rgba(var(--semi-blue-0), 0.5);
+  }
+`;
 
 const ColorContainer = styled.div`
   display: flex;

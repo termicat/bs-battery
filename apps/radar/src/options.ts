@@ -5,6 +5,7 @@ import { bsSdk } from "./views/Home/factory";
 import { tranBIData } from "@bc/helper/config-ui";
 import { FieldType, SourceType } from "@lark-base-open/js-sdk";
 import type { NodeTypes } from "@bc/config-ui";
+import { typeofNumber } from "@bc/sdk/fieldTools";
 
 export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
   const t = i18n.t.bind(i18n);
@@ -418,14 +419,7 @@ export const getPullScheme = async (
         parseRootDataRange.viewId
       );
       rootFieldCategoryCates.options.list = tranBIData(
-        fields.filter((item) =>
-          [
-            FieldType.Number,
-            FieldType.Formula,
-            FieldType.Lookup,
-            FieldType.Progress,
-          ].includes(item.type)
-        )
+        fields.filter((item) => typeofNumber(item.type))
       );
       const rootFieldCategoryCatesDefault =
         rootFieldCategoryCates.options.list.map((item) => {
@@ -576,13 +570,7 @@ export const getPullScheme = async (
       }
 
       const rootRecordCategorySeriesOptionsList = tranBIData(fields).filter(
-        (item) =>
-          [
-            FieldType.Number,
-            FieldType.Formula,
-            FieldType.Lookup,
-            FieldType.Progress,
-          ].includes(item.type)
+        (item) => typeofNumber(item.type)
       );
       const rootRecordCategorySeriesOptionsItemSelectOptions = [
         {

@@ -36,7 +36,7 @@ export default function ConfigCheckboxes(props: ConfigCheckboxesProps) {
           marginTop: "8px",
           width: "100%",
           display: "grid",
-          gridTemplateColumns: "repeat(auto-fill, minmax(110px, 1fr))",
+          gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",
           justifyContent: "space-between",
         }}
         options={options}

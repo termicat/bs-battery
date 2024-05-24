@@ -152,7 +152,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         // marginTop: 50,
       }}
     >
-      <div style={{ flex: 1, padding: 20 }}>
+      <div style={{ width: "100%", padding: 20 }}>
         <ECharts option={echartsOption}></ECharts>
       </div>
       <div
