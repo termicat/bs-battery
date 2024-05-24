@@ -51,22 +51,28 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     let scopeConfigValue = configValue;
     if (lastConfigValue) {
       scopeConfigValue = { root: configRoot };
-    } else {
+    } else if (configValue.root) {
       scopeConfigValue = { root: configValue.root };
+    } else {
+      scopeConfigValue = { root: configRoot };
     }
     setConfigValue(scopeConfigValue);
     updatePreview(scopeConfigValue);
   }
 
   useDebounceEffect(() => {
-    bsSdk.getConfig().then((config) => {
+    async function init() {
+      const config = await bsSdk
+        .getConfig()
+        .catch((err) => ({ customConfig: undefined }));
       updateScheme(
         {
           root: config.customConfig,
         },
         undefined
       );
-    });
+    }
+    init();
   }, []);
 
   const getConfig = (scopeConfigValue = configValue) => {
