@@ -322,19 +322,21 @@ export const getPullScheme = async (
     type: "select",
     options: [],
   };
-  rootDataRange.options = tranBIData(
-    await bsSdk.getViewList(rootTableId.default)
-  ).map((view) => {
-    return {
-      value: JSON.stringify({
-        viewId: view.value,
-        viewName: view.label,
-        type: SourceType.VIEW,
-      }),
-      label: view.label,
-      icon: view.icon,
-    };
-  });
+  const views = await bsSdk.getTableDataRange(rootTableId.default);
+  console.log("views", views);
+  rootDataRange.options = views
+    .filter((item) => "viewName" in item)
+    .map((item: any) => {
+      return {
+        value: JSON.stringify({
+          viewId: item.viewId,
+          viewName: item.viewName,
+          type: item.type,
+        }),
+        icon: "icons/table.svg",
+        label: item.viewName ?? "全部",
+      };
+    });
   rootDataRange.default = rootDataRange.options[0].value;
   if (configRoot.tableId === lastConfigRoot?.tableId && configRoot.dataRange) {
     rootDataRange.default = configRoot.dataRange;

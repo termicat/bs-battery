@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { ConfigUI, getPullScheme } from "@bc/config-ui";
-import { Button } from "@douyinfe/semi-ui";
+import { Button, Toast } from "@douyinfe/semi-ui";
 import type { Scheme } from "@bc/config-ui";
 import { getDefaultValue } from "@bc/config-ui";
 import {
@@ -35,15 +35,27 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       return;
     }
     console.log("getConfig", config);
-    const data = await bsSdk.getPreviewData(config.dataConditions as any);
+    const data = await bsSdk
+      .getPreviewData(config.dataConditions as any)
+      .catch((err) => {
+        console.error(err);
+        Toast.warning("数据为空");
+        return [];
+      });
     console.log("getPreviewData", data);
     setEchartsOption(createEChartsOption(data, config.customConfig));
     bsSdk.triggerDashRendered();
   }
   async function updateScheme(configValue: any, lastConfigValue?: any) {
     console.log("updateScheme before", configValue);
-
-    const scheme = await getPullScheme(configValue.root, lastConfigValue?.root);
+    const scheme = await getPullScheme(
+      configValue.root,
+      lastConfigValue?.root
+    ).catch((err) => {
+      console.error(err);
+      Toast.error(err.message);
+      return {};
+    });
     const configRoot = getDefaultValue(scheme as any);
     console.log("updateScheme after", scheme, configRoot);
 

@@ -88,6 +88,10 @@ export class BsSdk {
     }
   }
 
+  getTableDataRange(tableId: string) {
+    return this.bitable.dashboard.getTableDataRange(tableId);
+  }
+
   getTheme() {
     return this.bitable.bridge.getTheme();
   }
