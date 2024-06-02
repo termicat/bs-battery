@@ -55,12 +55,27 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
   const [hideSearch, setHideSearch] = useState(true);
   const [showTip, setShowTip] = useState(false);
   const [showUpdate, setShowUpdate] = useState({} as any);
-  const [innerItemSelect, setInnerItemSelect] = useState(
-    itemSelectOptions?.[0]?.value
-  );
+  const initInnerItemSelect = () => {
+    if (!scopeValue) {
+      return "";
+    }
+    const set = new Set();
+    scopeValue.forEach((v: any) => {
+      set.add(v.select);
+    });
+
+    if (set.size === 1) {
+      return Array.from(set)[0];
+    } else if (set.size > 1) {
+      return "自定义";
+    }
+
+    return itemSelectOptions?.[0]?.value;
+  };
+  const [innerItemSelect, setInnerItemSelect] = useState(initInnerItemSelect);
 
   useEffect(() => {
-    setInnerItemSelect(itemSelectOptions?.[0]?.value);
+    setInnerItemSelect(initInnerItemSelect());
   }, [itemSelectOptions]);
 
   const notAddedOptions = list.filter(
@@ -112,7 +127,7 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
           </If>
         </div>
       </div>
-      <div style={{ marginTop: 13 }}>
+      <div style={{ marginTop: 4 }}>
         {scopeValue?.map(({ value, select }: any) => (
           <div key={value}>
             <FieldItem>
@@ -277,13 +292,12 @@ export default function ConfigFieldList(props: ConfigFieldListProps) {
             </article>
           }
           arrowPointAtCenter={false}
-          trigger="custom"
-          visible={showTip}
+          trigger="hover"
         >
           <Text
             link={Boolean(notAddedOptions?.length)}
-            icon={<IconPlus style={{ fontSize: 14 }} />}
-            style={{ color: "#aaa" }}
+            icon={<IconPlus style={{ fontSize: 12 }} />}
+            style={{ color: "#aaa", fontSize: 12 }}
             onClick={() => {
               if (notAddedOptions?.length) {
                 setHideSearch(false);
@@ -392,10 +406,11 @@ const FieldItem = styled.div`
   color: rgba(var(--semi-grey-8), 1);
   display: flex;
   align-items: center;
-  border: 1px solid #e1e3e6;
+  border: 1px solid var(--semi-color-stroke);
   border-radius: 5px;
   padding: 0 10px;
   margin-top: 8px;
+  cursor: pointer;
 
   &:hover {
     background: rgba(var(--semi-blue-0), 0.5);

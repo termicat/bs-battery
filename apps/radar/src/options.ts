@@ -292,7 +292,8 @@ export const createScheme = (mapType: "fieldCategory" | "recordCategory") => {
 
 export const getPullScheme = async (
   configRoot: any = {},
-  lastConfigRoot: any = configRoot
+  lastConfigRoot: any = configRoot,
+  defaultTableIndex = 0
 ) => {
   console.log("getPullScheme", {
     configRoot,
@@ -313,7 +314,8 @@ export const getPullScheme = async (
     options: [],
   };
   rootTableId.options = tranBIData(await bsSdk.getTableList());
-  rootTableId.default = configRoot.tableId ?? rootTableId.options[0].value;
+  rootTableId.default =
+    configRoot.tableId ?? rootTableId.options[defaultTableIndex].value;
   scheme.properties.push(rootTableId);
   // ------------------------------
   const rootDataRange: Node<"select"> = {
@@ -380,17 +382,35 @@ export const getPullScheme = async (
   scheme.properties.push(rootLine);
   // ------------------------------
 
-  const rootMapType: Node<"select-tabs"> = {
-    label: t("Data Map"),
-    field: "mapType",
-    type: "select-tabs",
+  const rootAxisValue: Node<"select"> = {
+    label: t("Axis Value"),
+    field: "axisValue",
+    type: "select",
     options: [
       {
-        label: t("Field"),
+        label: t("Single Axis Max"),
+        value: "single",
+      },
+      {
+        label: t("Global Axis Max"),
+        value: "global",
+      },
+    ],
+    default: configRoot.axisValue ?? "single",
+  };
+  scheme.properties.push(rootAxisValue);
+  // ------------------------------
+  const rootMapType: Node<"select"> = {
+    label: t("Data Map"),
+    field: "mapType",
+    type: "select",
+    options: [
+      {
+        label: t("Select Field Category"),
         value: "fieldCategory",
       },
       {
-        label: t("Aggregate Records"),
+        label: t("Select Aggregate Records"),
         value: "recordCategory",
       },
     ],
@@ -423,22 +443,23 @@ export const getPullScheme = async (
       rootFieldCategoryCates.options.list = tranBIData(
         fields.filter((item) => typeofNumber(item.type))
       );
-      const rootFieldCategoryCatesDefault =
-        rootFieldCategoryCates.options.list.map((item) => {
+      const rootFieldCategoryCatesDefault = rootFieldCategoryCates.options.list
+        .slice(0, 10)
+        .map((item) => {
           return {
             value: item.value,
           };
         });
       rootFieldCategoryCates.default = rootFieldCategoryCatesDefault as any;
-      console.log(
-        "eq",
-        configRoot.mapOptions?.cates,
-        lastConfigRoot?.mapOptions?.cates,
-        eqObject(
-          configRoot.mapOptions?.cates,
-          lastConfigRoot?.mapOptions?.cates
-        )
-      );
+      // console.log(
+      //   "eq",
+      //   configRoot.mapOptions?.cates,
+      //   lastConfigRoot?.mapOptions?.cates,
+      //   eqObject(
+      //     configRoot.mapOptions?.cates,
+      //     lastConfigRoot?.mapOptions?.cates
+      //   )
+      // );
 
       if (
         configRoot.tableId === lastConfigRoot?.tableId &&
@@ -600,12 +621,14 @@ export const getPullScheme = async (
           list: rootRecordCategorySeriesOptionsList,
           itemSelectOptions: rootRecordCategorySeriesOptionsItemSelectOptions,
         },
-        default: rootRecordCategorySeriesOptionsList.map((item) => {
-          return {
-            value: item.value,
-            select: "MAX",
-          };
-        }),
+        default: rootRecordCategorySeriesOptionsList
+          .slice(0, 10)
+          .map((item) => {
+            return {
+              value: item.value,
+              select: "MAX",
+            };
+          }),
       };
 
       if (

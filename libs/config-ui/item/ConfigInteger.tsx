@@ -19,7 +19,7 @@ export default function ConfigInteger(props: any) {
         {label}
       </div>
       <InputNumber
-        style={{ marginTop: "8px", width: "100%" }}
+        style={{ marginTop: 4, width: "100%" }}
         ref={ref}
         defaultValue={defaultValue}
         value={value}

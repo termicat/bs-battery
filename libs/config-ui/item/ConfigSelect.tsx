@@ -86,6 +86,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
       </div>
       <If condition={options?.length}>
         <Select
+          filter
           prefix={
             optionsIcons[value] ? (
               <Icon
@@ -97,7 +98,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
             )
           }
           placeholder="请选择"
-          style={{ width: "100%", marginTop: "8px" }}
+          style={{ width: "100%", marginTop: 4 }}
           onChange={(v) => {
             onChange(target, field, v);
           }}
@@ -117,7 +118,7 @@ export default function ConfigSelect(props: ConfigSelectProps) {
       <If condition={!options?.length}>
         <Select
           placeholder={t("Empty Options")}
-          style={{ width: "100%", marginTop: "8px" }}
+          style={{ width: "100%", marginTop: 4 }}
         ></Select>
       </If>
       <div id={field + "-bottom"}></div>
@@ -129,6 +130,7 @@ const SelectItem = styled.div`
   display: flex;
   align-items: center;
   padding: 5px 10px;
+  cursor: pointer;
 
   &:hover {
     background: rgba(var(--semi-blue-0), 0.5);

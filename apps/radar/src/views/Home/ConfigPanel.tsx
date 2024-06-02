@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { ConfigUI, getPullScheme } from "@bc/config-ui";
 import { Button, Toast } from "@douyinfe/semi-ui";
 import type { Scheme } from "@bc/config-ui";
@@ -26,6 +26,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     field: "",
   });
   const [echartsOption, setEchartsOption] = useState({} as any);
+  const defaultTableIndex = useRef(0);
 
   async function updatePreview(configValue: any) {
     console.log("updatePreview", configValue.root);
@@ -50,7 +51,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     console.log("updateScheme before", configValue);
     const scheme = await getPullScheme(
       configValue.root,
-      lastConfigValue?.root
+      lastConfigValue?.root,
+      defaultTableIndex.current
     ).catch((err) => {
       console.error(err);
       Toast.error(err.message);
@@ -164,7 +166,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         // marginTop: 50,
       }}
     >
-      <div style={{ width: "100%", padding: 20 }}>
+      <div style={{ width: "calc(100% - 340px)", padding: 20 }}>
         <ECharts option={echartsOption}></ECharts>
       </div>
       <div
@@ -195,7 +197,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             justifyContent: "end",
             background: "var(--feishu-color-bg)",
             borderRadius: 4,
-            width: 339,
+            // width: 339,
             padding: "10px 20px",
           }}
         >

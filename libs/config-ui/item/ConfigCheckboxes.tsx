@@ -33,7 +33,7 @@ export default function ConfigCheckboxes(props: ConfigCheckboxesProps) {
 
       <CheckboxGroup
         style={{
-          marginTop: "8px",
+          marginTop: 4,
           width: "100%",
           display: "grid",
           gridTemplateColumns: "repeat(auto-fill, minmax(100px, 1fr))",

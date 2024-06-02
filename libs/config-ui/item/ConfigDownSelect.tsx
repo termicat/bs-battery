@@ -47,6 +47,7 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
           borderRadius: 3,
           fontWeight: "normal",
           fontSize: 13,
+          cursor: "pointer",
         }}
       >
         <div
@@ -62,7 +63,9 @@ export default function ConfigDownSelect(props: ConfigDownSelectProps) {
           }}
         >
           {value.map((item: { label: any }) => item.label).join(" , ")}
-          <IconChevronDown style={{ margin: "0 8px", flexShrink: 0 }} />
+          <IconChevronDown
+            style={{ margin: "0 8px", flexShrink: 0, fontSize: 12 }}
+          />
         </div>
       </div>
     );

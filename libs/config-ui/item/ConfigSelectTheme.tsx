@@ -62,7 +62,7 @@ export default function ConfigSelectTheme(props: ConfigSelectThemeProps) {
 
       <Select
         placeholder="请选择主题色"
-        style={{ width: "100%", marginTop: "8px" }}
+        style={{ width: "100%", marginTop: 4 }}
         onChange={(v) => {
           onChange(target, field, v);
         }}
@@ -91,6 +91,8 @@ const ThemeWrap = styled.div`
   padding: 3px 8px;
   margin: 2px 5px;
   border-radius: 4px;
+  cursor: pointer;
+
   &:hover {
     background: rgba(var(--semi-blue-0), 0.5);
   }

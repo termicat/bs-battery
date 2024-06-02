@@ -25,7 +25,7 @@ export default function ConfigString(props: ConfigStringProps) {
         {label}
       </div>
       <Input
-        style={{ marginTop: "8px" }}
+        style={{ marginTop: 4 }}
         ref={ref}
         defaultValue={defaultValue}
         value={value}

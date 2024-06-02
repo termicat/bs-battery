@@ -19,7 +19,7 @@ export default function ConfigString(props: any) {
         {label}
       </div>
       <Select
-        style={{ marginTop: "8px", width: "100%" }}
+        style={{ marginTop: 4, width: "100%" }}
         defaultValue={defaultValue}
         optionList={options}
         value={value}
