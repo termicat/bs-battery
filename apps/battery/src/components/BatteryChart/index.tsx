@@ -77,7 +77,11 @@ export default function BatteryChart(props: BatteryChartProps) {
           {percent[0] > 0 ? `${percent[0].toFixed(1)}%` : "N/A"}
         </CozyTitle>
       </div>
-      <div className="auto-hide" style={{ width: "100%" }}>
+      <CozyTitle className="not auto-hide">
+        {props.list[0].label}{" "}
+        {percent[0] > 0 ? `${percent[0].toFixed(1)}%` : "N/A"}
+      </CozyTitle>
+      <div className="auto-hide" style={{ width: "100%", maxHeight: "30%" }}>
         <div
           style={{
             display: "flex",
@@ -129,9 +133,20 @@ export default function BatteryChart(props: BatteryChartProps) {
 }
 
 const ChartWrap = styled.div`
+  .not.auto-hide {
+    display: none;
+  }
   @media (max-width: 352px) {
     .auto-hide {
       display: none;
+    }
+    .not.auto-hide {
+      display: block;
+      white-space: nowrap;
+      width: 100%;
+      max-width: 100%;
+      font-size: 12px;
+      text-align: center;
     }
   }
 `;
