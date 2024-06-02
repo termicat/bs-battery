@@ -121,7 +121,7 @@ export default function BatteryChart(props: BatteryChartProps) {
                     whiteSpace: "nowrap",
                   }}
                 >
-                  {item.label}
+                  {item.label || "空值"}
                 </Title>
               </div>
             );
