@@ -406,11 +406,11 @@ export const getPullScheme = async (
     type: "select",
     options: [
       {
-        label: t("Select Aggregate Records"),
+        label: t("Select Field Category"),
         value: "fieldCategory",
       },
       {
-        label: t("Select Field Category"),
+        label: t("Select Aggregate Records"),
         value: "recordCategory",
       },
     ],

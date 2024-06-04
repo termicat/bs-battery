@@ -57,7 +57,7 @@ export function createEChartsOption(data: any[][], configRoot: any) {
     },
   };
   const type = configRoot.mapType;
-  if (type === "fieldCategory") {
+  if (type === "recordCategory") {
     const series = [
       {
         name: "Data",
