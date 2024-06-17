@@ -14,7 +14,11 @@ export default withResizeDetector(function ECharts(props: any) {
     const isDark = document.body.getAttribute("theme-mode") === "dark";
 
     const chart = echarts.init(chartRef.current!, isDark ? "dark" : "light");
-    chart.setOption(option);
+    try {
+      chart.setOption(option);
+    } catch (error) {
+      console.error("setOption error", error);
+    }
     if (props.refInstance) props.refInstance.current = chart;
     echartsInstance.current = chart;
     return () => {
