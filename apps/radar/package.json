@@ -13,7 +13,7 @@
   "dependencies": {
     "@bc/config": "workspace:^",
     "@bc/config-ui": "workspace:^",
-    "@bc/echarts": "workspace:^",
+    "@bc/vcharts": "workspace:^",
     "@bc/helper": "workspace:^",
     "@bc/i18n": "workspace:^",
     "@bc/sdk": "workspace:^",

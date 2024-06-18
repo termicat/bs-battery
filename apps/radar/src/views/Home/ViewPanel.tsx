@@ -1,7 +1,7 @@
-import ECharts from "@bc/echarts/index";
+import VCharts from "@bc/vcharts/index";
 import { useEffect, useState } from "react";
 import { bsSdk } from "./factory";
-import { createEChartsOption } from "@bc/helper/createEChartsOption";
+import { createVChartsOption } from "@bc/helper/createVChartsOption";
 import { useDebounceCallback } from "@bc/helper/useDebounce";
 
 type ViewPanelProps = { themeMode?: any };
@@ -13,7 +13,7 @@ export default function ViewPanel(props: ViewPanelProps) {
     const config = await bsSdk.getConfig();
     const data = await bsSdk.getData();
     console.log("getPreviewData", config, data, e);
-    setEchartsOption(createEChartsOption(data, config.customConfig));
+    setEchartsOption(createVChartsOption(data, config.customConfig));
     bsSdk.triggerDashRendered();
   }, 300);
 
@@ -29,7 +29,7 @@ export default function ViewPanel(props: ViewPanelProps) {
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <ECharts option={echartsOption} themeMode={props.themeMode}></ECharts>
+      <VCharts option={echartsOption} themeMode={props.themeMode}></VCharts>
     </div>
   );
 }

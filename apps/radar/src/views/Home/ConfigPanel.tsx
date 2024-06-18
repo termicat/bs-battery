@@ -10,8 +10,8 @@ import {
   Rollup,
   type IConfig,
 } from "@lark-base-open/js-sdk";
-import ECharts from "@bc/echarts/index";
-import { createEChartsOption } from "@bc/helper/createEChartsOption";
+import VCharts from "@bc/vcharts/index";
+import { createVChartsOption } from "@bc/helper/createVChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import { useDebounceEffect } from "@bc/helper/useDebounce";
@@ -44,7 +44,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         return [];
       });
     console.log("getPreviewData", data);
-    setEchartsOption(createEChartsOption(data, config.customConfig));
+    setEchartsOption(createVChartsOption(data, config.customConfig));
     bsSdk.triggerDashRendered();
   }
   async function updateScheme(configValue: any, lastConfigValue?: any) {
@@ -167,7 +167,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       }}
     >
       <div style={{ width: "calc(100% - 340px)", padding: 20 }}>
-        <ECharts option={echartsOption}></ECharts>
+        <VCharts option={echartsOption}></VCharts>
       </div>
       <div
         style={{

@@ -58,7 +58,7 @@ importers:
         version: link:../../libs/config-ui
       '@bc/echarts':
         specifier: workspace:^
-        version: link:../../libs/vcharts
+        version: link:../../libs/echarts
       '@bc/helper':
         specifier: workspace:^
         version: link:../../libs/helper
@@ -177,9 +177,6 @@ importers:
       '@bc/config-ui':
         specifier: workspace:^
         version: link:../../libs/config-ui
-      '@bc/echarts':
-        specifier: workspace:^
-        version: link:../../libs/vcharts
       '@bc/helper':
         specifier: workspace:^
         version: link:../../libs/helper
@@ -189,6 +186,9 @@ importers:
       '@bc/sdk':
         specifier: workspace:^
         version: link:../../libs/sdk
+      '@bc/vcharts':
+        specifier: workspace:^
+        version: link:../../libs/vcharts
       '@douyinfe/semi-foundation':
         specifier: ^2.58.0
         version: 2.58.0
@@ -297,7 +297,7 @@ importers:
         version: link:../../libs/config-ui
       '@bc/echarts':
         specifier: workspace:^
-        version: link:../../libs/vcharts
+        version: link:../../libs/echarts
       '@bc/helper':
         specifier: workspace:^
         version: link:../../libs/helper

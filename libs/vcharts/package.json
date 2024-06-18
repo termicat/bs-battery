@@ -1,6 +1,6 @@
 {
   "private": true,
-  "name": "@bc/echarts",
+  "name": "@bc/vcharts",
   "version": "1.0.0",
   "description": "SDK for the BS API",
   "module": "./index.ts",

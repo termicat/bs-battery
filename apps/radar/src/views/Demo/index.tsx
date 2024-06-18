@@ -1,4 +1,4 @@
-import Echarts from "@bc/echarts/index";
+import Echarts from "@bc/vcharts/index";
 
 export default function DemoView() {
   return (
