@@ -1,0 +1,14 @@
+{
+  "private": true,
+  "name": "@bc/echarts",
+  "version": "1.0.0",
+  "description": "SDK for the BS API",
+  "module": "./index.ts",
+  "types": "./index.ts",
+  "dependencies": {
+    "@bc/config": "workspace:^",
+    "@visactor/vchart": "^1.11.3",
+    "react": "^18.2.0",
+    "react-resize-detector": "^9.1.1"
+  }
+}
