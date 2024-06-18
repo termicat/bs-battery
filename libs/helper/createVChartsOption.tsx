@@ -24,6 +24,7 @@ export function createVChartsOption(data: any[][], configRoot: any) {
             };
           })
           .reduce((acc, cur: any) => acc.concat(cur.values), [])
+          .filter((item: any) => typeof item.value === "number")
           .sort((a: any, b: any) => a.value - b.value),
         fields: {
           type: {
@@ -49,7 +50,7 @@ export function createVChartsOption(data: any[][], configRoot: any) {
           seriesField: "cate",
         }),
 
-    stack: true,
+    stack: false,
     percent: configRoot.axisValue === "single",
     area: {
       visible: true,
@@ -71,7 +72,10 @@ export function createVChartsOption(data: any[][], configRoot: any) {
               : undefined,
         },
         grid: {
-          smooth: true,
+          smooth: false,
+          style: {
+            lineDash: [0],
+          },
         },
       },
       {
@@ -91,6 +95,8 @@ export function createVChartsOption(data: any[][], configRoot: any) {
       orient: "top",
     },
   };
+
+  console.log(JSON.stringify(spec));
 
   return spec;
 }
