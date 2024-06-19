@@ -382,23 +382,23 @@ export const getPullScheme = async (
   scheme.properties.push(rootLine);
   // ------------------------------
 
-  const rootAxisValue: Node<"select"> = {
-    label: t("Axis Value"),
-    field: "axisValue",
-    type: "select",
-    options: [
-      {
-        label: t("Single Axis Max"),
-        value: "single",
-      },
-      {
-        label: t("Global Axis Max"),
-        value: "global",
-      },
-    ],
-    default: configRoot.axisValue ?? "single",
-  };
-  scheme.properties.push(rootAxisValue);
+  // const rootAxisValue: Node<"select"> = {
+  //   label: t("Axis Value"),
+  //   field: "axisValue",
+  //   type: "select",
+  //   options: [
+  //     {
+  //       label: t("Single Axis Max"),
+  //       value: "single",
+  //     },
+  //     {
+  //       label: t("Global Axis Max"),
+  //       value: "global",
+  //     },
+  //   ],
+  //   default: configRoot.axisValue ?? "single",
+  // };
+  // scheme.properties.push(rootAxisValue);
   // ------------------------------
   const rootMapType: Node<"select"> = {
     label: t("Data Map"),
