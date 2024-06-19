@@ -8,6 +8,7 @@ export function createVChartsOption(data: any[][], configRoot: any) {
   const spec = {
     type: "radar",
     color: colors,
+    background: "rgba(0,0,0,0)",
     data: data
       .slice(1)
       .filter((item) => item[0].text)

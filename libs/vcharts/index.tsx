@@ -1,6 +1,11 @@
 import VChart from "@visactor/vchart";
 import { useEffect, useRef } from "react";
 import { withResizeDetector } from "react-resize-detector";
+import { initVChartSemiTheme } from "@visactor/vchart-semi-theme";
+
+initVChartSemiTheme({
+  isWatchingMode: true,
+});
 
 export default withResizeDetector(function ECharts(props: any) {
   const { option, width } = props;
@@ -13,7 +18,7 @@ export default withResizeDetector(function ECharts(props: any) {
 
     // const chart = echarts.init(chartRef.current!, isDark ? "dark" : "light");
     console.log("option", option);
-    if(option.type){
+    if (option.type) {
       const chart = new VChart(option, { dom: chartRef.current! });
       try {
         chart.renderSync();
