@@ -1,11 +1,11 @@
 import VChart from "@visactor/vchart";
 import { useEffect, useRef } from "react";
 import { withResizeDetector } from "react-resize-detector";
-import { initVChartSemiTheme } from "@visactor/vchart-semi-theme";
+// import { initVChartSemiTheme } from "@visactor/vchart-semi-theme";
 
-initVChartSemiTheme({
-  isWatchingMode: true,
-});
+// initVChartSemiTheme({
+//   isWatchingMode: true,
+// });
 
 export default withResizeDetector(function ECharts(props: any) {
   const { option, width } = props;
@@ -27,6 +27,7 @@ export default withResizeDetector(function ECharts(props: any) {
       }
       if (props.refInstance) props.refInstance.current = chart;
       chartsInstance.current = chart;
+      (window as any).chart = chart;
       return () => {
         chart.release();
       };
