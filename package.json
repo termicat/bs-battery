@@ -5,8 +5,8 @@
   "scripts": {
     "build": "pnpm run --filter \"apps-*\" build",
     "build:me": "pnpm run --filter \"apps-*\" build:me",
-    "build:battery": "rm -rf ./dist && pnpm run --filter \"apps-battery\" build && mv apps/battery/dist . && git add dist && git commit -m \"chore: update battery dist\" && git push -f battery main && git push && git checkout .",
-    "build:radar": "rm -rf ./dist && pnpm run --filter \"apps-radar\" build && mv apps/radar/dist . && git add dist && git commit -m \"chore: update radar dist\" && git push -f radar main && git push && git checkout ."
+    "build:battery": "rm -rf ./dist && pnpm run --filter \"apps-battery\" build && mv apps/battery/dist . && git add . && git commit -m \"chore: update battery dist\" && git push -f battery main && git push && git checkout .",
+    "build:radar": "rm -rf ./dist && pnpm run --filter \"apps-radar\" build && mv apps/radar/dist . && git add . && git commit -m \"chore: update radar dist\" && git push -f radar main && git push && git checkout ."
   },
   "dependencies": {},
   "devDependencies": {
