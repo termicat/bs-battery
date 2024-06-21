@@ -295,15 +295,15 @@ importers:
       '@bc/config-ui':
         specifier: workspace:^
         version: link:../../libs/config-ui
-      '@bc/echarts':
-        specifier: workspace:^
-        version: link:../../libs/echarts
       '@bc/helper':
         specifier: workspace:^
         version: link:../../libs/helper
       '@bc/i18n':
         specifier: workspace:^
         version: link:../../libs/i18n
+      '@bc/minicharts':
+        specifier: workspace:^
+        version: link:../../libs/minicharts
       '@bc/sdk':
         specifier: workspace:^
         version: link:../../libs/sdk
@@ -469,6 +469,18 @@ importers:
       react-i18next:
         specifier: ^14.1.1
         version: 14.1.1(i18next@23.11.4)(react-dom@18.3.1)(react@18.3.1)
+
+  libs/minicharts:
+    dependencies:
+      '@bc/config':
+        specifier: workspace:^
+        version: link:../config
+      react:
+        specifier: ^18.2.0
+        version: 18.3.1
+      react-resize-detector:
+        specifier: ^9.1.1
+        version: 9.1.1(react-dom@18.3.1)(react@18.3.1)
 
   libs/sdk:
     dependencies:

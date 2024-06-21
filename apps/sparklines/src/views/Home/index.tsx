@@ -47,19 +47,14 @@ export default function App() {
       }
     });
   }, []);
-  // switch (bsSdk.getDashState()) {
-  //   case DashboardState.View:
-  //     return ViewPanel({ themeMode: themeMode });
-  //   case DashboardState.FullScreen:
-  //     document.body.setAttribute("theme-mode", "dark");
+  switch (bsSdk.getDashState()) {
+    case DashboardState.View:
+      return ViewPanel({ themeMode: themeMode });
+    case DashboardState.FullScreen:
+      document.body.setAttribute("theme-mode", "dark");
 
-  //     return ViewPanel({});
-  //   default:
-  //     return ConfigPanel({});
-  // }
-
-  return (
-    <iframe
-    ></iframe>
-  );
+      return ViewPanel({});
+    default:
+      return ConfigPanel({});
+  }
 }

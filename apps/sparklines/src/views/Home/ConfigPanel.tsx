@@ -1,345 +1,158 @@
-import { useEffect, useRef, useState } from "react";
-import { ConfigUI } from "@bc/config-ui";
-import { Button } from "@douyinfe/semi-ui";
+import { useRef, useState } from "react";
+import { ConfigUI, getPullScheme } from "@bc/config-ui";
+import { Button, Toast } from "@douyinfe/semi-ui";
 import type { Scheme } from "@bc/config-ui";
-import { tranBIData } from "@bc/helper/config-ui";
-import {
-  getDefaultValue,
-  getSchemeByPath,
-  setSchemeByPath,
-} from "@bc/config-ui";
+import { getDefaultValue } from "@bc/config-ui";
 import {
   DATA_SOURCE_SORT_TYPE,
-  FieldType,
   GroupMode,
   ORDER,
   Rollup,
-  SourceType,
   type IConfig,
 } from "@lark-base-open/js-sdk";
+import { createVChartsOption } from "@bc/helper/createVChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
-import type { BIField } from "@bc/sdk/BsSdk";
-import BatteryChart from "../../components/BatteryChart";
-import { createChartOption, createScheme } from "../../options";
-import { theme } from "@bc/config";
 import { useDebounceEffect } from "@bc/helper/useDebounce";
-import { typeofNumber } from "@bc/sdk/fieldTools";
+import MiniCharts from "@bc/minicharts";
 
 export type ConfigPanelProps = {};
-
-let timer: NodeJS.Timeout;
-let timer2: NodeJS.Timeout;
 
 export default function ConfigPanel(props: ConfigPanelProps) {
   const [t] = useTranslation();
   const [configValue, setConfigValue] = useState({ root: {} as any });
   const [scheme, setScheme] = useState<Scheme>({
-    field: "root",
     type: "object",
+    field: "",
   });
-  const [initd, setInitd] = useState(false);
-  const [chartsOption, setChartsOption] = useState([] as any);
-  const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
+  const [echartsOption, setEchartsOption] = useState({} as any);
+  const defaultTableIndex = useRef(0);
 
-  useEffect(() => {
-    function updatePreview() {
-      timer && clearTimeout(timer);
-      timer = setTimeout(async () => {
-        const config = getConfig();
-        if (!config) {
-          console.error("config is empty, skip updatePreview");
-          return;
-        }
-        const data = await bsSdk.getPreviewData(config.dataConditions as any);
-        console.log(
-          "getPreviewData",
-          JSON.stringify({
-            dataConditions: config.dataConditions,
-            data,
-          })
-        );
-        const chartOption = createChartOption(data, configValue.root);
-        setChartsOption(chartOption);
-        bsSdk.triggerDashRendered();
-      }, 300);
+  async function updatePreview(configValue: any) {
+    console.log("updatePreview", configValue.root);
+    const config = getConfig(configValue);
+    if (!config) {
+      console.error("config is empty, skip updatePreview");
+      return;
     }
-    updatePreview();
-  }, [configValue]);
-
-  useEffect(() => {
-    async function initConfigValue() {
-      if (timer2) clearTimeout(timer2);
-      timer2 = setTimeout(async () => {
-        const config = await bsSdk.getConfig();
-        console.log("initConfigValue", JSON.stringify(config));
-        const customConfig = config.customConfig;
-        setConfigValue({ root: customConfig });
-      }, 500);
-    }
-    initConfigValue();
-  }, []);
-
-  useEffect(() => {
-    async function init() {
-      const tables = await bsSdk.getTableList();
-      console.log("init", tables);
-      const o1 = tranBIData(tables);
-      const newScheme = createScheme();
-      setSchemeByPath(newScheme, "tableId", {
-        default: o1[0].value,
-        options: o1,
+    console.log("getConfig", config);
+    const data = await bsSdk
+      .getPreviewData(config.dataConditions as any)
+      .catch((err) => {
+        console.error(err);
+        Toast.warning("数据为空");
+        return [];
       });
-      const defaultConfigValue = getDefaultValue(newScheme);
-      setConfigValue({ root: defaultConfigValue });
-      // console.log("defaultConfigValue", defaultConfigValue);
+    console.log("getPreviewData", data);
+    setEchartsOption(createVChartsOption(data, config.customConfig));
+    bsSdk.triggerDashRendered();
+  }
+  async function updateScheme(configValue: any, lastConfigValue?: any) {
+    console.log("updateScheme before", configValue);
+    const scheme = await getPullScheme(
+      configValue.root,
+      lastConfigValue?.root,
+      defaultTableIndex.current
+    ).catch((err) => {
+      console.error(err);
+      Toast.error(err.message);
+      return {};
+    });
+    const configRoot = getDefaultValue(scheme as any);
+    console.log("updateScheme after", scheme, configRoot);
 
-      setScheme(newScheme);
+    setScheme(scheme as any);
+    let scopeConfigValue = configValue;
+    if (lastConfigValue) {
+      scopeConfigValue = { root: configRoot };
+    } else if (configValue.root) {
+      scopeConfigValue = { root: configValue.root };
+    } else {
+      scopeConfigValue = { root: configRoot };
+    }
+    setConfigValue(scopeConfigValue);
+    updatePreview(scopeConfigValue);
+  }
+
+  useDebounceEffect(() => {
+    async function init() {
+      const config = await bsSdk
+        .getConfig()
+        .catch((err) => ({ customConfig: undefined }));
+      updateScheme(
+        {
+          root: config.customConfig,
+        },
+        undefined
+      );
     }
     init();
   }, []);
 
-  useEffect(() => {
-    async function updateViews() {
-      const { tableId } = configValue.root;
-      if (tableId) {
-        const table = tableId;
-
-        const views = await bsSdk.getViewList(table);
-
-        const options = tranBIData(views).map((view) => {
-          return {
-            value: JSON.stringify({
-              viewId: view.value,
-              viewName: view.label,
-              type: SourceType.VIEW,
-            }),
-            label: view.label,
-            icon: view.icon,
-          };
-        });
-        const defaultView = options[0].value;
-
-        console.log("updateViews", options, defaultView);
-
-        // console.log("getViewList", views);
-        setSchemeByPath(scheme, "dataRange", {
-          options,
-          default: defaultView,
-        });
-
-        setConfigValue({
-          root: {
-            ...configValue.root,
-            dataRange: defaultView,
-          },
-        });
-        setScheme({ ...scheme });
-      }
+  const getConfig = (scopeConfigValue = configValue) => {
+    if (!scopeConfigValue.root.dataRange) {
+      console.error("dataRange is empty");
+      return;
     }
-    updateViews();
-  }, [configValue?.root?.tableId]);
-
-  useEffect(() => {
-    async function updateGroupBy() {
-      const { tableId, dataRange } = configValue.root;
-      if (tableId && dataRange) {
-        console.log(
-          "updateGroupBy",
-          "tableId",
-          tableId,
-          "dataRange",
-          dataRange
-        );
-
-        const dataRangeObj = JSON.parse(dataRange);
-        const fields = await bsSdk.getFiledListByViewId(
-          tableId,
-          dataRangeObj.viewId
-        );
-        console.log("getFiledListByViewId", fields);
-
-        const options = tranBIData(fields).map((field) => {
-          fieldTypeMapRef.current[field.value] = field.raw;
-          return field;
-        });
-        const defaultField = options[0].value;
-        setSchemeByPath(scheme, "groupBy", {
-          options,
-          default: defaultField,
-        });
-
-        const fieldValueByOptions = options.filter((item) =>
-          typeofNumber(item.type)
-        );
-        setSchemeByPath(scheme, "fieldValueBy", {
-          options: fieldValueByOptions,
-          default: fieldValueByOptions[0]?.value,
-        });
-
-        setConfigValue((configValue) => ({
-          root: {
-            ...configValue.root,
-            groupBy: defaultField,
-            fieldValueBy: fieldValueByOptions[0]?.value,
-          },
-        }));
-        setScheme({ ...scheme });
-      }
-    }
-    updateGroupBy();
-  }, [configValue?.root?.dataRange]);
-
-  useDebounceEffect(() => {
-    async function updatePrimaryKey() {
-      console.log("updatePrimaryKey", configValue.root.groupBy);
-
-      const { tableId, dataRange } = configValue.root;
-      if (tableId && dataRange) {
-        const dataRangeObj = JSON.parse(dataRange);
-        const data = await bsSdk.getPreviewData({
-          tableId,
-          dataRange: dataRangeObj,
+    if (scopeConfigValue.root.mapType === "fieldCategory") {
+      const config: IConfig = {
+        dataConditions: {
+          tableId: scopeConfigValue.root.tableId,
+          dataRange: JSON.parse(scopeConfigValue.root.dataRange),
           groups: [
             {
-              fieldId: configValue.root.groupBy,
+              fieldId: scopeConfigValue.root.mapOptions.series,
               sort: {
                 order: ORDER.ASCENDING,
                 sortType: DATA_SOURCE_SORT_TYPE.VIEW,
               },
-              mode: GroupMode.ENUMERATED,
+              mode: scopeConfigValue.root.mapOptions.checkSplit
+                ? GroupMode.ENUMERATED
+                : GroupMode.INTEGRATED,
             },
           ],
-        });
-        console.log("data:", data);
-
-        const options = data
-          .slice(1)
-          .map((field) => {
+          series: scopeConfigValue.root.mapOptions.cates.map((cate: any) => {
             return {
-              value: field[0].text,
-              label: field[0].text,
+              fieldId: cate.value,
+              rollup: scopeConfigValue.root.mapOptions.calc || Rollup.MAX,
             };
-          })
-          .filter((item) => item.label);
-        const defaultValue = options?.[0]?.value;
-        setSchemeByPath(scheme, "primaryKey", {
-          options,
-          default: defaultValue,
-        });
-        setConfigValue((configValue) => {
-          console.log("configValue", configValue.root.primaryKey, options);
-
-          if (
-            options.some((item) => item.value === configValue.root.primaryKey)
-          ) {
-            return configValue;
-          }
-          return {
-            root: { ...configValue.root, primaryKey: defaultValue },
-          };
-        });
-        setScheme({ ...scheme });
-      }
-    }
-    updatePrimaryKey();
-  }, [configValue?.root?.groupBy]);
-
-  useEffect(() => {
-    function updateCheckSplitScheme() {
-      console.log("updateCheckSplitScheme", configValue.root.groupBy);
-
-      const { groupBy } = configValue.root;
-      if (!groupBy) {
+          }),
+        } as any,
+        customConfig: scopeConfigValue.root,
+      };
+      return config;
+    } else if (scopeConfigValue.root.mapType === "recordCategory") {
+      if (!scopeConfigValue.root.mapOptions.series) {
+        console.error("series is empty");
         return;
       }
-      const field = fieldTypeMapRef.current[groupBy];
-      if (!field) {
-        return;
-      }
-      if ([FieldType.MultiSelect, FieldType.User].includes(field.type)) {
-        setSchemeByPath(scheme, "checkSplit", {
-          hide: false,
-        });
-        setConfigValue((configValue) => ({
-          root: { ...configValue.root, checkSplit: false },
-        }));
-        setScheme({ ...scheme });
-      } else {
-        setSchemeByPath(scheme, "checkSplit", {
-          hide: true,
-        });
-        setConfigValue((configValue) => ({
-          root: { ...configValue.root, checkSplit: false },
-        }));
-        setScheme({ ...scheme });
-      }
-    }
-    updateCheckSplitScheme();
-  }, [configValue?.root?.groupBy]);
-
-  useEffect(() => {
-    function updateShowFieldValueBy() {
-      console.log("updateShowFieldValueBy", configValue.root.valueBy, scheme);
-      if (!configValue.root.tableId) {
-        return;
-      }
-      if (configValue.root?.valueBy === "fieldValue") {
-        setSchemeByPath(scheme, "fieldValueBy", {
-          hide: false,
-        });
-        setSchemeByPath(scheme, "calcType", {
-          hide: false,
-        });
-        setScheme({ ...scheme });
-      } else {
-        setSchemeByPath(scheme, "fieldValueBy", {
-          hide: true,
-        });
-        setSchemeByPath(scheme, "calcType", {
-          hide: true,
-        });
-        setScheme({ ...scheme });
-      }
-      // setInitd(true);
-    }
-    updateShowFieldValueBy();
-  }, [configValue.root?.valueBy]);
-
-  const getConfig = () => {
-    if (!configValue.root.dataRange || !configValue.root.primaryKey) {
-      return;
-    }
-    const config: IConfig = {
-      dataConditions: {
-        tableId: configValue.root.tableId,
-        dataRange: JSON.parse(configValue.root.dataRange),
-        groups: [
-          {
-            fieldId: configValue.root.groupBy,
-            sort: {
-              order: ORDER.ASCENDING,
-              sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+      const config: IConfig = {
+        dataConditions: {
+          tableId: scopeConfigValue.root.tableId,
+          dataRange: JSON.parse(scopeConfigValue.root.dataRange),
+          groups: [
+            {
+              fieldId: scopeConfigValue.root.mapOptions.cate,
+              sort: {
+                order: ORDER.ASCENDING,
+                sortType: DATA_SOURCE_SORT_TYPE.VIEW,
+              },
+              mode: scopeConfigValue.root.mapOptions.checkSplit
+                ? GroupMode.ENUMERATED
+                : GroupMode.INTEGRATED,
             },
-            mode: configValue.root.checkSplit
-              ? GroupMode.ENUMERATED
-              : GroupMode.INTEGRATED,
-          },
-        ],
-        series:
-          configValue.root.valueBy === "fieldValue" &&
-          configValue.root.fieldValueBy
-            ? [
-                {
-                  fieldId: configValue.root.fieldValueBy,
-                  rollup: configValue.root.calcType,
-                },
-              ]
-            : "COUNTA",
-      } as any,
-      customConfig: configValue.root,
-    };
-    return config;
+          ],
+          series: scopeConfigValue.root.mapOptions.series.map((series: any) => {
+            return {
+              fieldId: series.value,
+              rollup: series.select,
+            };
+          }),
+        } as any,
+        customConfig: scopeConfigValue.root,
+      };
+      return config;
+    }
   };
 
   return (
@@ -353,20 +166,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         // marginTop: 50,
       }}
     >
-      <div
-        style={{
-          flex: 1,
-          padding: 20,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          overflow: "hidden",
-        }}
-      >
-        <BatteryChart
-          style={{ width: "80%", height: "20vw" }}
-          list={chartsOption}
-        ></BatteryChart>
+      <div style={{ width: "calc(100% - 340px)", padding: 20 }}>
+        <MiniCharts option={echartsOption}></MiniCharts>
       </div>
       <div
         style={{
@@ -382,7 +183,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           onChange={(target, field, value) => {
             console.log("Root onChange", target, field, value);
             const newTarget = Object.assign({}, target, { [field]: value });
-            setConfigValue(newTarget);
+            updateScheme(newTarget, target);
+            // setConfigValue(newTarget);
           }}
         ></ConfigUI>
         <div style={{ height: 100 }}></div>
@@ -395,7 +197,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             justifyContent: "end",
             background: "var(--feishu-color-bg)",
             borderRadius: 4,
-            width: 339,
+            width: "335px",
             padding: "10px 20px",
           }}
         >
