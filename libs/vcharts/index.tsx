@@ -7,7 +7,7 @@ import { withResizeDetector } from "react-resize-detector";
 //   isWatchingMode: true,
 // });
 
-export default withResizeDetector(function ECharts(props: any) {
+export default withResizeDetector(function VCharts(props: any) {
   const { option, width } = props;
   const chartRef = useRef<HTMLDivElement>(null);
   const chartsInstance = useRef<VChart>();

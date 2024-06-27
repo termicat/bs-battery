@@ -1,20 +1,26 @@
-import MiniCharts from "@bc/minicharts";
 import { useEffect, useState } from "react";
 import { bsSdk } from "./factory";
 import { createVChartsOption } from "@bc/helper/createVChartsOption";
 import { useDebounceCallback } from "@bc/helper/useDebounce";
+import { vchartsOptionSplit } from "./vchartsOptionSplit";
+import MVCharts from "./MVCharts";
 
 type ViewPanelProps = { themeMode?: any };
 
 export default function ViewPanel(props: ViewPanelProps) {
-  const [echartsOption, setEchartsOption] = useState({} as any);
+  const [echartsOption, setEchartsOption] = useState([] as any);
 
   const updateEcharts = useDebounceCallback(async (e?: any) => {
     console.log("updateEcharts");
-    const config = await bsSdk.getConfig();
+    const config: any = await bsSdk.getConfig();
     const data = await bsSdk.getData();
-    console.log("getPreviewData", config, data, e);
-    setEchartsOption(createVChartsOption(data, config.customConfig));
+
+    const chartsOptions = createVChartsOption(
+      data,
+      config.customConfig[config.customConfig.chartType]
+    );
+    const splitOptions = vchartsOptionSplit(chartsOptions);
+    setEchartsOption(splitOptions);
     bsSdk.triggerDashRendered();
   }, 300);
 
@@ -30,7 +36,7 @@ export default function ViewPanel(props: ViewPanelProps) {
 
   return (
     <div style={{ width: "100%", height: "100vh" }}>
-      <MiniCharts option={echartsOption} themeMode={props.themeMode}></MiniCharts>
+      <MVCharts echartsOption={echartsOption}></MVCharts>
     </div>
   );
 }

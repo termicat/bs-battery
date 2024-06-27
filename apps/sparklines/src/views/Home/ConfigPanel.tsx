@@ -1,4 +1,4 @@
-import { useRef, useState } from "react";
+import { useRef, useState, type Key } from "react";
 import { ConfigUI } from "@bc/config-ui";
 import { Button, Toast } from "@douyinfe/semi-ui";
 import type { Scheme } from "@bc/config-ui";
@@ -10,6 +10,7 @@ import { useDebounceEffect } from "@bc/helper/useDebounce";
 import VCharts from "@bc/vcharts";
 import * as chartsMap from "@bc/minicharts/chartsMap";
 import { getPullScheme } from "../../options";
+import { vchartsOptionSplit } from "./vchartsOptionSplit";
 
 export type ConfigPanelProps = {};
 
@@ -20,7 +21,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     type: "object",
     field: "",
   });
-  const [echartsOption, setEchartsOption] = useState({} as any);
+  const [echartsOption, setEchartsOption] = useState([] as any);
   const defaultTableIndex = useRef(0);
 
   async function updatePreview(configValue: any) {
@@ -30,7 +31,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       console.error("config is empty, skip updatePreview");
       return;
     }
-    console.log("getConfig", config);
+    // console.log("getConfig", config);
     const data = await bsSdk
       .getPreviewData(config.dataConditions as any)
       .catch((err) => {
@@ -38,12 +39,17 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         Toast.warning("数据为空");
         return [];
       });
-    console.log("getPreviewData", data);
-    setEchartsOption(createVChartsOption(data, config.customConfig.radar));
+    // console.log("getPreviewData", data);
+    const chartsOptions = createVChartsOption(
+      data,
+      config.customConfig[config.customConfig.chartType]
+    );
+    const splitOptions = vchartsOptionSplit(chartsOptions);
+    setEchartsOption(splitOptions);
     bsSdk.triggerDashRendered();
   }
   async function updateScheme(configValue: any, lastConfigValue?: any) {
-    console.log("updateScheme before", configValue);
+    // console.log("updateScheme before", configValue);
     const scheme = await getPullScheme(
       configValue.root,
       lastConfigValue?.root,
@@ -54,19 +60,19 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       return {};
     });
     const configRoot = getDefaultValue(scheme as any);
-    console.log("updateScheme after", scheme, configRoot);
+    // console.log("updateScheme after", scheme, configRoot);
 
     setScheme(scheme as any);
     let scopeConfigValue = configValue;
     if (lastConfigValue) {
       scopeConfigValue = { root: configRoot };
-      console.log('lastConfigValue', lastConfigValue);
+      console.log("lastConfigValue", lastConfigValue);
     } else if (configValue.root) {
       scopeConfigValue = { root: configValue.root };
-      console.log('configValue', configValue);
+      console.log("configValue", configValue);
     } else {
       scopeConfigValue = { root: configRoot };
-      console.log('configRoot', configRoot);
+      console.log("configRoot", configRoot);
     }
     setConfigValue(scopeConfigValue);
     updatePreview(scopeConfigValue);
@@ -99,7 +105,6 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       dataConditions: config?.dataConditions,
       customConfig: scopeConfigValue.root,
     } as any;
-
   };
 
   return (
@@ -109,12 +114,35 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         flexDirection: "row",
         height: "100vh",
         overflow: "hidden",
+        width: "100%",
+        boxSizing: "border-box",
         borderTop: "var(--split-line-size) solid var(--split-line-color)",
         // marginTop: 50,
       }}
     >
-      <div style={{ width: "calc(100% - 340px)", padding: 20 }}>
-        <VCharts option={echartsOption}></VCharts>
+      <div
+        style={{
+          width: "calc(100% - 340px)",
+          padding: 20,
+          display: "grid",
+          gridTemplateColumns: `repeat(${
+            echartsOption.length === 4
+              ? 2
+              : echartsOption.length >= 3
+              ? 3
+              : echartsOption.length % 3
+          }, 1fr)`,
+          overflowY: "scroll",
+          // overflowX: "hidden",
+        }}
+      >
+        {echartsOption.map((item: any, index: any) => {
+          return (
+            <div key={item.title} style={{ width: "100%", aspectRatio: "1/1" }}>
+              <VCharts option={item.option}></VCharts>
+            </div>
+          );
+        })}
       </div>
       <div
         style={{
@@ -122,6 +150,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
           padding: "0 20px",
           overflow: "scroll",
           borderLeft: "var(--split-line-size) solid var(--split-line-color)",
+          flexShrink: 0,
         }}
       >
         <ConfigUI
