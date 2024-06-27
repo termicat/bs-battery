@@ -17,6 +17,7 @@
     "@bc/i18n": "workspace:^",
     "@bc/minicharts": "workspace:^",
     "@bc/sdk": "workspace:^",
+    "@bc/vcharts": "workspace:^",
     "@douyinfe/semi-foundation": "^2.58.0",
     "@douyinfe/semi-icons": "^2.58.0",
     "@douyinfe/semi-illustrations": "^2.58.0",

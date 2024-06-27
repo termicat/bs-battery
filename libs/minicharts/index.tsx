@@ -18,11 +18,11 @@ export default withResizeDetector(function ECharts(props: any) {
   }, [width]);
 
   return <div ref={chartRef} style={{ width: "100%", height: "100%", display: 'grid', gridTemplateColumns: '1fr 1fr 1fr', }}>
-    <iframe src="http://localhost:3001/?minicharts" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
-    <iframe src="http://localhost:3001/?minicharts" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
-    <iframe src="http://localhost:3001/?minicharts" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
-    <iframe src="http://localhost:3001/?minicharts" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
-    <iframe src="http://localhost:3001/?minicharts" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
-    <iframe src="http://localhost:3001/?minicharts" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
+    {/* <iframe src="http://localhost:3001/#minicharts?id=1" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
+    <iframe src="http://localhost:3001/#minicharts?id=2" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
+    <iframe src="http://localhost:3001/#minicharts?id=3" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
+    <iframe src="http://localhost:3001/#minicharts?id=4" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
+    <iframe src="http://localhost:3001/#minicharts?id=5" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe>
+    <iframe src="http://localhost:3001/#minicharts?id=6" width="100%" style={{aspectRatio: '1/1', border:'none', padding: 5}}></iframe> */}
   </div>;
 });

@@ -1,20 +1,15 @@
 import { useRef, useState } from "react";
-import { ConfigUI, getPullScheme } from "@bc/config-ui";
+import { ConfigUI } from "@bc/config-ui";
 import { Button, Toast } from "@douyinfe/semi-ui";
 import type { Scheme } from "@bc/config-ui";
 import { getDefaultValue } from "@bc/config-ui";
-import {
-  DATA_SOURCE_SORT_TYPE,
-  GroupMode,
-  ORDER,
-  Rollup,
-  type IConfig,
-} from "@lark-base-open/js-sdk";
 import { createVChartsOption } from "@bc/helper/createVChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import { useDebounceEffect } from "@bc/helper/useDebounce";
-import MiniCharts from "@bc/minicharts";
+import VCharts from "@bc/vcharts";
+import * as chartsMap from "@bc/minicharts/chartsMap";
+import { getPullScheme } from "../../options";
 
 export type ConfigPanelProps = {};
 
@@ -44,7 +39,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         return [];
       });
     console.log("getPreviewData", data);
-    setEchartsOption(createVChartsOption(data, config.customConfig));
+    setEchartsOption(createVChartsOption(data, config.customConfig.radar));
     bsSdk.triggerDashRendered();
   }
   async function updateScheme(configValue: any, lastConfigValue?: any) {
@@ -65,10 +60,13 @@ export default function ConfigPanel(props: ConfigPanelProps) {
     let scopeConfigValue = configValue;
     if (lastConfigValue) {
       scopeConfigValue = { root: configRoot };
+      console.log('lastConfigValue', lastConfigValue);
     } else if (configValue.root) {
       scopeConfigValue = { root: configValue.root };
+      console.log('configValue', configValue);
     } else {
       scopeConfigValue = { root: configRoot };
+      console.log('configRoot', configRoot);
     }
     setConfigValue(scopeConfigValue);
     updatePreview(scopeConfigValue);
@@ -90,69 +88,18 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   }, []);
 
   const getConfig = (scopeConfigValue = configValue) => {
-    if (!scopeConfigValue.root.dataRange) {
+    if (!scopeConfigValue.root.chartType) {
       console.error("dataRange is empty");
       return;
     }
-    if (scopeConfigValue.root.mapType === "fieldCategory") {
-      const config: IConfig = {
-        dataConditions: {
-          tableId: scopeConfigValue.root.tableId,
-          dataRange: JSON.parse(scopeConfigValue.root.dataRange),
-          groups: [
-            {
-              fieldId: scopeConfigValue.root.mapOptions.series,
-              sort: {
-                order: ORDER.ASCENDING,
-                sortType: DATA_SOURCE_SORT_TYPE.VIEW,
-              },
-              mode: scopeConfigValue.root.mapOptions.checkSplit
-                ? GroupMode.ENUMERATED
-                : GroupMode.INTEGRATED,
-            },
-          ],
-          series: scopeConfigValue.root.mapOptions.cates.map((cate: any) => {
-            return {
-              fieldId: cate.value,
-              rollup: scopeConfigValue.root.mapOptions.calc || Rollup.MAX,
-            };
-          }),
-        } as any,
-        customConfig: scopeConfigValue.root,
-      };
-      return config;
-    } else if (scopeConfigValue.root.mapType === "recordCategory") {
-      if (!scopeConfigValue.root.mapOptions.series) {
-        console.error("series is empty");
-        return;
-      }
-      const config: IConfig = {
-        dataConditions: {
-          tableId: scopeConfigValue.root.tableId,
-          dataRange: JSON.parse(scopeConfigValue.root.dataRange),
-          groups: [
-            {
-              fieldId: scopeConfigValue.root.mapOptions.cate,
-              sort: {
-                order: ORDER.ASCENDING,
-                sortType: DATA_SOURCE_SORT_TYPE.VIEW,
-              },
-              mode: scopeConfigValue.root.mapOptions.checkSplit
-                ? GroupMode.ENUMERATED
-                : GroupMode.INTEGRATED,
-            },
-          ],
-          series: scopeConfigValue.root.mapOptions.series.map((series: any) => {
-            return {
-              fieldId: series.value,
-              rollup: series.select,
-            };
-          }),
-        } as any,
-        customConfig: scopeConfigValue.root,
-      };
-      return config;
-    }
+
+    const config = chartsMap.radar.query.default(scopeConfigValue.root.radar);
+
+    return {
+      dataConditions: config?.dataConditions,
+      customConfig: scopeConfigValue.root,
+    } as any;
+
   };
 
   return (
@@ -167,7 +114,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
       }}
     >
       <div style={{ width: "calc(100% - 340px)", padding: 20 }}>
-        <MiniCharts option={echartsOption}></MiniCharts>
+        <VCharts option={echartsOption}></VCharts>
       </div>
       <div
         style={{
@@ -201,6 +148,21 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             padding: "10px 20px",
           }}
         >
+          <Button
+            style={{ width: 80, marginBottom: 10, marginRight: 10 }}
+            onClick={() => {
+              const config = getConfig();
+              if (!config) {
+                console.error("config is empty");
+                return;
+              }
+              bsSdk.saveConfig(config).then((res) => {
+                console.log("setConfig", res);
+              });
+            }}
+          >
+            {t("Build")}
+          </Button>
           <Button
             type="primary"
             theme="solid"

@@ -7,6 +7,12 @@
   "types": "./index.tsx",
   "dependencies": {
     "@bc/config": "workspace:^",
+    "@bc/i18n": "workspace:^",
+    "@bc/helper": "workspace:^",
+    "@bc/config-ui": "workspace:^",
+    "@bc/sdk": "workspace:^",
+
+    "@lark-base-open/js-sdk": "0.4.0-alpha.1",
     "react": "^18.2.0",
     "react-resize-detector": "^9.1.1"
   }

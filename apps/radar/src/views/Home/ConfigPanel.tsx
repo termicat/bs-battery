@@ -1,5 +1,5 @@
 import { useRef, useState } from "react";
-import { ConfigUI, getPullScheme } from "@bc/config-ui";
+import { ConfigUI } from "@bc/config-ui";
 import { Button, Toast } from "@douyinfe/semi-ui";
 import type { Scheme } from "@bc/config-ui";
 import { getDefaultValue } from "@bc/config-ui";
@@ -15,6 +15,7 @@ import { createVChartsOption } from "@bc/helper/createVChartsOption";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import { useDebounceEffect } from "@bc/helper/useDebounce";
+import { getPullScheme } from "../../options";
 
 export type ConfigPanelProps = {};
 

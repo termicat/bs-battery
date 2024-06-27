@@ -1,21 +1,22 @@
 import i18n from "@bc/i18n";
 import type { Node, Scheme } from "@bc/config-ui/types";
 import { theme } from "@bc/config";
-import { bsSdk } from "./views/Home/factory";
 import { tranBIData } from "@bc/helper/config-ui";
 import { FieldType, SourceType } from "@lark-base-open/js-sdk";
 import type { NodeTypes } from "@bc/config-ui";
 import { typeofNumber } from "@bc/sdk/fieldTools";
+import type { BsSdk } from "@bc/sdk/BsSdk";
 
-export const getPullScheme = async (
+export default async function pullScheme (
+  bsSdk: BsSdk,
   configRoot: any = {},
   lastConfigRoot: any = configRoot,
-  defaultTableIndex = 0
-) => {
-  console.log("getPullScheme", {
-    configRoot,
-    lastConfigRoot,
-  });
+  defaultTableIndex = 0,
+) {
+  // console.log("pullScheme", {
+  //   configRoot,
+  //   lastConfigRoot,
+  // });
 
   const t = i18n.t.bind(i18n);
   const scheme = {
@@ -370,7 +371,3 @@ export const getPullScheme = async (
 
   return scheme;
 };
-
-function eqObject(obj1: any, obj2: any) {
-  return JSON.stringify(obj1) === JSON.stringify(obj2);
-}
