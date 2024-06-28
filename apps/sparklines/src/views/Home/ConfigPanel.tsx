@@ -177,7 +177,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             padding: "10px 20px",
           }}
         >
-          <Button
+          {/* <Button
             style={{ width: 80, marginBottom: 10, marginRight: 10 }}
             onClick={() => {
               const config = getConfig();
@@ -191,7 +191,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             }}
           >
             {t("Build")}
-          </Button>
+          </Button> */}
           <Button
             type="primary"
             theme="solid"
