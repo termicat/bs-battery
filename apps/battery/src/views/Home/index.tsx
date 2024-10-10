@@ -1,4 +1,4 @@
-import { DashboardState, ThemeModeType } from "@lark-base-open/js-sdk";
+import { DashboardState, ThemeModeType } from "@bc/sdk";
 import { bsSdk } from "./factory";
 import ViewPanel from "./ViewPanel";
 import ConfigPanel from "./ConfigPanel";

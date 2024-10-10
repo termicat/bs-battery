@@ -35,7 +35,9 @@ export default function ConfigObject(props: ConfigObjectProps) {
       {label && <div style={{ marginBottom: "10px" }}>{label}</div>}
       {properties?.map((item: any) => {
         const Component = getConfigRegister(item.type);
-        return (
+        return item.hide ? (
+          <> </>
+        ) : (
           <Component
             {...item}
             value={value?.[item.field]}

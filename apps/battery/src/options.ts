@@ -1,7 +1,11 @@
 import i18n from "@bc/i18n";
 import type { Node, Scheme } from "@bc/config-ui";
-import { theme } from "@bc/config";
-import { DATA_SOURCE_SORT_TYPE, ORDER } from "@lark-base-open/js-sdk";
+import {
+  dashboard,
+  DATA_SOURCE_SORT_TYPE,
+  ORDER,
+  type IDashboardTheme,
+} from "@bc/sdk";
 
 export const createScheme = () => {
   const t = i18n.t.bind(i18n);
@@ -28,14 +32,21 @@ export const createScheme = () => {
         field: "selectTheme",
         label: t("Theme"),
         type: "select-theme",
-        default: "p2",
+        default: "p1",
         // tip: "这是一个标题",
-        options: theme.light.map((item: any) => {
-          return {
-            label: item.label.slice(0, 3),
-            value: item.value,
-          };
-        }),
+        hide: true,
+        // options: [
+        //   {
+        //     label: themePalette.slice(0, 3),
+        //     value: "p1",
+        //   },
+        // ],
+        // theme.light.map((item: any) => {
+        //   return {
+        //     label: item.label.slice(0, 3),
+        //     value: item.value,
+        //   };
+        // }),
       },
       {
         type: "line",
@@ -152,9 +163,14 @@ export const createScheme = () => {
   } as Scheme;
 };
 
-export function createChartOption(data: any, configValueRoot: any) {
-  const selectTheme = configValueRoot.selectTheme;
-  const themeOption = theme.light.find((item) => item.value === selectTheme);
+export function createChartOption(
+  data: any,
+  configValueRoot: any,
+  theme: IDashboardTheme
+) {
+  // const selectTheme = configValueRoot.selectTheme;
+  // const themeOption = theme.light.find((item) => item.value === selectTheme);
+
   const chartOption = data.slice(1).map(
     (
       item: {
@@ -166,7 +182,8 @@ export function createChartOption(data: any, configValueRoot: any) {
       return {
         label: item[0].text,
         value: item[1]?.value,
-        color: themeOption?.label[index % themeOption?.label.length],
+        // color: themeOption?.label[index],
+        color: theme.themePalette[index],
       };
     }
   );

@@ -11,13 +11,15 @@ import {
   type IDataCondition,
   type IData,
   type ThemeModeCtx,
+  dashboard,
+  type IDashboardTheme,
 } from "@lark-base-open/js-sdk";
 import { Emitter } from "./Emitter";
 
 export type SelectionChangeEmitter = (event: IEventCbCtx<Selection>) => any;
 export type DashDataChangeEmitter = (event: IEventCbCtx<IData>) => any;
 export type DashConfigChangeEmitter = (event: IEventCbCtx<IConfig>) => any;
-export type ThememChangeEmitter = (event: IEventCbCtx<ThemeModeCtx>) => any;
+export type ThememChangeEmitter = (event: IEventCbCtx<IDashboardTheme>) => any;
 export type InitEmitter = (sdk: BsSdk) => any;
 
 export interface BIField {
@@ -79,17 +81,13 @@ export class BsSdk {
       });
     }
     if (onThemeChange) {
-      this.bitable.bridge.onThemeChange((event) => {
+      dashboard.onThemeChange((event) => {
         this.emThemeChange.emit(event);
       });
-      this.bitable.bridge.getTheme().then((theme) => {
-        this.emThemeChange.emitLifeCycle({ data: { theme } });
+      dashboard.getTheme().then((data) => {
+        this.emThemeChange.emitLifeCycle({ data });
       });
     }
-  }
-
-  getTableDataRange(tableId: string) {
-    return this.bitable.dashboard.getTableDataRange(tableId);
   }
 
   getTheme() {

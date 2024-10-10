@@ -9,6 +9,7 @@ import {
   setSchemeByPath,
 } from "@bc/config-ui";
 import {
+  dashboard,
   DATA_SOURCE_SORT_TYPE,
   FieldType,
   GroupMode,
@@ -16,7 +17,7 @@ import {
   Rollup,
   SourceType,
   type IConfig,
-} from "@lark-base-open/js-sdk";
+} from "@bc/sdk";
 import { bsSdk } from "./factory";
 import { useTranslation } from "react-i18next";
 import type { BIField } from "@bc/sdk/BsSdk";
@@ -24,7 +25,6 @@ import BatteryChart from "../../components/BatteryChart";
 import { createChartOption, createScheme } from "../../options";
 import { theme } from "@bc/config";
 import { useDebounceEffect } from "@bc/helper/useDebounce";
-import { typeofNumber } from "@bc/sdk/fieldTools";
 
 export type ConfigPanelProps = {};
 
@@ -40,6 +40,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
   });
   const [initd, setInitd] = useState(false);
   const [chartsOption, setChartsOption] = useState([] as any);
+  const [backgroundColor, setBackgroundColor] = useState("#fff");
   const fieldTypeMapRef = useRef<{ [key: string]: BIField }>({});
 
   useEffect(() => {
@@ -59,7 +60,12 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             data,
           })
         );
-        const chartOption = createChartOption(data, configValue.root);
+        const [newTheme] = await bsSdk.emThemeChange.wait();
+        const chartOption = createChartOption(
+          data,
+          configValue.root,
+          newTheme.data
+        );
         setChartsOption(chartOption);
         bsSdk.triggerDashRendered();
       }, 300);
@@ -75,6 +81,8 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         console.log("initConfigValue", JSON.stringify(config));
         const customConfig = config.customConfig;
         setConfigValue({ root: customConfig });
+        const [newTheme] = await bsSdk.emThemeChange.wait();
+        setBackgroundColor(newTheme.data.chartBgColor);
       }, 500);
     }
     initConfigValue();
@@ -170,7 +178,9 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         });
 
         const fieldValueByOptions = options.filter((item) =>
-          typeofNumber(item.type)
+          [FieldType.Number, FieldType.Formula, FieldType.Lookup].includes(
+            item.type
+          )
         );
         setSchemeByPath(scheme, "fieldValueBy", {
           options: fieldValueByOptions,
@@ -350,6 +360,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
         height: "100vh",
         overflow: "hidden",
         borderTop: "var(--split-line-size) solid var(--split-line-color)",
+        backgroundColor,
         // marginTop: 50,
       }}
     >
@@ -385,7 +396,7 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             setConfigValue(newTarget);
           }}
         ></ConfigUI>
-        <div style={{ height: 100 }}></div>
+        <div style={{ height: 300 }}></div>
         <div
           style={{
             position: "fixed",
@@ -393,10 +404,10 @@ export default function ConfigPanel(props: ConfigPanelProps) {
             right: 0,
             display: "flex",
             justifyContent: "end",
-            background: "var(--feishu-color-bg)",
             borderRadius: 4,
             width: 339,
             padding: "10px 20px",
+            backgroundColor,
           }}
         >
           <Button

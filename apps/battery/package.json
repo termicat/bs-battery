@@ -21,7 +21,6 @@
     "@douyinfe/semi-icons": "^2.58.0",
     "@douyinfe/semi-illustrations": "^2.58.0",
     "@douyinfe/semi-ui": "^2.58.0",
-    "@lark-base-open/js-sdk": "0.4.0-alpha.1",
     "axios": "^1.6.8",
     "date-fns": "^2.30.0",
     "deepmerge": "^4.3.1",
@@ -37,7 +36,8 @@
     "react-resize-detector": "^9.1.1",
     "reset-css": "^5.0.2",
     "styled-components": "^6.1.11",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "@lark-base-open/js-sdk": "https://lf3-static.bytednsdoc.com/obj/eden-cn/jjjpceh7nulojvhj/@lark-base-open-js-sdk-0.4.1-beta.5.tgz"
   },
   "devDependencies": {
     "@semi-bot/semi-theme-feishu-dashboard": "^1.0.4",

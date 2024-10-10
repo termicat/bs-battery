@@ -6,6 +6,6 @@
   "module": "./index.ts",
   "types": "./index.ts",
   "dependencies": {
-    "@lark-base-open/js-sdk": "0.4.0-alpha.1"
+    "@lark-base-open/js-sdk": "https://lf3-static.bytednsdoc.com/obj/eden-cn/jjjpceh7nulojvhj/@lark-base-open-js-sdk-0.4.1-beta.5.tgz"
   }
 }
